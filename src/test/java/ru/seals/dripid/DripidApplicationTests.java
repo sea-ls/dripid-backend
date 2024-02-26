@@ -1,4 +1,4 @@
-package su.seals.dripid;
+package ru.seals.dripid;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
