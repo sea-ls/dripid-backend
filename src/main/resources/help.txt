@@ -1,0 +1,2 @@
+запустить - docker stack deploy -c docker-compose.yml nft
+остановить - docker stack rm nft
