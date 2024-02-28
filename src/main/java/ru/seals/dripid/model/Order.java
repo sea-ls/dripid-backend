@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.seals.dripid.model.enums.DeliveryStageType;
 import ru.seals.dripid.model.enums.OrderStatus;
 import ru.seals.dripid.model.enums.OrderType;
 
@@ -26,14 +27,14 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
     private List<Product> products = new ArrayList<>();
 
     @ManyToOne
     private Warehouse warehouse;
 
-    @ManyToOne
-    private DeliveryStage deliveryStage;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStageType deliveryStageType;
 
     @ManyToOne
     private User user;

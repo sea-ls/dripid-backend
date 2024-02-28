@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import org.javamoney.moneta.Money;
 import ru.seals.dripid.model.enums.Role;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @AllArgsConstructor
@@ -20,9 +23,16 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
+    private List<SaveAddresses> saveAddresses = new ArrayList<>();
+
+    @Column(unique = true)
+    private String email;
+
+    private String password;
+    private Money balance;
+    private String image;
     private String firstName;
     private String lastName;
-    private String phoneNumber;
-    private Money balance;
-    //private image
+    private String phone;
 }

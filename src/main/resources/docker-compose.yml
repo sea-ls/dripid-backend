@@ -4,12 +4,12 @@ services:
     image: postgres:13.3
     restart: always
     environment:
-      POSTGRES_DB: "nft"
+      POSTGRES_DB: "dripId"
       POSTGRES_USER: "postgres"
       POSTGRES_PASSWORD: "postgres"
       PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ./drawSQL-pgsql-export-2024-02-26.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - ./dripId.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - /tmp/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"

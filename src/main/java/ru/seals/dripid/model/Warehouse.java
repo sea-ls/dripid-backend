@@ -23,5 +23,5 @@ public class Warehouse {
     private String phoneNumber;
     private String email;
     private String workSchedule;
-    //private  image;
+    private String image;
 }

@@ -31,5 +31,5 @@ public class Message {
     private MessageStatus status;
 
     private String content;
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 }
