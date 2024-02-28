@@ -1,4 +1,4 @@
 package ru.seals.dripid.model.enums;
 
-public enum DeliveryStatus {
+public enum DeliveryStageType {
 }

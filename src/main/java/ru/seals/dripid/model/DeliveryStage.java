@@ -4,19 +4,21 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javamoney.moneta.Money;
+import ru.seals.dripid.model.enums.DeliveryStageType;
+
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "products")
+@Table(name = "delivery_stage")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Product {
+public class DeliveryStage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String url;
-    private String description;
-    private Money price;
-    private Long weight;
+    private String location;
+    private LocalDate date;
+    @Enumerated(EnumType.STRING)
+    private DeliveryStageType type;
 }
