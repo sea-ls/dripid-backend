@@ -23,7 +23,7 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     @Override
     public MessageType getById(Long id) {
         return repository.findById(id)
-                .orElseThrow(messageTypeNotFoundException("DefaultMessage {0} not found!", id));
+                .orElseThrow(messageTypeNotFoundException("MessageType {0} not found!", id));
     }
 
     @Override

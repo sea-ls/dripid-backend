@@ -1,7 +1,11 @@
 package ru.seals.dripid.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
+import ru.seals.dripid.model.Warehouse;
 
 import java.util.List;
 
@@ -14,4 +18,9 @@ public interface AdminService {
     List<MessageType> getAllMessageTypes();
     void deleteMessageTypeById(Long id);
     void saveMessageType(MessageType messageType);
+
+    Page<WarehouseSimpleViewDTO> getAllWarehouseSimpleViewDTO(Pageable pageable);
+    Warehouse getWarehouseById(Long id);
+    void saveWarehouse(Warehouse warehouse);
+    void deleteWarehouseById(Long id);
 }
