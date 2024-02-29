@@ -14,6 +14,6 @@ public class DefaultMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private MessageType type;
+    private MessageType messageType;
     private String message;
 }
