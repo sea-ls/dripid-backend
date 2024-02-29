@@ -24,6 +24,7 @@ public class User {
     private Role role;
 
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
+    @JoinColumn(name = "user_id")
     private List<SaveAddresses> saveAddresses = new ArrayList<>();
 
     @Column(unique = true)

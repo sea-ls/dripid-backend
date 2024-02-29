@@ -26,7 +26,7 @@ public class BalanceHistory {
     @ManyToOne
     private User admin;
 
+    private String cheque;
     private Money oldBalance;
     private Money newBalance;
-    private String check;
 }

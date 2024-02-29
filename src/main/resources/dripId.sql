@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "warehouses"(
+/*CREATE TABLE IF NOT EXISTS "warehouses"(
     "id" BIGSERIAL PRIMARY KEY,
     "code" VARCHAR(255) NOT NULL,
     "zip_code" VARCHAR(255) NOT NULL,
@@ -99,3 +99,4 @@ CREATE TABLE IF NOT EXISTS "messages"(
     FOREIGN KEY("user_id") REFERENCES "users"("id"),
     FOREIGN KEY("admin_id") REFERENCES "users"("id")
 );
+*/

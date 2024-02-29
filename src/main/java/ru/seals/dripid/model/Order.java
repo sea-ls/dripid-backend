@@ -28,6 +28,7 @@ public class Order {
     private OrderStatus orderStatus;
 
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
+    @JoinColumn(name = "order_id")
     private List<Product> products = new ArrayList<>();
 
     @ManyToOne
