@@ -38,7 +38,7 @@ public class Order {
     private DeliveryStageType deliveryStageType;
 
     @ManyToOne
-    private User user;
+    private Person person;
 
     private String trackNumberInternal;
     private String trackNumberExternal;

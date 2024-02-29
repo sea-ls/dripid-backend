@@ -18,15 +18,17 @@ public class BalanceHistory {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private TransactionType type;
+    private TransactionType transactionType;
 
     @ManyToOne
-    private User user;
+    private Person user;
 
     @ManyToOne
-    private User admin;
+    private Person admin;
 
-    private String cheque;
+    @Column(columnDefinition = "money")
     private Money oldBalance;
+    @Column(columnDefinition = "money")
     private Money newBalance;
+    private String cheque;
 }

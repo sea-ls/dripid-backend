@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "chats")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

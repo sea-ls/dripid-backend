@@ -9,7 +9,6 @@ import ru.seals.dripid.model.enums.MessageStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "messages")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -22,10 +21,10 @@ public class Message {
     private Chat chat;
 
     @ManyToOne
-    private User user;
+    private Person person;
 
     @ManyToOne
-    private User admin;
+    private Person admin;
 
     @Enumerated(EnumType.STRING)
     private MessageStatus status;

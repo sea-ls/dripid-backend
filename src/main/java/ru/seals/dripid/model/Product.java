@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.javamoney.moneta.Money;
 
 @Entity
-@Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -17,6 +16,7 @@ public class Product {
     private Long id;
     private String url;
     private String description;
+    @Column(columnDefinition = "money")
     private Money price;
     private Long weight;
 }

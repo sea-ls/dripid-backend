@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class User {
+public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,13 +23,14 @@ public class User {
     private Role role;
 
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
-    @JoinColumn(name = "user_id")
-    private List<SaveAddresses> saveAddresses = new ArrayList<>();
+    @JoinColumn(name = "person_id")
+    private List<SaveAddress> saveAddresses = new ArrayList<>();
 
     @Column(unique = true)
     private String email;
 
     private String password;
+    @Column(columnDefinition = "money")
     private Money balance;
     private String image;
     private String firstName;

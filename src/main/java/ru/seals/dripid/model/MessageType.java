@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "message_types")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
