@@ -1,0 +1,36 @@
+package ru.seals.delivery.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@RequestMapping(value = "api/v1/admin/enum")
+@RequiredArgsConstructor
+public class EnumController {
+    /*@GetMapping("/delivery_status")
+    public DeliveryStatus[] getAllDeliveryStatuses() {
+        return DeliveryStatus.values();
+    }
+
+    @GetMapping("/message_status")
+    public MessageStatus[] getAllMessageStatuses() {
+        return MessageStatus.values();
+    }
+
+    @GetMapping("/order_status")
+    public OrderStatus[] getAllOrderStatuses() {
+        return OrderStatus.values();
+    }
+
+    @GetMapping("/order_type")
+    public OrderType[] getAllOrderTypes() {
+        return OrderType.values();
+    }
+
+    @GetMapping("/transaction_type")
+    public TransactionType[] getAllTransactionTypes() {
+        return TransactionType.values();
+    }*/
+}

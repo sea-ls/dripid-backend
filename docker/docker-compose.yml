@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  dripid-backend-service:
+    <<: *default-spring-config
+    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/dripid-backend-service:${IMAGE_TAG}
+    hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
+    deploy:
+      labels:
+        ru.seals.service: "dripid-backend-service"
+      resources:
+        reservations: *resources-low
+        limits: *resources-high
+    environment:
+      <<: *environment
+      VIRTUAL_HOST: "dripid-backend-service"
+    ports:
+      - "5005:5005"
+      - "8080:8080"
+    depends_on:
+      -   dripid-postgres
