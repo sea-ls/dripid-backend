@@ -6,15 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.seals.dripid.model.Order;
+import ru.seals.dripid.service.*;
 import ru.seals.dripid.util.Convertor;
 import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
 import ru.seals.dripid.model.Warehouse;
-import ru.seals.dripid.service.AdminService;
-import ru.seals.dripid.service.DefaultMessageService;
-import ru.seals.dripid.service.MessageTypeService;
-import ru.seals.dripid.service.WarehouseService;
 
 import java.util.List;
 
@@ -25,6 +23,7 @@ public class AdminServiceImpl implements AdminService {
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final WarehouseService warehouseService;
+    private final OrderService orderService;
 
     @Override
     public List<DefaultMessage> getAllDefaultMessagesByType(MessageType type) {
@@ -86,5 +85,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteWarehouseById(Long id) {
         warehouseService.deleteById(id);
+    }
+
+    @Override
+    public Order getOrderById(Long id) {
+        return orderService.getOrderById(id);
     }
 }

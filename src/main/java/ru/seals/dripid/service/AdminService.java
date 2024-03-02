@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
+import ru.seals.dripid.model.Order;
 import ru.seals.dripid.model.Warehouse;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public interface AdminService {
     Warehouse getWarehouseById(Long id);
     void saveWarehouse(Warehouse warehouse);
     void deleteWarehouseById(Long id);
+
+    Order getOrderById(Long id);
 }

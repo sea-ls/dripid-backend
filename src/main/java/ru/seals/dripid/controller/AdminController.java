@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
+import ru.seals.dripid.model.Order;
 import ru.seals.dripid.model.Warehouse;
 import ru.seals.dripid.service.AdminService;
 
@@ -62,6 +63,7 @@ public class AdminController {
     public Page<WarehouseSimpleViewDTO> getAllWarehouseSimpleViewDTO(@PathVariable int page, @RequestParam int size) {
         return adminService.getAllWarehouseSimpleViewDTO(PageRequest.of(page, size));
     }
+
     @GetMapping("/warehouse/{id}")
     public Warehouse getWarehouseById(@PathVariable Long id) {
         return adminService.getWarehouseById(id);
@@ -76,4 +78,10 @@ public class AdminController {
     public void deleteWarehouseById(@PathVariable Long id) {
         adminService.deleteWarehouseById(id);
     }
+
+    @GetMapping("/orders/{id}")
+    public Order getOrderById(@RequestBody Long id) {
+        return adminService.getOrderById(id);
+    }
+
 }
