@@ -27,7 +27,7 @@ public class AdminServiceImpl implements AdminService {
     private final WarehouseService warehouseService;
 
     @Override
-    public List<DefaultMessage> getAllDefaultMessagesByType(String type) {
+    public List<DefaultMessage> getAllDefaultMessagesByType(MessageType type) {
         return defaultMessageService.getAllByType(type);
     }
 
@@ -41,11 +41,16 @@ public class AdminServiceImpl implements AdminService {
         defaultMessageService.deleteById(id);
     }
 
-    @Override
+    /*@Override
     public void saveDefaultMessage(DefaultMessage defaultMessage, String type) {
         defaultMessage.setMessageType(messageTypeService.getByName(type));
         defaultMessageService.save(defaultMessage);
+    }*/
+    @Override
+    public void saveDefaultMessage(DefaultMessage defaultMessage) {
+        defaultMessageService.save(defaultMessage);
     }
+
 
     @Override
     public List<MessageType> getAllMessageTypes() {

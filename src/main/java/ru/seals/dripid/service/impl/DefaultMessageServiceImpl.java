@@ -3,6 +3,7 @@ package ru.seals.dripid.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.seals.dripid.model.DefaultMessage;
+import ru.seals.dripid.model.MessageType;
 import ru.seals.dripid.repository.DefaultMessageRepository;
 import ru.seals.dripid.service.DefaultMessageService;
 
@@ -22,8 +23,8 @@ public class DefaultMessageServiceImpl implements DefaultMessageService {
     }
 
     @Override
-    public List<DefaultMessage> getAllByType(String type) {
-        return repository.findAllByMessageTypeName(type);
+    public List<DefaultMessage> getAllByType(MessageType type) {
+        return repository.findAllByMessageType(type);
     }
 
     @Override

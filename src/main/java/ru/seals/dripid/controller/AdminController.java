@@ -18,8 +18,8 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
 
-    @GetMapping("/default_message/type/{type}")
-    public List<DefaultMessage> getAllDefaultMessagesByType(@PathVariable String type) {
+    @GetMapping("/default_message/type")
+    public List<DefaultMessage> getAllDefaultMessagesByType(@RequestBody MessageType type) {
         return adminService.getAllDefaultMessagesByType(type);
     }
 
@@ -33,9 +33,14 @@ public class AdminController {
         adminService.deleteDefaultMessageById(id);
     }
 
-    @PostMapping("/default_message/save")
+   /* @PostMapping("/default_message/save")
     public void saveDefaultMessage(@RequestBody DefaultMessage defaultMessage, @RequestParam String type) {
         adminService.saveDefaultMessage(defaultMessage, type);
+    }*/
+
+    @PostMapping("/default_message/save")
+    public void saveDefaultMessage(@RequestBody DefaultMessage defaultMessage) {
+        adminService.saveDefaultMessage(defaultMessage);
     }
 
     @GetMapping("/message_types")
@@ -71,5 +76,4 @@ public class AdminController {
     public void deleteWarehouseById(@PathVariable Long id) {
         adminService.deleteWarehouseById(id);
     }
-
 }
