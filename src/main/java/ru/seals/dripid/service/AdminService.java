@@ -27,4 +27,6 @@ public interface AdminService {
     void deleteWarehouseById(Long id);
 
     Order getOrderById(Long id);
+    void saveOrder(Order order);
+    void deleteOrderById(Long id);
 }

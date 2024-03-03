@@ -80,8 +80,17 @@ public class AdminController {
     }
 
     @GetMapping("/orders/{id}")
-    public Order getOrderById(@RequestBody Long id) {
+    public Order getOrderById(@PathVariable Long id) {
         return adminService.getOrderById(id);
     }
 
+    @PostMapping("/orders/save")
+    public void saveOrder(@RequestBody Order order) {
+        adminService.saveOrder(order);
+    }
+
+    @DeleteMapping("/orders/delete/{id}")
+    public void saveOrder(@PathVariable Long id) {
+        adminService.deleteOrderById(id);
+    }
 }

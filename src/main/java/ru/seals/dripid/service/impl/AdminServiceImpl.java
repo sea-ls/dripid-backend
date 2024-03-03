@@ -91,4 +91,14 @@ public class AdminServiceImpl implements AdminService {
     public Order getOrderById(Long id) {
         return orderService.getOrderById(id);
     }
+
+    @Override
+    public void saveOrder(Order order) {
+        orderService.saveOrder(order);
+    }
+
+    @Override
+    public void deleteOrderById(Long id) {
+        orderService.deleteOrderById(id);
+    }
 }
