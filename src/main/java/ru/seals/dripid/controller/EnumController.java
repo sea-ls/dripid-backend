@@ -7,14 +7,13 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.seals.dripid.model.enums.*;
 
 
-
 @RestController
 @RequestMapping(value = "api/v1/admin/enum")
 @RequiredArgsConstructor
 public class EnumController {
-    /*@GetMapping("/delivery_status")
-    public DeliveryStatus[] getAllDeliveryStatuses() {
-        return DeliveryStatus.values();
+    @GetMapping("/delivery_stage_type")
+    public DeliveryStageType[] getAllDeliveryStageTypes() {
+        return DeliveryStageType.values();
     }
 
     @GetMapping("/message_status")
@@ -35,5 +34,5 @@ public class EnumController {
     @GetMapping("/transaction_type")
     public TransactionType[] getAllTransactionTypes() {
         return TransactionType.values();
-    }*/
+    }
 }

@@ -59,26 +59,6 @@ public class AdminController {
         adminService.saveMessageType(messageType);
     }
 
-    @GetMapping("/warehouses/{page}")
-    public Page<WarehouseSimpleViewDTO> getAllWarehouseSimpleViewDTO(@PathVariable int page, @RequestParam int size) {
-        return adminService.getAllWarehouseSimpleViewDTO(PageRequest.of(page, size));
-    }
-
-    @GetMapping("/warehouse/{id}")
-    public Warehouse getWarehouseById(@PathVariable Long id) {
-        return adminService.getWarehouseById(id);
-    }
-
-    @PostMapping("/warehouse/save")
-    public void saveWarehouse(@RequestBody Warehouse warehouse) {
-        adminService.saveWarehouse(warehouse);
-    }
-
-    @DeleteMapping("/warehouse/delete/{id}")
-    public void deleteWarehouseById(@PathVariable Long id) {
-        adminService.deleteWarehouseById(id);
-    }
-
     @GetMapping("/orders/{id}")
     public Order getOrderById(@PathVariable Long id) {
         return adminService.getOrderById(id);

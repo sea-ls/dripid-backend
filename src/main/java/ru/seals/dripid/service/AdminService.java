@@ -21,11 +21,6 @@ public interface AdminService {
     void deleteMessageTypeById(Long id);
     void saveMessageType(MessageType messageType);
 
-    Page<WarehouseSimpleViewDTO> getAllWarehouseSimpleViewDTO(Pageable pageable);
-    Warehouse getWarehouseById(Long id);
-    void saveWarehouse(Warehouse warehouse);
-    void deleteWarehouseById(Long id);
-
     Order getOrderById(Long id);
     void saveOrder(Order order);
     void deleteOrderById(Long id);

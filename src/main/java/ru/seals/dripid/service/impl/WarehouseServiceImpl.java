@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.Warehouse;
 import ru.seals.dripid.repository.WarehouseRepository;
 import ru.seals.dripid.service.WarehouseService;
+import ru.seals.dripid.util.Convertor;
 
 import static ru.seals.dripid.exception.WarehouseNotFoundException.warehouseNotFoundException;
 
@@ -14,10 +16,12 @@ import static ru.seals.dripid.exception.WarehouseNotFoundException.warehouseNotF
 @RequiredArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
     private final WarehouseRepository repository;
+    private final Convertor convertor;
 
     @Override
-    public Page<Warehouse> getAllWarehouse(Pageable pageable) {
-        return repository.findAll(pageable);
+    public Page<WarehouseSimpleViewDTO> getAllWarehouse(Pageable pageable) {
+        Page<Warehouse> warehouses = repository.findAll(pageable);
+        return convertor.mapEntityPageIntoDtoPage(warehouses, WarehouseSimpleViewDTO.class);
     }
 
     @Override
