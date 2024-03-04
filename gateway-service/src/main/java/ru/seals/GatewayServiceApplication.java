@@ -1,4 +1,4 @@
-package ru.seals.gateway;
+package ru.seals;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
