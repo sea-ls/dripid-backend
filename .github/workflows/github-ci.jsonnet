@@ -39,7 +39,12 @@ local job_build_parent() = {
     needs: "changes",
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
     steps: [
-        { uses: "actions/checkout@v3" },
+        {
+            uses: "actions/checkout@v3",
+            with: {
+              ref: "${{ github.event.workflow_run.head_branch }}"
+            },
+        },
         { run: 'mvn --non-recursive clean package' },
     ],
   },
@@ -149,9 +154,6 @@ local jsonPipeline =
               "develop",
               "test-microservices"
           ],
-          with: {
-            ref: "${{ github.event.workflow_run.head_branch }}"
-          },
       },
       push: {
           "paths-ignore": [ '.github/**' ]
