@@ -1,0 +1,13 @@
+name: Create all jobs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/**'
+      - '!.github/workflows/generated-config.yml'
+
+jobs:
+    call-workflow:
+      uses: sea-ls/pipe/.github/workflows/pipeline-generation.github-ci.yml@main
+      secrets: inherit
