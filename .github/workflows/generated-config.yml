@@ -1,0 +1,46 @@
+"jobs":
+  "build-parent":
+    "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
+    "needs": "changes"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "mvn --non-recursive clean package"
+  "changes":
+    "outputs":
+      "parent": "${{ steps.filter.outputs.parent }}"
+    "permissions":
+      "pull-requests": "read"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "id": "filter"
+        "uses": "dorny/paths-filter@v3"
+        "with":
+          "filters": |
+            parent:
+            - pom.xml
+"name": "Create and publish a Service image"
+"on":
+  "push":
+    "paths-ignore":
+      - ".github/**"
+  "workflow_dispatch":
+    "branches":
+      - "develop"
+      - "test-microservices"
+    "inputs":
+      "build":
+        "description": "Who to build"
+        "options":
+          - "parent"
+        "type": "choice"
+  "workflow_run":
+    "branches":
+      - "develop"
+      - "test-microservices"
+    "types":
+      - "completed"
+    "workflows":
+      - "Create all jobs"
