@@ -5,7 +5,7 @@
     "runs-on":
       - "self-hosted"
     "steps":
-      - "mvn --non-recursive clean package"
+      - "run": "mvn --non-recursive clean package"
   "changes":
     "outputs":
       "parent": "${{ steps.filter.outputs.parent }}"
