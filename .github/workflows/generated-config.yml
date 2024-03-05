@@ -27,6 +27,9 @@
     "paths-ignore":
       - ".github/**"
   "workflow_dispatch":
+    "branches":
+      - "develop"
+      - "test-microservices"
     "inputs":
       "build":
         "description": "Who to build"
@@ -34,6 +37,9 @@
           - "parent"
         "type": "choice"
   "workflow_run":
+    "branches":
+      - "develop"
+      - "test-microservices"
     "types":
       - "completed"
     "workflows":
