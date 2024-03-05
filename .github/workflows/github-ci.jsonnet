@@ -9,6 +9,7 @@ local rule_allow_failure() = { allow_failure: true };
 local command_docker_login_local = 'echo -n $GITLAB_CI_PASSWORD | docker login $CI_REGISTRY --username $GITLAB_CI_USERNAME --password-stdin';
 local command_docker_login_remote = 'echo -n $UCSO_REMOTE_REGISTRY_PASS | docker login $UCSO_REMOTE_REGISTRY --username $UCSO_REMOTE_REGISTRY_USER --password-stdin';
 
+
 local filterArray = [ "pom.xml" ];
 
 local filters = std.manifestYamlDoc(filterArray, false);
@@ -16,6 +17,7 @@ local filters = std.manifestYamlDoc(filterArray, false);
 local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
+        image: configuration.dockerImage,
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -34,6 +36,7 @@ local job_changes() = {
 local job_build_parent() = {
   'build-parent': {
     "runs-on": [ "self-hosted" ],
+    image: configuration.dockerImage,
     needs: "changes",
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
     steps: [
