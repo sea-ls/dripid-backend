@@ -37,6 +37,7 @@ local job_build_parent() = {
     needs: "changes",
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
     steps: [
+        { uses: "actions/checkout@v3" },
         { run: 'mvn --non-recursive clean package' },
     ],
   },
