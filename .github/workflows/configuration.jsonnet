@@ -1,4 +1,5 @@
 {
+
   //variables: {
   //  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository",
  // },
