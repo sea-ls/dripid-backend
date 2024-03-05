@@ -42,5 +42,7 @@
       - "test-microservices"
     "types":
       - "completed"
+    "with":
+      "ref": "${{ github.event.workflow_run.head_branch }}"
     "workflows":
       - "Create all jobs"
