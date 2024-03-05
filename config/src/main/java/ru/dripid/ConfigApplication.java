@@ -1,4 +1,4 @@
-package ru.dripid.config;
+package ru.dripid;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

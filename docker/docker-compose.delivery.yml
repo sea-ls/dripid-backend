@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  delivery-postgres:
+    <<: *postgres-default-config
+    restart: always
+    environment:
+      POSTGRES_DB: "dripId"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./dripId.sql:/docker-entrypoint-initdb.d/create_tables.sql
+      - delivery-pgdata:/var/lib/postgresql/data
+      - type: tmpfs           #Эквивалент записи: shm_size: 1gb.
+        target: /dev/shm      #Работает в swarm режиме
+        tmpfs:
+          size: 1024000000
+  delivery-service:
+    <<: *default-spring-config
+    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/delivery-service:${IMAGE_TAG}
+    hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
+    deploy:
+      labels:
+        ru.seals.service: "delivery-service"
+      resources:
+        reservations: *resources-low
+        limits: *resources-high
+    environment:
+      <<: *environment
+      VIRTUAL_HOST: "delivery-service"
+    ports:
+      - "5001:5005"
+    depends_on:
+      - delivery-postgres
+
+volumes:
+  delivery-pgdata:
+    name: docker_delivery-pgdata
