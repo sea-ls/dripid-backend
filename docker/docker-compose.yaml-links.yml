@@ -28,7 +28,8 @@ x-update-config: &update-config-30s
   order: start-first
 
 x-environment: &environment
-  JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Dnetworkaddress.cache.ttl=60 -Dsun.net.inetaddr.ttl=60
+  JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5000 -Dnetworkaddress.cache.ttl=60 -Dsun.net.inetaddr.ttl=60
+  VIRTUAL_PORT: 8080
 
 x-default-spring-service-configuration: &default-spring-config
   stop_grace_period: 1m
@@ -38,3 +39,10 @@ x-default-spring-service-configuration: &default-spring-config
     resources: *reservation-low
     update_config: *update-config-30s
   environment: *environment
+
+x-postgres-default-config: &postgres-default-config
+  image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/postgres-16:latest
+  #    image: gitlab-registry.opencode.su/ucso/ucso-docker/postgres12-alpine:latest
+  stop_grace_period: 1m30s
+  shm_size: 1gb #Не работает в swarm режиме
+  logging: *default-logging
