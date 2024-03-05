@@ -17,7 +17,6 @@ local filters = std.manifestYamlDoc(filterArray, false);
 local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
-        container: configuration.dockerImage,
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -36,7 +35,6 @@ local job_changes() = {
 local job_build_parent() = {
   'build-parent': {
     "runs-on": [ "self-hosted" ],
-    container: configuration.dockerImage,
     needs: "changes",
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
     steps: [
