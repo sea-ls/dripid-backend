@@ -1,7 +1,7 @@
 "jobs":
   "build-parent":
+    "container": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
-    "image": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
     "needs": "changes"
     "runs-on":
       - "self-hosted"
@@ -9,7 +9,7 @@
       - "uses": "actions/checkout@v3"
       - "run": "mvn --non-recursive clean package"
   "changes":
-    "image": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
+    "container": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
     "outputs":
       "parent": "${{ steps.filter.outputs.parent }}"
     "permissions":
