@@ -150,6 +150,9 @@ local jsonPipeline =
               "develop",
               "test-microservices"
           ],
+          with: {
+            ref: "${{ github.event.workflow_run.head_branch }}"
+          },
       },
       push: {
           "paths-ignore": [ '.github/**' ]
