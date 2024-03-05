@@ -1,142 +1,143 @@
-local services = [
-  //{ name: "docker-25", dependsOn: [ "docker--25" ] },
-  { name: "minio-release_2024-02-24t17-11-14z", dependsOn: [ "minio__minio--release_2024-02-24t17-11-14z" ] },
-  { name: "postgres-16", dependsOn: [ "postgres--16" ] },
-];
+local configuration = import 'configuration.jsonnet';
 
-local dependencies = std.set(std.flattenArrays([
-    local depList(service) = service.dependsOn;
-    depList(service)
-    for service in services
-]));
+local filter_change_parent_pom() = { filters+: 'parent:\n- pom.xml\n' };
 
-local testA = {
-        [dependency]:  [
-            './init/' + dependency + '/**'
-        ] for dependency in dependencies
-    } + {
-        [service.name]:  [
-            '' + service.name + '/**'
-        ] for service in services
-    };
+local rule_change_in_directory(directory) = { changes+: [directory + '/**/*'] };
+local rule_manual() = { when: 'manual' };
+local rule_on_success() = { when: 'on_success' };
+local rule_allow_failure() = { allow_failure: true };
+local command_docker_login_local = 'echo -n $GITLAB_CI_PASSWORD | docker login $CI_REGISTRY --username $GITLAB_CI_USERNAME --password-stdin';
+local command_docker_login_remote = 'echo -n $UCSO_REMOTE_REGISTRY_PASS | docker login $UCSO_REMOTE_REGISTRY --username $UCSO_REMOTE_REGISTRY_USER --password-stdin';
 
-local str_templating = std.manifestYamlDoc(testA, false);
+local filterArray = [ "pom.xml" ];
 
-# Пока берется толкьо 0 элемент
-local arrayToString(arr) =
-  local aux(arr, index) =
-    // Assuming escapeStringJson is how you want to serialize
-    // the elements. Of course you can use any other way
-    // to serialize them (e.g. toString or manifestJson).
-    local elem = std.escapeStringJson(arr[index]);
-    if index == std.length(arr) - 1 then
-       " || needs.changes.outputs." + std.strReplace(elem, "\"", "") + " == 'true'"
-    else
-      elem + " || needs.changes.outputs." +  std.strReplace(aux(arr, index + 1)) + " == 'true'"
-  ;
-  aux(arr, 0);
+local filters = std.manifestYamlDoc(filterArray, false);
 
-
-local gitlabci = {
-  # Шаблоны
-  name: "Create and publish a Docker image",
-  on: {
-    workflow_dispatch: {
-        inputs: {
-            build: {
-                type: "choice",
-                description: "Who to build",
-                options: [
-                   service.name for service in services
-                ] +  [
-                    dependency for dependency in dependencies
-                ],
-            },
-        }
-    },
-    workflow_run: {
-        workflows: [ "Create all jobs" ],
-        types: [ "completed" ]
-    },
-    push: {
-        "paths-ignore": [ '.github/**' ]
-    }
-  },
-  env: {
-        DOCKER_REPO_PASSWORD: "${{ secrets.DOCKER_REPO_PASSWORD }}",
-        DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}",
-        DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}",
-        DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}",
-        CI_PROJECT_NAME: "${{ github.event.repository.name }}"
-    },
-} + {
-jobs : {
+local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
         # Required permissions
         permissions:{
             "pull-requests": "read"
-        } ,
-        outputs: {
-             [dependency]: "${{ steps.filter.outputs." + dependency + " }}"
-             for dependency in dependencies
-        } + {
-            [service.name]: "${{ steps.filter.outputs." + service.name + " }}"
-            for service in services
         },
+        outputs: { parent: "${{ steps.filter.outputs.parent }}" },
         steps: [
             {
                 uses: "dorny/paths-filter@v3",
                 id: "filter",
-                with: {
-                    filters: str_templating,
-                },
+                with: filter_change_parent_pom(),
             },
         ],
      }
-    } + {
-     [dependency]: {
-       "runs-on": [ "self-hosted" ],
-       needs: "changes",
-       "if": "${{github.event.inputs.build == '" + dependency + "' || needs.changes.outputs." + dependency + " == 'true' && always() }}",
-       env: {
-         SERVICE_NAME: dependency,
-         IMAGE: "${{ vars.DOCKER_REPO_URL }}${{ github.event.repository.name }}/" + dependency + ":latest"
-       },
-       steps: [
-         { uses: "actions/checkout@v3", },
-         { run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin", },
-         { run: "echo " +  dependency, },
-         { run: "docker build --build-arg DOCKER_REPO_URL --build-arg CI_PROJECT_NAME -t $IMAGE ./init/$SERVICE_NAME", },
-         { run: "docker push $IMAGE", },
-       ],
- //      environment: {
- //        name: "dev",
- //        url: "https://ucso-dev.opencode.su",
- //      },
-     }, for dependency in dependencies
- }  + {
-    [service.name]: {
-      "runs-on": [ "self-hosted" ],
-      needs:  [ "changes" ] + service.dependsOn,
-      "if": "${{github.event.inputs.build == '" + service.name + "' || (needs.changes.outputs." + service.name + " == 'true'" + arrayToString(service.dependsOn) + ") && always() }}",
-      env: {
-        SERVICE_NAME: service.name,
-        IMAGE: "${{ vars.DOCKER_REPO_URL }}${{ github.event.repository.name }}/" + service.name + ":latest"
-      },
-      steps: [
-        { uses: "actions/checkout@v3" },
-        { run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin" },
-        { run: "echo " +  service.name },
-        { run: "docker build --build-arg DOCKER_REPO_URL --build-arg CI_PROJECT_NAME -t $IMAGE ./$SERVICE_NAME" },
-        { run: "docker push $IMAGE" },
-      ],
-//     environment: {
-//       name: "dev",
-//       url: "https://ucso-dev.opencode.su",
-//     },
-    }, for service in services
-}
 };
 
-std.manifestYamlDoc(gitlabci, true)
+local job_build_parent() = {
+  'build-parent': {
+    "runs-on": [ "self-hosted" ],
+    needs: "changes",
+    "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
+    steps: [
+        'mvn --non-recursive clean package',
+    ],
+  },
+};
+
+//local job_build_service(container_name, dependsOnLibs, dependSubmodule) = {
+//  local var_tag = '$CI_COMMIT_BRANCH',
+//  local image = if std.length(std.extVar('branch')) != 0
+//    then 'ucso/' + container_name + ':' + var_tag
+//    else 'ucso/' + container_name + ':$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME',
+//  local var_image = '${DOCKER_REPO_URL}${CI_PROJECT_NAME}/' + container_name,
+//
+//  variables: {
+//    GIT_SUBMODULE_STRATEGY: 'recursive',
+//  },
+//  stage: 'build-service',
+//  script: [
+//    'echo ' + mvn_repo,
+//    command_docker_login_local,
+//    'mvn clean spring-boot:build-image' +
+//          ' -Dspring-boot.build-image.imageName=' + image + ' -pl ' + container_name + mvn_repo +
+//          ' -Dbuilder=${DOCKER_REPO_URL}ucso-docker/paketo-full:latest' +
+//          ' -DrunImage=${DOCKER_REPO_URL}ucso-docker/paketo-run-full:latest' +
+//          ' -Ddocker.repo.url=${CI_REGISTRY}' +
+//          ' -Ddocker.repo.username=${GITLAB_CI_USERNAME}' +
+//          ' -Ddocker.repo.password=${GITLAB_CI_PASSWORD}',
+//          //+ ' -DrunImage=paketobuildpacks/run:1.2.60-base-cnb',// + ' -DbuildImage=paketobuildpacks/run:1.2.60-base-cnb',
+//          //' -DrunImage=${DOCKER_REPO_URL}ucso-docker/paketo-run-base:latest',
+//    'docker tag ucso/' + container_name + ':' + var_tag + ' ' + var_image + ':' + var_tag,
+//    'docker push ' + var_image + ':' + var_tag,
+//    'BUILT_CONTAINER_NAME_' + std.strReplace(container_name, '-', '_') + '=' + container_name
+//  ],
+//  retry: 1,
+//  rules: [rule_merge_request()] + rule_openapi_changes(container_name) + [
+//    filter_change_parent_pom() + rule_change_in_directory(container_name) + rule_change_libs(dependsOnLibs),
+//    rule_manual() + rule_allow_failure(),
+//  ],
+//  tags: ['docker-builder'],
+//};
+//
+//local build_services() = {
+//  ['build-' + container.container_name]:
+//    job_build_service(container.container_name, container.dependOnLibs, container.dependSubmodule)
+//  for container in configuration.containers
+//};
+//
+//local generate_compose_all() = [
+//  [
+//      'cat docker-compose.yaml-links.yml docker-compose.' + deploymentGroup.name + '.yml > docker-compose.' + deploymentGroup.name + '.gen.yml',
+//      'env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) ' +
+//      'docker --context $CI_COMMIT_BRANCH ' +
+//      'stack deploy -c docker-compose.' + deploymentGroup.name + '.gen.yml ' +
+//      '--with-registry-auth ucso-' + deploymentGroup.name,
+//  ]
+//  for deploymentGroup in configuration.deploymentGroups
+//];
+//
+//local collect_compose_all() = [
+//  '-c docker-compose.' + deploymentGroup.name + '.gen.yml'
+//  for deploymentGroup in configuration.deploymentGroups
+//];
+//
+//local deploy_local_server() = if ( std.extVar('branch') == 'test' || std.extVar('branch') == 'develop' || std.extVar('branch') == 'develop-old' || std.extVar('branch') == 'test-old' ) then {
+//  ['update-' + std.extVar('branch') + '-server']: {
+//    stage: 'local-deploy',
+//    cache: { },
+//    script:
+//    [
+//      'cd docker',
+//      command_docker_login_local,
+//      'echo $DOCKER_REPO_URL',
+//    ] +
+//    generate_compose_all(),
+//    rules: [
+//      rule_merge_request() + { when: 'never' },
+//      rule_on_success(),
+//      rule_manual() + rule_allow_failure(),
+//    ],
+//    tags: ['ucso-deploy-manager'],
+//  }
+//} else { };
+
+
+local jsonPipeline =
+{
+  name: "Create and publish a Service image",
+  on: {
+      workflow_run: {
+          workflows: [ "Create all jobs" ],
+          types: [ "completed" ]
+      },
+      push: {
+          "paths-ignore": [ '.github/**' ]
+      }
+  },
+} + {
+    jobs: job_changes()
+    + job_build_parent()
+};
+
+//+ build_services()
+//+ deploy_local_server()
+
+std.manifestYamlDoc( jsonPipeline, true)
