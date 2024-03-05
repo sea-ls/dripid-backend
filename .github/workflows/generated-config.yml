@@ -25,6 +25,13 @@
   "push":
     "paths-ignore":
       - ".github/**"
+  "workflow_dispatch":
+    "inputs":
+      "build":
+        "description": "Who to build"
+        "options":
+          - "parent"
+        "type": "choice"
   "workflow_run":
     "types":
       - "completed"
