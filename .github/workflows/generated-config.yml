@@ -1,0 +1,32 @@
+"jobs":
+  "build-parent":
+    "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
+    "needs": "changes"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "mvn --non-recursive clean package"
+  "changes":
+    "outputs":
+      "parent": "${{ steps.filter.outputs.parent }}"
+    "permissions":
+      "pull-requests": "read"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "id": "filter"
+        "uses": "dorny/paths-filter@v3"
+        "with":
+          "filters": |
+            parent:
+            - pom.xml
+"name": "Create and publish a Service image"
+"on":
+  "push":
+    "paths-ignore":
+      - ".github/**"
+  "workflow_run":
+    "types":
+      - "completed"
+    "workflows":
+      - "Create all jobs"
