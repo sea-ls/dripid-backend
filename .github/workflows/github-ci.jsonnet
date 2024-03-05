@@ -126,6 +126,10 @@ local jsonPipeline =
   name: "Create and publish a Service image",
   on: {
       workflow_dispatch: {
+          branches: [
+                "develop",
+                "test-microservices"
+            ],
           inputs: {
               build: {
                   type: "choice",
@@ -138,7 +142,11 @@ local jsonPipeline =
       },
       workflow_run: {
           workflows: [ "Create all jobs" ],
-          types: [ "completed" ]
+          types: [ "completed" ],
+          branches: [
+              "develop",
+              "test-microservices"
+          ],
       },
       push: {
           "paths-ignore": [ '.github/**' ]
