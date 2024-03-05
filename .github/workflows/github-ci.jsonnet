@@ -124,6 +124,17 @@ local jsonPipeline =
 {
   name: "Create and publish a Service image",
   on: {
+      workflow_dispatch: {
+          inputs: {
+              build: {
+                  type: "choice",
+                  description: "Who to build",
+                  options: [
+                     "parent"
+                  ],
+              },
+          }
+      },
       workflow_run: {
           workflows: [ "Create all jobs" ],
           types: [ "completed" ]
