@@ -1,4 +1,4 @@
-package ru.seals.authservice;
+package ru.seals.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
