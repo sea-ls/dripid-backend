@@ -8,7 +8,7 @@ spring:
         git:
           uri: https://github.com/sea-ls/dripid-config.git
           username: my_temp_access_token
-          password: ${DRIP_ID_CONFIG_TOKEN}
+          password: ${CONFIG_TOKEN}
           search-paths: "{application}"
 
 server:
