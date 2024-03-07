@@ -10,7 +10,7 @@ import ru.seals.delivery.service.AdminService;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "delivery_service/api/v1/admin")
+@RequestMapping(value = "/api/delivery-service/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final AdminService adminService;
