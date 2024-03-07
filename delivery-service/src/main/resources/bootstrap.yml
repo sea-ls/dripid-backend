@@ -5,3 +5,13 @@
     config:
       uri: http://localhost:8888
       fail-fast: true
+    gateway:
+      routes:
+        - id: delivery-service
+          uri: http://localhost:8090
+          predicates:
+            - Path=/delivery_service/api/v1/**
+        - id: auth-service
+          uri: http://localhost:9000
+          predicates:
+            - Path=/auth_service/api/v1/*
