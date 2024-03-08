@@ -1,5 +1,6 @@
 "jobs":
   "build-parent":
+    "container": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs": "changes"
     "runs-on":
