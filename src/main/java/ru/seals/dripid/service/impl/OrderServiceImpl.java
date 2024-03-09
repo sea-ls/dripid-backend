@@ -26,4 +26,10 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrderById(Long id) {
         orderRepository.deleteById(id);
     }
+
+    @Override
+    public String getDeliveryHistory(String trackNumber) {
+        //return orderRepository.getOrderByTrackNumberExternal(trackNumber).getDeliveryHistory();
+        return null;
+    }
 }

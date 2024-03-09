@@ -6,4 +6,5 @@ import ru.seals.dripid.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
+    Order getOrderByTrackNumberExternal(String trackNumber);
 }

@@ -1,9 +1,13 @@
 package ru.seals.dripid.model;
 
+
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.json.JSONObject;
 import ru.seals.dripid.model.enums.DeliveryStageType;
 import ru.seals.dripid.model.enums.OrderStatus;
 import ru.seals.dripid.model.enums.OrderType;
@@ -39,6 +43,10 @@ public class Order {
 
     @ManyToOne
     private Person person;
+
+    @Column(columnDefinition = "jsonb")
+    @Type(JsonBinaryType.class)
+    private JSONObject deliveryHistory;
 
     private String trackNumberInternal;
     private String trackNumberExternal;
