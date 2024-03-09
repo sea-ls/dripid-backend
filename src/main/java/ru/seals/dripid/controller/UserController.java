@@ -14,7 +14,7 @@ import ru.seals.dripid.service.OrderService;
 public class UserController {
     private final OrderService orderService;
 
-    @GetMapping("/default_message/{trackNumber}")
+    @GetMapping("/track/{trackNumber}")
     public String getDeliveryHistory(@PathVariable String trackNumber) {
         return orderService.getDeliveryHistory(trackNumber);
     }

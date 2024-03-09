@@ -2,6 +2,7 @@ package ru.seals.dripid.model;
 
 
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -45,8 +46,8 @@ public class Order {
     private Person person;
 
     @Column(columnDefinition = "jsonb")
-    @Type(JsonBinaryType.class)
-    private JSONObject deliveryHistory;
+    @Type(JsonType.class)
+    private String deliveryHistory;
 
     private String trackNumberInternal;
     private String trackNumberExternal;

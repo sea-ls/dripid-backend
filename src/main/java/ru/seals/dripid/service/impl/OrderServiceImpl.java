@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String getDeliveryHistory(String trackNumber) {
-        //return orderRepository.getOrderByTrackNumberExternal(trackNumber).getDeliveryHistory();
-        return null;
+        return orderRepository.getOrderByTrackNumberExternal(trackNumber).getDeliveryHistory();
     }
 }
