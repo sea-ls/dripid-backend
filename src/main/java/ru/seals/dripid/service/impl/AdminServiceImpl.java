@@ -3,18 +3,21 @@ package ru.seals.dripid.service.impl;
 import lombok.RequiredArgsConstructor;
 
 
-
 import org.springframework.stereotype.Service;
 import ru.seals.dripid.model.Order;
 import ru.seals.dripid.service.*;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
+    private static final String DELIVERY_HISTORY_JSON = "%s, {\"time\": \"%s\", \"status\": \"%s\"}]";
+    private static final String DELIVERY_START_HISTORY_JSON = "[{\"time\": \"%s\", \"status\": \"%s\"}]";
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
@@ -73,5 +76,17 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteOrderById(Long id) {
         orderService.deleteOrderById(id);
+    }
+
+    @Override
+    public void updateDeliveryHistory(Long id, String status) {
+        Order order = orderService.getOrderById(id);
+        String oldStatus = order.getDeliveryHistory();
+        String newStatus = Objects.isNull(oldStatus) ?
+                String.format(DELIVERY_START_HISTORY_JSON, LocalDate.now(), status) :
+                String.format(DELIVERY_HISTORY_JSON, oldStatus.substring(0, oldStatus.length() - 1), LocalDate.now(), status);
+
+        order.setDeliveryHistory(newStatus);
+        orderService.saveOrder(order);
     }
 }

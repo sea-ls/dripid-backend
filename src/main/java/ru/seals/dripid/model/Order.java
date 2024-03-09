@@ -1,14 +1,12 @@
 package ru.seals.dripid.model;
 
 
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.json.JSONObject;
 import ru.seals.dripid.model.enums.DeliveryStageType;
 import ru.seals.dripid.model.enums.OrderStatus;
 import ru.seals.dripid.model.enums.OrderType;

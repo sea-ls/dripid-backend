@@ -73,4 +73,9 @@ public class AdminController {
     public void saveOrder(@PathVariable Long id) {
         adminService.deleteOrderById(id);
     }
+
+    @PostMapping("/order/delivery_history/{id}")
+    public void updateDeliveryHistory(@PathVariable Long id, @RequestParam String status) {
+        adminService.updateDeliveryHistory(id, status);
+    }
 }
