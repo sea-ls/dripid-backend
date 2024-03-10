@@ -11,4 +11,11 @@
     {name: 'gateway',            containers: ['gateway-service']},
     {name: 'delivery',           containers: ['delivery-service']},
   ],
+    containers: [
+          {name: 'config-service',             dependOnLibs: [ ]},
+          {name: 'auth-service',               dependOnLibs: [ ]},
+          {name: 'gateway-service',            dependOnLibs: [ ]},
+          {name: 'delivery-service',           dependOnLibs: [ ]},
+
+    ]
 }

@@ -50,7 +50,7 @@ local job_build_parent() = {
   },
 };
 
-//local job_build_service(container_name, dependsOnLibs, dependSubmodule) = {
+//local job_build_service(container_name) = {
 //  local var_tag = '$CI_COMMIT_BRANCH',
 //  local image = if std.length(std.extVar('branch')) != 0
 //    then 'ucso/' + container_name + ':' + var_tag
@@ -85,11 +85,11 @@ local job_build_parent() = {
 //  tags: ['docker-builder'],
 //};
 //
-//local build_services() = {
-//  ['build-' + container.container_name]:
-//    job_build_service(container.container_name, container.dependOnLibs, container.dependSubmodule)
-//  for container in configuration.containers
-//};
+local build_services() = {
+  ['build-' + container.container_name]:
+    job_build_service(container.container_name)
+  for container in configuration.containers
+};
 //
 //local generate_compose_all() = [
 //  [
@@ -99,11 +99,6 @@ local job_build_parent() = {
 //      'stack deploy -c docker-compose.' + deploymentGroup.name + '.gen.yml ' +
 //      '--with-registry-auth ucso-' + deploymentGroup.name,
 //  ]
-//  for deploymentGroup in configuration.deploymentGroups
-//];
-//
-//local collect_compose_all() = [
-//  '-c docker-compose.' + deploymentGroup.name + '.gen.yml'
 //  for deploymentGroup in configuration.deploymentGroups
 //];
 //
@@ -162,9 +157,9 @@ local jsonPipeline =
 } + {
     jobs: job_changes()
     + job_build_parent()
-};
+}
 
-//+ build_services()
++ build_services();
 //+ deploy_local_server()
 
 std.manifestYamlDoc( jsonPipeline, true)

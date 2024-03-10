@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.seals</groupId>
-    <artifactId>dripid</artifactId>
+    <artifactId>dripid-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -29,8 +29,8 @@
         <docker.repo.url/>
         <docker.repo.username/>
         <docker.repo.password/>
-        <builder>paketobuildpacks/builder:0.2.443-full</builder>
-        <runImage>paketobuildpacks/run:full-cnb</runImage>
+<!--        <builder>paketobuildpacks/builder:0.2.443-full</builder>
+        <runImage>paketobuildpacks/run:full-cnb</runImage>-->
     </properties>
 
     <dependencyManagement>
@@ -125,6 +125,7 @@
                         <cleanCache>false</cleanCache>
                         <env>
                             <BP_OCI_CREATED>${maven.build.timestamp}</BP_OCI_CREATED>
+                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                         </env>
                     </image>
                     <docker>

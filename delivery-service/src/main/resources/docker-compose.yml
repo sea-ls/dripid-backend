@@ -12,4 +12,4 @@ services:
       - ./dripId.sql:/docker-entrypoint-initdb.d/create_tables.sql
       - /tmp/postgres:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5431:5432"
