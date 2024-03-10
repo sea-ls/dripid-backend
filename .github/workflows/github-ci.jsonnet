@@ -58,10 +58,10 @@ local job_build_parent() = {
 
 local job_build_service(container_name) = {
   local projectName = 'dripid/',
-  local var_tag = '${{ vars.GITHUB_REF_NAME }}',
+  local var_tag = '${GITHUB_REF_NAME}',
   local image = if std.length(std.extVar('branch')) != 0
     then projectName + + container_name + ':' + var_tag
-    else projectName + + container_name + ':${{ vars.GITHUB_HEAD_REF }}-${{ vars.GITHUB_BASE_REF }}',
+    else projectName + + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
   //local image = projectName + container_name + ':' + var_tag,
   local var_image = '$DOCKER_REPO_URL$CI_PROJECT_NAME/' + container_name,
 
