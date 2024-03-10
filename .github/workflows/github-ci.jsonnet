@@ -19,6 +19,7 @@ local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
+        "if": "${{ github.event.inputs.build == '' }}",
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -79,8 +80,8 @@ local job_build_service(container_name) = {
     { run: image },
     { run: 'mvn clean spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
-          ' -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest' +
-          ' -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest' +
+          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
+          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
           ' -Ddocker.repo.url=$CI_REGISTRY' +
           ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
           ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
