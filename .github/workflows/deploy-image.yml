@@ -10,6 +10,4 @@ on:
 jobs:
     call-workflow:
       uses: sea-ls/pipe/.github/workflows/pipeline-generation.github-ci.yml@main
-      with:
-        GITHUB_REF_NAME: "${{ vars.GITHUB_REF_NAME }}"
       secrets: inherit
