@@ -86,36 +86,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <layers>
-                        <enabled>true</enabled>
-                    </layers>
-                    <image>
-<!--                        <builder>${builder}</builder>
-                        <runImage>${runImage}</runImage>-->
-                        <cleanCache>false</cleanCache>
-                        <env>
-                            <BP_OCI_CREATED>${maven.build.timestamp}</BP_OCI_CREATED>
-                        </env>
-                    </image>
-<!--                    <docker>
-                        <builderRegistry>
-                            <username>${docker.repo.username}</username>
-                            <password>${docker.repo.password}</password>
-                            <url>${docker.repo.url}</url>
-                        </builderRegistry>
-                    </docker>-->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
+<!--                    <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
-                    </excludes>
+                    </excludes>-->
                     <layers>
                         <enabled>true</enabled>
                     </layers>
