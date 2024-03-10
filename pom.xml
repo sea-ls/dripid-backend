@@ -29,8 +29,8 @@
         <docker.repo.url/>
         <docker.repo.username/>
         <docker.repo.password/>
-<!--        <builder>paketobuildpacks/builder:0.2.443-full</builder>
-        <runImage>paketobuildpacks/run:full-cnb</runImage>-->
+        <builder>paketobuildpacks/builder-jammy-base:0.4.278</builder>
+        <runImage>paketobuildpacks/run-jammy-base:0.1.105</runImage>
     </properties>
 
     <dependencyManagement>
@@ -74,7 +74,7 @@
     </dependencies>
 
     <modules>
-        <module>config</module>
+        <module>config-service</module>
         <module>gateway-service</module>
         <module>auth-service</module>
         <module>delivery-service</module>
