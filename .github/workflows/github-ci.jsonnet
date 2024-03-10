@@ -58,10 +58,12 @@ local job_build_parent() = {
 
 local job_build_service(container_name) = {
   local projectName = 'dripid/',
-  local var_tag = '${GITHUB_REF_NAME}',
-  local image = if std.length(var_tag) != 0
-    then projectName + container_name + ':' + var_tag
-    else projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
+  local image = '[[ -n "${GITHUB_REF_NAME}" ]]' +
+   ' && echo IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}' +
+   ' || echo IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
+  //local image = if std.length(var_tag) != 0
+    //then projectName + container_name + ':' + var_tag
+    //else projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
   //local image = projectName + container_name + ':' + var_tag,
   local var_image = '$DOCKER_REPO_URL$CI_PROJECT_NAME/' + container_name,
 
@@ -74,16 +76,17 @@ local job_build_service(container_name) = {
   steps: [
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
+    { run: image },
     { run: 'mvn clean spring-boot:build-image' +
-          ' -Dspring-boot.build-image.imageName=' + image +
+          ' -Dspring-boot.build-image.imageName=$IMAGE' +
           ' -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest' +
           ' -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest' +
           ' -Ddocker.repo.url=$CI_REGISTRY' +
           ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
           ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
           },
-    { run: 'docker tag ' + projectName + container_name + ':' + var_tag + ' ' + var_image + ':' + var_tag },
-    { run: 'docker push ' + var_image + ':' + var_tag },
+    { run: 'docker tag ' + projectName + container_name + ':${GITHUB_REF_NAME}' + ' ' + var_image + ':${GITHUB_REF_NAME}' },
+    { run: 'docker push ' + var_image + ':${GITHUB_REF_NAME}' },
   ],
 };
 
