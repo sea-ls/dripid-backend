@@ -41,7 +41,7 @@ local job_changes() = {
 local job_build_parent() = {
   'build-parent': {
     "runs-on": [ "self-hosted" ],
-    container: configuration.dockerImage,
+    //container: configuration.dockerImage,
     needs: "changes",
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
     steps: [
@@ -77,7 +77,7 @@ local job_build_service(container_name) = {
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
     { run: image },
-    { run: 'mvn clean spring-boot:build-image' +
+    { run: 'mvn clean spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
           ' -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest' +
           ' -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest' +
