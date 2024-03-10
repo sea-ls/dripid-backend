@@ -1,5 +1,69 @@
+"env":
+  "CI_PROJECT_NAME": "${{ github.event.repository.name }}"
+  "CI_REGISTRY": "ghcr.io"
+  "DOCKER_REPO_PASSWORD": "${{ secrets.DOCKER_REPO_PASSWORD }}"
+  "DOCKER_REPO_URL": "${{ vars.DOCKER_REPO_URL }}"
+  "DOCKER_REPO_URL_LOGIN": "${{ vars.DOCKER_REPO_URL_LOGIN }}"
+  "DOCKER_REPO_USERNAME": "${{ secrets.DOCKER_REPO_USERNAME }}"
 "jobs":
+  "build-auth-service":
+    "if": "${{ github.event.inputs.build == 'auth-service' || needs.changes.outputs.auth-service == 'true' && always() }}"
+    "needs":
+      - "changes"
+      - "build-parent"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
+      - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo IMAGE=dripid/auth-service:${GITHUB_REF_NAME} || echo IMAGE=dripid/auth-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}"
+      - "run": "mvn clean spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "docker tag dripid/auth-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
+      - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
+  "build-config-service":
+    "if": "${{ github.event.inputs.build == 'config-service' || needs.changes.outputs.config-service == 'true' && always() }}"
+    "needs":
+      - "changes"
+      - "build-parent"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
+      - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo IMAGE=dripid/config-service:${GITHUB_REF_NAME} || echo IMAGE=dripid/config-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}"
+      - "run": "mvn clean spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "docker tag dripid/config-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
+      - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
+  "build-delivery-service":
+    "if": "${{ github.event.inputs.build == 'delivery-service' || needs.changes.outputs.delivery-service == 'true' && always() }}"
+    "needs":
+      - "changes"
+      - "build-parent"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
+      - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo IMAGE=dripid/delivery-service:${GITHUB_REF_NAME} || echo IMAGE=dripid/delivery-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}"
+      - "run": "mvn clean spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "docker tag dripid/delivery-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
+      - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
+  "build-gateway-service":
+    "if": "${{ github.event.inputs.build == 'gateway-service' || needs.changes.outputs.gateway-service == 'true' && always() }}"
+    "needs":
+      - "changes"
+      - "build-parent"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
+      - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo IMAGE=dripid/gateway-service:${GITHUB_REF_NAME} || echo IMAGE=dripid/gateway-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}"
+      - "run": "mvn clean spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "docker tag dripid/gateway-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/gateway-service:${GITHUB_REF_NAME}"
+      - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/gateway-service:${GITHUB_REF_NAME}"
   "build-parent":
+    "container": "${{ vars.DOCKER_REPO_URL }}docker/docker-25"
     "if": "${{ github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs": "changes"
     "runs-on":
@@ -11,6 +75,10 @@
       - "run": "mvn --non-recursive clean package"
   "changes":
     "outputs":
+      "auth-service": "${{ steps.filter.outputs.auth-service }}"
+      "config-service": "${{ steps.filter.outputs.config-service }}"
+      "delivery-service": "${{ steps.filter.outputs.delivery-service }}"
+      "gateway-service": "${{ steps.filter.outputs.gateway-service }}"
       "parent": "${{ steps.filter.outputs.parent }}"
     "permissions":
       "pull-requests": "read"
@@ -20,9 +88,7 @@
       - "id": "filter"
         "uses": "dorny/paths-filter@v3"
         "with":
-          "filters": |
-            parent:
-            - pom.xml
+          "filters": "\"auth-service\":\n- \"./auth-service/**\"\n\"config-service\":\n- \"./config-service/**\"\n\"delivery-service\":\n- \"./delivery-service/**\"\n\"gateway-service\":\n- \"./gateway-service/**\"\n\"parent\":\n- \"pom.xml\""
 "name": "Create and publish a Service image"
 "on":
   "push":
@@ -37,6 +103,10 @@
         "description": "Who to build"
         "options":
           - "parent"
+          - "config-service"
+          - "auth-service"
+          - "gateway-service"
+          - "delivery-service"
         "type": "choice"
   "workflow_run":
     "branches":
