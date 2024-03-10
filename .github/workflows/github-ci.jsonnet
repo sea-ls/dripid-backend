@@ -60,8 +60,8 @@ local job_build_parent() = {
 local job_build_service(container_name) = {
   local projectName = 'dripid/',
   local image = '[[ -n "${GITHUB_REF_NAME}" ]]' +
-   ' && echo IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}' +
-   ' || echo IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
+   ' && echo "IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}"' +
+   ' || echo "IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}"',
   //local image = if std.length(var_tag) != 0
     //then projectName + container_name + ':' + var_tag
     //else projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
