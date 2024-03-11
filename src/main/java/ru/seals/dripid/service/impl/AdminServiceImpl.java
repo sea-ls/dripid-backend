@@ -1,5 +1,7 @@
 package ru.seals.dripid.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 
@@ -9,15 +11,11 @@ import ru.seals.dripid.service.*;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class AdminServiceImpl implements AdminService {
-    private static final String DELIVERY_HISTORY_JSON = "%s, {\"time\": \"%s\", \"status\": \"%s\"}]";
-    private static final String DELIVERY_START_HISTORY_JSON = "[{\"time\": \"%s\", \"status\": \"%s\"}]";
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
@@ -79,14 +77,19 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateDeliveryHistory(Long id, String status) {
+    public void updateDeliveryHistory(Long id, HashMap<String, String> newStatus) {
         Order order = orderService.getOrderById(id);
         String oldStatus = order.getDeliveryHistory();
-        String newStatus = Objects.isNull(oldStatus) ?
-                String.format(DELIVERY_START_HISTORY_JSON, LocalDate.now(), status) :
-                String.format(DELIVERY_HISTORY_JSON, oldStatus.substring(0, oldStatus.length() - 1), LocalDate.now(), status);
 
-        order.setDeliveryHistory(newStatus);
+        try {
+            ObjectMapper om = new ObjectMapper();
+            ArrayList<HashMap<String, String>> statuses = om.readValue(oldStatus, ArrayList.class);
+            statuses.add(newStatus);
+            order.setDeliveryHistory(om.writeValueAsString(statuses));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         orderService.saveOrder(order);
     }
 }

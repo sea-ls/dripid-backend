@@ -6,6 +6,7 @@ import ru.seals.dripid.model.MessageType;
 import ru.seals.dripid.model.Order;
 
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface AdminService {
@@ -22,5 +23,5 @@ public interface AdminService {
     Order getOrderById(Long id);
     void saveOrder(Order order);
     void deleteOrderById(Long id);
-    void updateDeliveryHistory(Long id, String status);
+    void updateDeliveryHistory(Long id, HashMap<String, String> newStatus);
 }

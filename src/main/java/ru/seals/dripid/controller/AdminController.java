@@ -1,16 +1,13 @@
 package ru.seals.dripid.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import ru.seals.dripid.dto.WarehouseSimpleViewDTO;
 import ru.seals.dripid.model.DefaultMessage;
 import ru.seals.dripid.model.MessageType;
 import ru.seals.dripid.model.Order;
-import ru.seals.dripid.model.Warehouse;
 import ru.seals.dripid.service.AdminService;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -75,7 +72,7 @@ public class AdminController {
     }
 
     @PostMapping("/order/delivery_history/{id}")
-    public void updateDeliveryHistory(@PathVariable Long id, @RequestParam String status) {
-        adminService.updateDeliveryHistory(id, status);
+    public void updateDeliveryHistory(@PathVariable Long id, @RequestBody HashMap<String, String> newStatus) {
+        adminService.updateDeliveryHistory(id, newStatus);
     }
 }
