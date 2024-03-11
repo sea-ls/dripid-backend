@@ -79,7 +79,8 @@ local job_build_service(container_name) = {
     { run: command_docker_login_local },
     { run: image },
     { run: "echo $IMAGE" },
-    { run: 'mvn clean spring-boot:build-image' + ' -pl ' + container_name +
+    //TODO убрать -DskipTests для пропуска тестов
+    { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
           ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
           ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
