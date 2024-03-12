@@ -1,33 +1,39 @@
 local configuration = import 'configuration.jsonnet';
 
-local filter_change_parent_pom() = { filters+: 'parent:\n- pom.xml\n' };
+local filter_change_parent_pom() = { "parent": [ "pom.xml" ] };
 
 local rule_change_in_directory(directory) = { changes+: [directory + '/**/*'] };
 local rule_manual() = { when: 'manual' };
-local rule_on_success() = { when: 'on_success' };
-local rule_allow_failure() = { allow_failure: true };
-local command_docker_login_local = 'echo -n $GITLAB_CI_PASSWORD | docker login $CI_REGISTRY --username $GITLAB_CI_USERNAME --password-stdin';
-local command_docker_login_remote = 'echo -n $UCSO_REMOTE_REGISTRY_PASS | docker login $UCSO_REMOTE_REGISTRY --username $UCSO_REMOTE_REGISTRY_USER --password-stdin';
+local command_docker_login_local = 'echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin';
+
+local filterArray() = {
+        [container.name]:  [
+            './' + container.name + '/**'
+        ] for container in configuration.containers
+    };
 
 
-local filterArray = [ "pom.xml" ];
-
-local filters = std.manifestYamlDoc(filterArray, false);
+local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom(), false);
 
 local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
+        "if": "${{ github.event.inputs.build == '' }}",
         # Required permissions
         permissions:{
             "pull-requests": "read"
         },
-        outputs: { parent: "${{ steps.filter.outputs.parent }}" },
+        outputs: { parent: "${{ steps.filter.outputs.parent }}" }
+         + {
+            [container.name]: "${{ steps.filter.outputs." + container.name + " }}"
+            for container in configuration.containers
+         },
         steps: [
             {
                 uses: "dorny/paths-filter@v3",
                 id: "filter",
-                with: filter_change_parent_pom(),
+                with: { filters: filters() },
             },
         ],
      }
@@ -51,46 +57,47 @@ local job_build_parent() = {
   },
 };
 
-//local job_build_service(container_name, dependsOnLibs, dependSubmodule) = {
-//  local var_tag = '$CI_COMMIT_BRANCH',
-//  local image = if std.length(std.extVar('branch')) != 0
-//    then 'ucso/' + container_name + ':' + var_tag
-//    else 'ucso/' + container_name + ':$CI_MERGE_REQUEST_SOURCE_BRANCH_NAME-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME',
-//  local var_image = '${DOCKER_REPO_URL}${CI_PROJECT_NAME}/' + container_name,
-//
+local job_build_service(container_name) = {
+  local projectName = 'dripid/',
+  local image = '[[ -n "${GITHUB_REF_NAME}" ]]' +
+   ' && echo "IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}" >> $GITHUB_ENV' +
+   ' || echo "IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}" >> $GITHUB_ENV',
+  //local image = if std.length(var_tag) != 0
+    //then projectName + container_name + ':' + var_tag
+    //else projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
+  //local image = projectName + container_name + ':' + var_tag,
+  local var_image = '$DOCKER_REPO_URL$CI_PROJECT_NAME/' + container_name,
+
 //  variables: {
 //    GIT_SUBMODULE_STRATEGY: 'recursive',
 //  },
-//  stage: 'build-service',
-//  script: [
-//    'echo ' + mvn_repo,
-//    command_docker_login_local,
-//    'mvn clean spring-boot:build-image' +
-//          ' -Dspring-boot.build-image.imageName=' + image + ' -pl ' + container_name + mvn_repo +
-//          ' -Dbuilder=${DOCKER_REPO_URL}ucso-docker/paketo-full:latest' +
-//          ' -DrunImage=${DOCKER_REPO_URL}ucso-docker/paketo-run-full:latest' +
-//          ' -Ddocker.repo.url=${CI_REGISTRY}' +
-//          ' -Ddocker.repo.username=${GITLAB_CI_USERNAME}' +
-//          ' -Ddocker.repo.password=${GITLAB_CI_PASSWORD}',
-//          //+ ' -DrunImage=paketobuildpacks/run:1.2.60-base-cnb',// + ' -DbuildImage=paketobuildpacks/run:1.2.60-base-cnb',
-//          //' -DrunImage=${DOCKER_REPO_URL}ucso-docker/paketo-run-base:latest',
-//    'docker tag ucso/' + container_name + ':' + var_tag + ' ' + var_image + ':' + var_tag,
-//    'docker push ' + var_image + ':' + var_tag,
-//    'BUILT_CONTAINER_NAME_' + std.strReplace(container_name, '-', '_') + '=' + container_name
-//  ],
-//  retry: 1,
-//  rules: [rule_merge_request()] + rule_openapi_changes(container_name) + [
-//    filter_change_parent_pom() + rule_change_in_directory(container_name) + rule_change_libs(dependsOnLibs),
-//    rule_manual() + rule_allow_failure(),
-//  ],
-//  tags: ['docker-builder'],
-//};
-//
-//local build_services() = {
-//  ['build-' + container.container_name]:
-//    job_build_service(container.container_name, container.dependOnLibs, container.dependSubmodule)
-//  for container in configuration.containers
-//};
+  "runs-on": [ "self-hosted" ],
+  needs: [ "changes", "build-parent" ],
+  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' && always() }}",
+  steps: [
+    { uses: "actions/checkout@v3", },
+    { run: command_docker_login_local },
+    { run: image },
+    { run: "echo $IMAGE" },
+    //TODO убрать -DskipTests для пропуска тестов
+    { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
+          ' -Dspring-boot.build-image.imageName=$IMAGE' +
+          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
+          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
+          ' -Ddocker.repo.url=$CI_REGISTRY' +
+          ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
+          ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
+          },
+    { run: 'docker tag ' + projectName + container_name + ':${GITHUB_REF_NAME}' + ' ' + var_image + ':${GITHUB_REF_NAME}' },
+    { run: 'docker push ' + var_image + ':${GITHUB_REF_NAME}' },
+  ],
+};
+
+local build_services() = {
+  ['build-' + container.name]:
+    job_build_service(container.name)
+  for container in configuration.containers
+};
 //
 //local generate_compose_all() = [
 //  [
@@ -100,11 +107,6 @@ local job_build_parent() = {
 //      'stack deploy -c docker-compose.' + deploymentGroup.name + '.gen.yml ' +
 //      '--with-registry-auth ucso-' + deploymentGroup.name,
 //  ]
-//  for deploymentGroup in configuration.deploymentGroups
-//];
-//
-//local collect_compose_all() = [
-//  '-c docker-compose.' + deploymentGroup.name + '.gen.yml'
 //  for deploymentGroup in configuration.deploymentGroups
 //];
 //
@@ -144,6 +146,8 @@ local jsonPipeline =
                   description: "Who to build",
                   options: [
                      "parent"
+                  ] + [
+                      container.name for container in configuration.containers
                   ],
               },
           }
@@ -160,12 +164,19 @@ local jsonPipeline =
           "paths-ignore": [ '.github/**' ]
       }
   },
+    env: {
+          DOCKER_REPO_PASSWORD: "${{ secrets.DOCKER_REPO_PASSWORD }}",
+          DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}",
+          DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}",
+          DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}",
+          CI_PROJECT_NAME: "${{ github.event.repository.name }}",
+          CI_REGISTRY: "ghcr.io"
+      },
 } + {
     jobs: job_changes()
     + job_build_parent()
+    + build_services()
 };
-
-//+ build_services()
 //+ deploy_local_server()
 
 std.manifestYamlDoc( jsonPipeline, true)

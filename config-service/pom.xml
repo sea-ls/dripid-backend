@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>ru.seals</groupId>
-        <artifactId>dripid</artifactId>
+        <artifactId>dripid-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>config</artifactId>
+    <artifactId>config-service</artifactId>
 
     <dependencies>
         <dependency>

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.seals</groupId>
-    <artifactId>dripid</artifactId>
+    <artifactId>dripid-parent</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
@@ -29,8 +29,8 @@
         <docker.repo.url/>
         <docker.repo.username/>
         <docker.repo.password/>
-        <builder>paketobuildpacks/builder:0.2.443-full</builder>
-        <runImage>paketobuildpacks/run:full-cnb</runImage>
+        <builder>paketobuildpacks/builder-jammy-base:0.4.278</builder>
+        <runImage>paketobuildpacks/run-jammy-base:0.1.105</runImage>
     </properties>
 
     <dependencyManagement>
@@ -74,7 +74,7 @@
     </dependencies>
 
     <modules>
-        <module>config</module>
+        <module>config-service</module>
         <module>gateway-service</module>
         <module>auth-service</module>
         <module>delivery-service</module>
@@ -86,12 +86,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
+<!--                    <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
-                    </excludes>
+                    </excludes>-->
                     <layers>
                         <enabled>true</enabled>
                     </layers>
@@ -101,6 +101,7 @@
                         <cleanCache>false</cleanCache>
                         <env>
                             <BP_OCI_CREATED>${maven.build.timestamp}</BP_OCI_CREATED>
+                            <BP_JVM_VERSION>${java.version}</BP_JVM_VERSION>
                         </env>
                     </image>
                     <docker>
