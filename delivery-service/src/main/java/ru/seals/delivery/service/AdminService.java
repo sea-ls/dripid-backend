@@ -8,6 +8,7 @@ import ru.seals.delivery.model.MessageType;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.Warehouse;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface AdminService {
@@ -24,4 +25,6 @@ public interface AdminService {
     Order getOrderById(Long id);
     void saveOrder(Order order);
     void deleteOrderById(Long id);
+
+    void updateDeliveryHistory(Long id, HashMap<String, String> newStatus);
 }

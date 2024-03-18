@@ -1,5 +1,7 @@
 package ru.seals.delivery.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 
 
@@ -10,6 +12,8 @@ import ru.seals.delivery.service.*;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.MessageType;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -73,5 +77,22 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteOrderById(Long id) {
         orderService.deleteOrderById(id);
+    }
+
+    @Override
+    public void updateDeliveryHistory(Long id, HashMap<String, String> newStatus) {
+        Order order = orderService.getOrderById(id);
+        String oldStatus = order.getDeliveryHistory();
+
+        try {
+            ObjectMapper om = new ObjectMapper();
+            ArrayList<HashMap<String, String>> statuses = om.readValue(oldStatus, ArrayList.class);
+            statuses.add(newStatus);
+            order.setDeliveryHistory(om.writeValueAsString(statuses));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
+        orderService.saveOrder(order);
     }
 }

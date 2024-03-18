@@ -7,6 +7,7 @@ import ru.seals.delivery.model.MessageType;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.service.AdminService;
 
+import java.util.HashMap;
 import java.util.List;
 
 @RestController

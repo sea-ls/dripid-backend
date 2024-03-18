@@ -1,8 +1,8 @@
-package ru.seals.dripid.controller;
+package ru.seals.delivery.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.seals.dripid.service.OrderService;
+import ru.seals.delivery.service.OrderService;
 
 @RestController
 @RequestMapping(value = "api/v1/user")
