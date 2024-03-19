@@ -25,7 +25,7 @@ jobs:
     runs-on:
       - develop
   steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
       with:
         token: ${{ secrets.WORKFLOW_TOKEN }}
     - run: cd docker
