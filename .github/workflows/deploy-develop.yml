@@ -27,8 +27,6 @@ jobs:
       - develop
   steps:
     - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.WORKFLOW_TOKEN }}
     - run: cd docker
     - run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
     - run: "echo $DOCKER_REPO_URL"
