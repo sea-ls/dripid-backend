@@ -8,7 +8,6 @@ import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.enums.TransactionType;
 
 @Entity
-@Table(name = "balance_history")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
