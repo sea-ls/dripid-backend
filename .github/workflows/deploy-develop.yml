@@ -1,0 +1,35 @@
+name: Deploy develop
+
+on:
+  workflow_dispatch:
+    branches:
+      - "develop"
+  workflow_run:
+    branches:
+      - "develop"
+    types:
+      - "completed"
+    workflows:
+      - "Create all jobs"
+env:
+  CI_COMMIT_BRANCH: "develop"
+  CI_PROJECT_NAME: "${{ github.event.repository.name }}"
+  CI_REGISTRY: "ghcr.io"
+  DOCKER_REPO_PASSWORD: "${{ secrets.DOCKER_REPO_PASSWORD }}"
+  DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}"
+  DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}"
+  DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}"
+
+jobs:
+  deploy:
+    runs-on:
+      - develop
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.WORKFLOW_TOKEN }}
+    - run: cd docker
+    - run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
+    - run: "echo $DOCKER_REPO_URL"
+    - run: "cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml"
+    - run: "env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth ucso-delivery"
