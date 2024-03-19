@@ -33,7 +33,7 @@ jobs:
           pwd
           cd docker
           pwd
-      - run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
-      - run: "echo $DOCKER_REPO_URL"
-      - run: "cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml"
-      - run: "env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth ucso-delivery"
+          echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin
+          echo $DOCKER_REPO_URL
+          cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth ucso-delivery
