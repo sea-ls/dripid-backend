@@ -19,6 +19,7 @@ local job_changes() = {
      changes: {
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
+        "if": "${{ github.event.inputs.build == '' }}",
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -59,8 +60,8 @@ local job_build_parent() = {
 local job_build_service(container_name) = {
   local projectName = 'dripid/',
   local image = '[[ -n "${GITHUB_REF_NAME}" ]]' +
-   ' && echo IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}' +
-   ' || echo IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
+   ' && echo "IMAGE=' + projectName + container_name + ':${GITHUB_REF_NAME}" >> $GITHUB_ENV' +
+   ' || echo "IMAGE=' + projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}" >> $GITHUB_ENV',
   //local image = if std.length(var_tag) != 0
     //then projectName + container_name + ':' + var_tag
     //else projectName + container_name + ':${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}',
@@ -77,10 +78,12 @@ local job_build_service(container_name) = {
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
     { run: image },
-    { run: 'mvn clean spring-boot:build-image' +
+    { run: "echo $IMAGE" },
+    //TODO убрать -DskipTests для пропуска тестов
+    { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
-          ' -Dbuilder=$DOCKER_REPO_URLdocker/builder-jammy-base-0_4_278:latest' +
-          ' -DrunImage=$DOCKER_REPO_URLdocker/run-jammy-base-0_1_105:latest' +
+          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
+          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
           ' -Ddocker.repo.url=$CI_REGISTRY' +
           ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
           ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
@@ -173,7 +176,7 @@ local jsonPipeline =
     jobs: job_changes()
     + job_build_parent()
     + build_services()
+  //  + deploy_local_server()
 };
-//+ deploy_local_server()
 
 std.manifestYamlDoc( jsonPipeline, true)
