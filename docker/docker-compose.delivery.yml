@@ -12,8 +12,7 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - ./dripId.sql:/docker-entrypoint-initdb.d/create_tables.sql
-      - delivery-pgdata:/var/lib/postgresql/data
+      - delivery-pgdata-volume:/var/lib/postgresql/data
       - type: tmpfs           #Эквивалент записи: shm_size: 1gb.
         target: /dev/shm      #Работает в swarm режиме
         tmpfs:
@@ -37,5 +36,5 @@ services:
       - delivery-postgres
 
 volumes:
-  delivery-pgdata:
+  delivery-pgdata-volume:
     name: docker_delivery-pgdata

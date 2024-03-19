@@ -176,7 +176,7 @@ local jsonPipeline =
     jobs: job_changes()
     + job_build_parent()
     + build_services()
+  //  + deploy_local_server()
 };
-//+ deploy_local_server()
 
 std.manifestYamlDoc( jsonPipeline, true)
