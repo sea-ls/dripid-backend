@@ -50,3 +50,5 @@ x-postgres-default-config: &postgres-default-config
   stop_grace_period: 1m30s
   shm_size: 1gb #Не работает в swarm режиме
   logging: *default-logging
+
+#Пустая строка здесь важна для объединения файлов
