@@ -46,7 +46,8 @@ x-default-spring-service-configuration: &default-spring-config
 
 x-postgres-default-config: &postgres-default-config
   image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/postgres-16:latest
-  #    image: gitlab-registry.opencode.su/ucso/ucso-docker/postgres12-alpine:latest
   stop_grace_period: 1m30s
   shm_size: 1gb #Не работает в swarm режиме
   logging: *default-logging
+
+#Пустая строка здесь важна для объединения файлов

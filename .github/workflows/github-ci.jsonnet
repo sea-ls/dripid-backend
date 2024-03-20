@@ -105,7 +105,7 @@ local build_services() = {
 //      'env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) ' +
 //      'docker --context $CI_COMMIT_BRANCH ' +
 //      'stack deploy -c docker-compose.' + deploymentGroup.name + '.gen.yml ' +
-//      '--with-registry-auth ucso-' + deploymentGroup.name,
+//      '--with-registry-auth dripid-' + deploymentGroup.name,
 //  ]
 //  for deploymentGroup in configuration.deploymentGroups
 //];
@@ -126,7 +126,7 @@ local build_services() = {
 //      rule_on_success(),
 //      rule_manual() + rule_allow_failure(),
 //    ],
-//    tags: ['ucso-deploy-manager'],
+//    tags: ['dripid-deploy-manager'],
 //  }
 //} else { };
 
