@@ -7,4 +7,5 @@ public interface OrderService {
     void saveOrder(Order order);
     void deleteOrderById(Long id);
     String getDeliveryHistory(String trackNumber);
+    Order getOrderByTrackIntervalNumber(String trackNumber);
 }

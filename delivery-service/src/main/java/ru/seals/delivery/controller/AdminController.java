@@ -75,4 +75,9 @@ public class AdminController {
     public void updateDeliveryHistory(@PathVariable Long id, @RequestBody HashMap<String, String> newStatus) {
         adminService.updateDeliveryHistory(id, newStatus);
     }
+
+    @GetMapping("/tracking")
+    public Order getOrderByTrackIntervalNumber(@RequestParam String trackNumber) {
+        return adminService.getOrderByTrackIntervalNumber(trackNumber);
+    }
 }
