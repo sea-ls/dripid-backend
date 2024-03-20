@@ -6,5 +6,6 @@ import ru.seals.delivery.model.Order;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Order getOrderByTrackNumberExternal(String trackNumber);
+    Order findByTrackNumberExternal(String trackNumber);
+    Order findByTrackNumberInternal(String trackNumber);
 }

@@ -27,4 +27,5 @@ public interface AdminService {
     void deleteOrderById(Long id);
 
     void updateDeliveryHistory(Long id, HashMap<String, String> newStatus);
+    Order getOrderByTrackIntervalNumber(String trackNumber);
 }

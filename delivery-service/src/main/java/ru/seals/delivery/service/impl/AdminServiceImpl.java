@@ -95,4 +95,9 @@ public class AdminServiceImpl implements AdminService {
 
         orderService.saveOrder(order);
     }
+
+    @Override
+    public Order getOrderByTrackIntervalNumber(String trackNumber) {
+        return orderService.getOrderByTrackIntervalNumber(trackNumber);
+    }
 }
