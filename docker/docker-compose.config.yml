@@ -13,6 +13,7 @@ services:
         limits: *resources-high
     environment:
       <<: *environment
+      CONFIG_TOKEN: ${CONFIG_TOKEN}
       VIRTUAL_HOST: "config-service"
     ports:
       - "8888:8888"
