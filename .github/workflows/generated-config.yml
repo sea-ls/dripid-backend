@@ -1,7 +1,6 @@
 "env":
   "CI_PROJECT_NAME": "${{ github.event.repository.name }}"
   "CI_REGISTRY": "ghcr.io"
-  "CONFIG_TOKEN": "${{ secrets.CONFIG_TOKEN }}"
   "DOCKER_REPO_PASSWORD": "${{ secrets.DOCKER_REPO_PASSWORD }}"
   "DOCKER_REPO_URL": "${{ vars.DOCKER_REPO_URL }}"
   "DOCKER_REPO_URL_LOGIN": "${{ vars.DOCKER_REPO_URL_LOGIN }}"
