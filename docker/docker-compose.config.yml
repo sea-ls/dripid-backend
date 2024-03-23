@@ -7,7 +7,7 @@ services:
     hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
     deploy:
       labels:
-        ru.seals.service: "  config-service"
+        ru.seals.service: "config-service"
       resources:
         reservations: *resources-low
         limits: *resources-high
