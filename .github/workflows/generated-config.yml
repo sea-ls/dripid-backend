@@ -94,7 +94,7 @@
       - "self-hosted"
     "steps":
       - "id": "filter"
-        "uses": "dorny/paths-filter@v3"
+        "uses": "dorny/paths-filter@v2"
         "with":
           "filters": "\"auth-service\":\n- \"./auth-service/**\"\n\"config-service\":\n- \"./config-service/**\"\n\"delivery-service\":\n- \"./delivery-service/**\"\n\"gateway-service\":\n- \"./gateway-service/**\"\n\"parent\":\n- \"pom.xml\""
 "name": "Create and publish a Service image"
