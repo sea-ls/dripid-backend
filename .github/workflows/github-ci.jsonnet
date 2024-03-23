@@ -171,7 +171,8 @@ local jsonPipeline =
           DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}",
           DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}",
           CI_PROJECT_NAME: "${{ github.event.repository.name }}",
-          CI_REGISTRY: "ghcr.io"
+          CI_REGISTRY: "ghcr.io",
+          CONFIG_TOKEN: "${{ secrets.CONFIG_TOKEN }}"
       },
 } + {
     jobs: job_changes()
