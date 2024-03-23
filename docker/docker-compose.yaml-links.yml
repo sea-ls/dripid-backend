@@ -29,6 +29,7 @@ x-update-config: &update-config-30s
 
 x-environment: &environment
   JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5000 -Dnetworkaddress.cache.ttl=60 -Dsun.net.inetaddr.ttl=60
+  ACTIVE_PROFILES: ${PROFILES}
   VIRTUAL_PORT: 8080
   INSTANCE_SLOT: '{{.Task.Slot}}'
   INSTANCE_NAME: '{{index .Service.Labels "su.opencode.service"}}'
