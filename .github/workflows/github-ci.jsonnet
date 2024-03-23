@@ -78,6 +78,7 @@ local job_build_service(container_name) = {
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
     { run: image },
+    { run: "mvn -v" },
     { run: "echo $IMAGE" },
     //TODO убрать -DskipTests для пропуска тестов
     { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
