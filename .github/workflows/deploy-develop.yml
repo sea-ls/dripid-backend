@@ -19,6 +19,7 @@ env:
   DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}"
   DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}"
   DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}"
+  CONFIG_TOKEN: "${{ secrets.CONFIG_TOKEN }}"
 
 
 jobs:
