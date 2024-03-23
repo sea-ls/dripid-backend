@@ -38,3 +38,8 @@ services:
 volumes:
   delivery-pgdata-volume:
     name: docker_delivery-pgdata
+
+networks:
+  default:
+    name: dripid-network
+    external: true
