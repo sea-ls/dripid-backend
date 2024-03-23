@@ -38,7 +38,7 @@ x-environment: &environment
 x-default-spring-service-configuration: &default-spring-config
   stop_grace_period: 1m
   logging: *default-logging
-  healthcheck: *actuator-health-check
+  #healthcheck: *actuator-health-check
   deploy: &default-spring-deploy
     resources: *reservation-low
     update_config: *update-config-30s
