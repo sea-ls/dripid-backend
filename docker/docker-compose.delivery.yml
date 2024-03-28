@@ -34,6 +34,19 @@ services:
       - "5001:5005"
     depends_on:
       - delivery-postgres
+  delivery-minio:
+    command: 'server /data --console-address ":9090"'
+    image: minio/minio
+    environment:
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_ACCESS_KEY=minioadmin
+    volumes:
+      - '~/data/minio/config:/root/.minio'
+      - '~/data/minio/data:/data'
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9090:9090'
 
 volumes:
   delivery-pgdata-volume:
