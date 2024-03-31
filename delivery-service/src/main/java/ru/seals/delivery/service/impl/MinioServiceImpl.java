@@ -53,7 +53,7 @@ public class MinioServiceImpl implements MinioService {
                             .method(Method.GET)
                             .bucket(BUCKET_NAME)
                             .object(fileName)
-                            .expiry(2) // TODO: change to ".expiry(2, TimeUtils.HOURS)". reason -> https://programingqa.com/answers/intellij-idea-jdk-21-issue-with-java-util-concurrent-package-timeunit-class-n/
+                            .expiry(2) // TODO: change to ".expiry(2, TimeUnit.HOURS)". reason -> https://programingqa.com/answers/intellij-idea-jdk-21-issue-with-java-util-concurrent-package-timeunit-class-n/
                             .extraQueryParams(reqParams)
                             .build());
             return url;
