@@ -22,7 +22,7 @@ public class UserController {
     }
 
     @GetMapping("authenticated")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public UserDTO getAuthenticatedUser() {
         return userService.mapUser(userService.getAuthenticatedUser());
     }
