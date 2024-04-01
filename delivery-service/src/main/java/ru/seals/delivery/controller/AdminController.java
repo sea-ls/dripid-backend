@@ -3,8 +3,8 @@ package ru.seals.delivery.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.model.DefaultMessage;
-import ru.seals.delivery.model.MessageType;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
 
 import java.util.HashMap;

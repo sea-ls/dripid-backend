@@ -6,6 +6,8 @@ import ru.seals.delivery.model.Order;
 import ru.seals.delivery.repository.OrderRepository;
 import ru.seals.delivery.service.OrderService;
 
+import java.util.List;
+
 import static ru.seals.delivery.exception.OrderNotFoundException.orderNotFoundException;
 
 @Service
@@ -35,5 +37,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order getOrderByTrackIntervalNumber(String trackNumber) {
         return orderRepository.findByTrackNumberInternal(trackNumber);
+    }
+
+    @Override
+    public List<Order> getAllOrderWithMessages() {
+        return orderRepository.findAllWithMessage();
     }
 }

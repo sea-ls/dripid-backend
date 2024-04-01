@@ -3,14 +3,14 @@ package ru.seals.delivery.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-
-
-
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.service.*;
 import ru.seals.delivery.model.DefaultMessage;
-import ru.seals.delivery.model.MessageType;
+import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.chat.MessageType;
+import ru.seals.delivery.service.AdminService;
+import ru.seals.delivery.service.DefaultMessageService;
+import ru.seals.delivery.service.MessageTypeService;
+import ru.seals.delivery.service.OrderService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
