@@ -1,6 +1,6 @@
  spring:
   application:
-    name: delivery-service
+    name: delivery-service-security
   cloud:
     config:
       uri: http://localhost:8888
