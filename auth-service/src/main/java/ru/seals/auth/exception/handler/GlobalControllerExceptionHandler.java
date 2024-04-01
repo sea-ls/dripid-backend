@@ -1,33 +1,18 @@
-package ru.seals.delivery.exception.handler;
+package ru.seals.auth.exception.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.util.DefaultUriBuilderFactory;
-import ru.seals.delivery.exception.DefaultMessageNotFoundException;
-import ru.seals.delivery.exception.MessageTypeNotFoundException;
-import ru.seals.delivery.exception.WarehouseNotFoundException;
 
 import java.net.URI;
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
-    @ResponseBody
-    @ExceptionHandler(value = {
-            DefaultMessageNotFoundException.class,
-            MessageTypeNotFoundException.class,
-            WarehouseNotFoundException.class
-    })
-    public ProblemDetail notFoundHandle(RuntimeException exception) {
-        ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
-        p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
-        return p;
-    }
-
     @ResponseBody
     @ExceptionHandler(AuthenticationException.class)
     public ProblemDetail handleAuthenticationException(Exception exception) {

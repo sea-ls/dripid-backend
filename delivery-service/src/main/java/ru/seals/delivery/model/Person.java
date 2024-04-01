@@ -18,22 +18,11 @@ public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private Role role;
-
+    private String keycloakId;
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
-
-    @Column(unique = true)
-    private String email;
-
-    private String password;
     @Column(columnDefinition = "money")
     private Money balance;
     private String image;
-    private String firstName;
-    private String lastName;
-    private String phone;
 }
