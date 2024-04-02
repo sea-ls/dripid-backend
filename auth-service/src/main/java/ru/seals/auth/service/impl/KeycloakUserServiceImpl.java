@@ -9,6 +9,7 @@ import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.common.util.CollectionUtil;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -110,6 +111,10 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
             userRep.getRequiredActions().add("CONFIGURE_TOTP");
         } else {
             userRep.getRequiredActions().remove("CONFIGURE_TOTP");
+            userRes.credentials().forEach(cred -> {
+                if (cred.getType().equals("otp"))
+                    userRes.removeCredential(cred.getId());
+            });
         }
         userRes.update(userRep);
     }
