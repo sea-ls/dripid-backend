@@ -49,6 +49,7 @@ services:
       - "5001:5005"
     depends_on:
       - delivery-postgres
+      - delivery-minio
 
 volumes:
   delivery-minio-config-volume:
