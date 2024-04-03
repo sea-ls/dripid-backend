@@ -15,7 +15,7 @@ services:
       <<: *environment
       VIRTUAL_HOST: "gateway-service"
     ports:
-      - "8888:8888"
+      - "8080:8080"
 
 networks:
   default:
