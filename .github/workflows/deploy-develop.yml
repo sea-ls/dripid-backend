@@ -41,3 +41,6 @@ jobs:
           
           cat docker-compose.yaml-links.yml docker-compose.config.yml > docker-compose.config.gen.yml
           env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.config.gen.yml --with-registry-auth dripid-config
+          
+          cat docker-compose.yaml-links.yml docker-compose.gateway.yml > docker-compose.gateway.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.gateway.gen.yml --with-registry-auth dripid-gateway
