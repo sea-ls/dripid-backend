@@ -3,5 +3,7 @@
     name: gateway-service-dev
   cloud:
     config:
-      uri: http://localhost:8888
+      uri: http://config-service:8888
       fail-fast: true
+  profiles:
+    active: ${ACTIVE_PROFILES:dev}
