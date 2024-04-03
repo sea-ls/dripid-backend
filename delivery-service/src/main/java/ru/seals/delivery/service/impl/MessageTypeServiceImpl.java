@@ -2,7 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.MessageType;
+import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.repository.MessageTypeRepository;
 import ru.seals.delivery.service.MessageTypeService;
 

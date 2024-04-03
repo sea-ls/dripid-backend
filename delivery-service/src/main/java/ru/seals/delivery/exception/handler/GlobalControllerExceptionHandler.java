@@ -2,6 +2,8 @@ package ru.seals.delivery.exception.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,6 +24,22 @@ public class GlobalControllerExceptionHandler {
     })
     public ProblemDetail notFoundHandle(RuntimeException exception) {
         ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
+        return p;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AuthenticationException.class)
+    public ProblemDetail handleAuthenticationException(Exception exception) {
+        ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, exception.getMessage());
+        p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
+        return p;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(AccessDeniedException.class)
+    public ProblemDetail handleAccessDeniedException(Exception exception) {
+        ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, exception.getMessage());
         p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
         return p;
     }

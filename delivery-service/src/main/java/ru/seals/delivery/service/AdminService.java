@@ -1,12 +1,8 @@
 package ru.seals.delivery.service;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
 import ru.seals.delivery.model.DefaultMessage;
-import ru.seals.delivery.model.MessageType;
 import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.Warehouse;
+import ru.seals.delivery.model.chat.MessageType;
 
 import java.util.HashMap;
 import java.util.List;
