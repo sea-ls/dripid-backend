@@ -8,7 +8,7 @@ x-low-prior-service-limitation: &resources-low
   memory: '500M'
 
 x-service-limitation: &resources-high
-  memory: '1G'
+  memory: '3G'
 
 x-health-check: &actuator-health-check
   test: "curl --fail --silent localhost:8080/api/actuator/health | grep UP || exit 1"
@@ -19,10 +19,9 @@ x-health-check: &actuator-health-check
 
 x-java-low-resource-reservation: &reservation-low
   reservations:
-    memory: 200M
+    memory: 700M
   limits:
-    cpus: '0.2'
-    memory: 500M
+    memory: 1G
 
 x-update-config: &update-config-30s
   monitor: 30s
