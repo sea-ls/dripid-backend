@@ -46,7 +46,7 @@ services:
       <<: *environment
       VIRTUAL_HOST: "delivery-service"
     ports:
-      - "5001:5005"
+      - "5001:5000"
     depends_on:
       - delivery-postgres
       - delivery-minio
