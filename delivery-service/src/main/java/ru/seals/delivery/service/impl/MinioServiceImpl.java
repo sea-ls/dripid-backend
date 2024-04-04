@@ -2,6 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import io.minio.*;
 import io.minio.http.Method;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,7 @@ import ru.seals.delivery.service.MinioService;
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Service
 public class MinioServiceImpl implements MinioService {
     private static final String BUCKET_NAME = "warehouse";
@@ -18,7 +20,7 @@ public class MinioServiceImpl implements MinioService {
     private MinioClient minioClient;
 
     @Override
-    public String saveImage(MultipartFile file, String fileName) {
+    public void saveImage(MultipartFile file, String fileName) {
         try {
             if (!bucketExists(BUCKET_NAME)) {
                 this.createBucket();
@@ -35,9 +37,8 @@ public class MinioServiceImpl implements MinioService {
                             .contentType(file.getContentType())
                             .build());
 
-            return String.format("Image %s uploaded", fileName);
         } catch (Exception e) {
-            return String.format("Error uploading image: %s", e.getMessage());
+            throw new RuntimeException("Error occurred during uploading image for warehouse.");
         }
     }
 

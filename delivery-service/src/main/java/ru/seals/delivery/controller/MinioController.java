@@ -14,10 +14,10 @@ public class MinioController {
     private MinioService minioService;
 
     @PostMapping("/upload")
-    public String uploadFile(
+    public void uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("fileName") String fileName) {
-        return minioService.saveImage(file, fileName);
+        minioService.saveImage(file, fileName);
     }
 
     @GetMapping(path = "/get/{fileName}")
