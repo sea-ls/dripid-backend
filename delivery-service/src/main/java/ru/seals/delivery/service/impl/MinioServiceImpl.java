@@ -1,6 +1,9 @@
 package ru.seals.delivery.service.impl;
 
-import io.minio.*;
+import io.minio.BucketExistsArgs;
+import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import io.minio.http.Method;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +26,9 @@ public class MinioServiceImpl implements MinioService {
     public void saveImage(MultipartFile file, String fileName) {
         try {
             if (!bucketExists(BUCKET_NAME)) {
-                this.createBucket();
+                log.error("Error occurred during uploading image for warehouse." +
+                        "No such bucket with name: " + BUCKET_NAME);
+                return;
             }
             Map<String, String> metadata = new HashMap<>();
             metadata.put("originalFilename", file.getOriginalFilename());
@@ -61,14 +66,7 @@ public class MinioServiceImpl implements MinioService {
         }
     }
 
-
     private boolean bucketExists(String bucket) throws Exception {
         return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
-    }
-
-    private void createBucket() throws Exception {
-        if (!this.bucketExists(BUCKET_NAME)) {
-            this.minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
-        }
     }
 }
