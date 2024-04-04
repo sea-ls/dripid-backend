@@ -22,7 +22,7 @@ services:
     image: quay.io/keycloak/keycloak:legacy
     environment:
       DB_VENDOR: POSTGRES
-      DB_ADDR: db
+      DB_ADDR: auth-postgres
       DB_DATABASE: keycloak_db
       DB_URL: jdbc:postgresql://auth-postgres:5432/keycloak_db
       DB_USER: my_admin
