@@ -1,0 +1,5 @@
+# fixme. remove app.yml file and use only docker-compose env
+minio:
+  endpoint: http://localhost:9000
+  accessKey: dripidMinio # login
+  secretKey: ch3Wuetm # password

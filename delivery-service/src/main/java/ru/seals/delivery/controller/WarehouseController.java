@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
 import ru.seals.delivery.model.Warehouse;
 import ru.seals.delivery.service.WarehouseService;
@@ -25,8 +26,10 @@ public class WarehouseController {
     }
 
     @PostMapping("/warehouse/save")
-    public void saveWarehouse(@RequestBody Warehouse warehouse) {
-        warehouseService.save(warehouse);
+    public void saveWarehouse(
+            @RequestPart(value = "file") MultipartFile file,
+            @RequestPart(value = "json") WarehouseSimpleViewDTO warehouseSimpleViewDTO) {
+        warehouseService.save(file, warehouseSimpleViewDTO);
     }
 
     @DeleteMapping("/warehouse/delete/{id}")

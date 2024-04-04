@@ -9,7 +9,6 @@ import ru.seals.delivery.service.MinioService;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class MinioServiceImpl implements MinioService {
@@ -19,25 +18,24 @@ public class MinioServiceImpl implements MinioService {
     private MinioClient minioClient;
 
     @Override
-    public String saveImage(MultipartFile file) {
+    public String saveImage(MultipartFile file, String fileName) {
         try {
             if (!bucketExists(BUCKET_NAME)) {
                 this.createBucket();
             }
-            String imageName = UUID.randomUUID().toString();
             Map<String, String> metadata = new HashMap<>();
             metadata.put("originalFilename", file.getOriginalFilename());
 
             minioClient.putObject(
                     PutObjectArgs.builder()
                             .bucket(BUCKET_NAME)
-                            .object(imageName)
+                            .object(fileName)
                             .userMetadata(metadata)
                             .stream(file.getInputStream(), file.getSize(), -1)
                             .contentType(file.getContentType())
                             .build());
 
-            return String.format("Image %s uploaded", imageName);
+            return String.format("Image %s uploaded", fileName);
         } catch (Exception e) {
             return String.format("Error uploading image: %s", e.getMessage());
         }

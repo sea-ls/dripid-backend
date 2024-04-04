@@ -14,11 +14,13 @@ public class MinioController {
     private MinioService minioService;
 
     @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file) {
-        return minioService.saveImage(file);
+    public String uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("fileName") String fileName) {
+        return minioService.saveImage(file, fileName);
     }
 
-    @GetMapping(path = "/download/{fileName}")
+    @GetMapping(path = "/get/{fileName}")
     public String uploadFile(@PathVariable String fileName) {
         return minioService.getImage(fileName);
     }

@@ -17,8 +17,9 @@ services:
     command: 'server /data --console-address ":9090"'
     image: minio/minio
     environment:
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_ACCESS_KEY=dripidMinio # login
+      - MINIO_SECRET_KEY=ch3Wuetm # password
+      - MINIO_ENDPOINT=http://localhost:9000
     volumes:
       - '~/data/minio/config:/root/.minio'
       - '~/data/minio/data:/data'
