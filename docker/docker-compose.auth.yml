@@ -19,7 +19,8 @@ services:
           size: 1024000000
 
   auth-keycloak:
-    image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/keycloak-24.0:latest
+    #image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/keycloak-24.0:latest
+    image: keycloak/keycloak:23.0
     command: start-dev
     environment:
       KEYCLOAK_ADMIN : admin
