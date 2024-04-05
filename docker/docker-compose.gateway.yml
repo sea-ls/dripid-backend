@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  gateway-service:
+    <<: *default-spring-config
+    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/gateway-service:${IMAGE_TAG}
+    hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
+    deploy:
+      labels:
+        ru.seals.service: "gateway-service"
+      resources:
+        reservations: *resources-low
+        limits: *resources-high
+    environment:
+      <<: *environment
+      VIRTUAL_HOST: "gateway-service"
+    ports:
+      - "8080:8080"
+
+networks:
+  default:
+    name: dripid-network
+    external: true

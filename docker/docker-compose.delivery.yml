@@ -17,6 +17,21 @@ services:
         target: /dev/shm      #Работает в swarm режиме
         tmpfs:
           size: 1024000000
+
+  delivery-minio:
+    image: minio/minio
+    command: 'server /data --console-address ":9090"'
+    environment:
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_ACCESS_KEY=minioadmin
+    volumes:
+      - delivery-minio-config-volume:/root/.minio
+      - delivery-minio-data-volume:/data
+    container_name: minio
+    ports:
+      - '9001:9000'
+      - '9091:9090'
+
   delivery-service:
     <<: *default-spring-config
     image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/delivery-service:${IMAGE_TAG}
@@ -31,24 +46,16 @@ services:
       <<: *environment
       VIRTUAL_HOST: "delivery-service"
     ports:
-      - "5001:5005"
+      - "5001:5000"
     depends_on:
       - delivery-postgres
-  delivery-minio:
-    command: 'server /data --console-address ":9090"'
-    image: minio/minio
-    environment:
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_ACCESS_KEY=minioadmin
-    volumes:
-      - '~/data/minio/config:/root/.minio'
-      - '~/data/minio/data:/data'
-    container_name: minio
-    ports:
-      - '9000:9000'
-      - '9090:9090'
+      - delivery-minio
 
 volumes:
+  delivery-minio-config-volume:
+    name: docker_delivery-minio-config
+  delivery-minio-data-volume:
+    name: docker_delivery-minio-data
   delivery-pgdata-volume:
     name: docker_delivery-pgdata
 

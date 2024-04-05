@@ -1,0 +1,63 @@
+version: '3.9'
+
+services:
+  auth-postgres:
+    <<: *postgres-default-config
+    restart: always
+    environment:
+      POSTGRES_USER: my_admin
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: keycloak_db
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5431:5432"
+    volumes:
+      - auth-pgdata-volume:/var/lib/postgresql/data:rw
+      - type: tmpfs           #Эквивалент записи: shm_size: 1gb.
+        target: /dev/shm      #Работает в swarm режиме
+        tmpfs:
+          size: 1024000000
+
+  auth-keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: auth-postgres
+      DB_DATABASE: keycloak_db
+      DB_URL: jdbc:postgresql://auth-postgres:5432/keycloak_db
+      DB_USER: my_admin
+      DB_SCHEMA: public
+      DB_PASSWORD: my_password
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    ports:
+      - 9000:8080
+    depends_on:
+      - auth-postgres
+
+  auth-service:
+    <<: *default-spring-config
+    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/auth-service:${IMAGE_TAG}
+    hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
+    deploy:
+      labels:
+        ru.seals.service: "auth-service"
+      resources:
+        reservations: *resources-low
+        limits: *resources-high
+    environment:
+      <<: *environment
+      VIRTUAL_HOST: "auth-service"
+    ports:
+      - "5002:5000"
+    depends_on:
+      - auth-keycloak
+
+volumes:
+  auth-pgdata-volume:
+    name: docker_auth-pgdata
+
+networks:
+  default:
+    name: dripid-network
+    external: true
