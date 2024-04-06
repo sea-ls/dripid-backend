@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableFeignClients(basePackages = {"ru.seals.delivery.controller.clients"})
 public class ApplicationConfig {
-
     @Bean
     public ModelMapper getMapper() {
         return new ModelMapper();
