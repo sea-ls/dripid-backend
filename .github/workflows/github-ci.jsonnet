@@ -15,11 +15,61 @@ local filterArray() = {
 
 local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom(), false);
 
+local jsonPipeline =
+{
+  name: "Create and publish a Service image",
+  on: {
+      workflow_dispatch: {
+          branches: [
+                "develop",
+                "test-microservices"
+            ],
+          inputs: {
+              build: {
+                  type: "choice",
+                  description: "Who to build",
+                  options: [
+                     "parent"
+                  ] + [
+                      container.name for container in configuration.containers
+                  ],
+              },
+          }
+      },
+      #workflow_run: {
+      #    workflows: [ "Create all jobs" ],
+      #    types: [ "completed" ],
+      #    branches: [
+      #        "develop",
+      #        "test-microservices"
+      #    ],
+      #},
+      push: {
+          "paths-ignore": [ '.github/**']
+      }
+  },
+    env: {
+          DOCKER_REPO_PASSWORD: "${{ secrets.DOCKER_REPO_PASSWORD }}",
+          DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}",
+          DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}",
+          DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}",
+          CI_PROJECT_NAME: "${{ github.event.repository.name }}",
+          CI_REGISTRY: "ghcr.io"
+      },
+} + {
+    jobs: job_changes()
+    + job_build_parent()
+    + build_services()
+  //  + deploy_local_server()
+};
+
 local job_changes() = {
      changes: {
+        "if": "${{ github.event.inputs.build == null}}",
+
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
-        "if": "${{ github.event.inputs.build == '' }}",
+
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -130,54 +180,5 @@ local build_services() = {
 //    tags: ['dripid-deploy-manager'],
 //  }
 //} else { };
-
-
-local jsonPipeline =
-{
-  name: "Create and publish a Service image",
-  on: {
-      workflow_dispatch: {
-          branches: [
-                "develop",
-                "test-microservices"
-            ],
-          inputs: {
-              build: {
-                  type: "choice",
-                  description: "Who to build",
-                  options: [
-                     "parent"
-                  ] + [
-                      container.name for container in configuration.containers
-                  ],
-              },
-          }
-      },
-      #workflow_run: {
-      #    workflows: [ "Create all jobs" ],
-      #    types: [ "completed" ],
-      #    branches: [
-      #        "develop",
-      #        "test-microservices"
-      #    ],
-      #},
-      push: {
-          "paths-ignore": [ '.github/**' ]
-      }
-  },
-    env: {
-          DOCKER_REPO_PASSWORD: "${{ secrets.DOCKER_REPO_PASSWORD }}",
-          DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}",
-          DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}",
-          DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}",
-          CI_PROJECT_NAME: "${{ github.event.repository.name }}",
-          CI_REGISTRY: "ghcr.io"
-      },
-} + {
-    jobs: job_changes()
-    + job_build_parent()
-    + build_services()
-  //  + deploy_local_server()
-};
 
 std.manifestYamlDoc( jsonPipeline, true)
