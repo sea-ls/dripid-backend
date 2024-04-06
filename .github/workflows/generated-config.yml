@@ -81,7 +81,7 @@
           "ref": "${{ github.event.workflow_run.head_branch }}"
       - "run": "mvn --non-recursive clean package"
   "changes":
-    "if": "${{ github.event.inputs.build == '' }}"
+    "if": "${{ github.event.inputs.build == null}}"
     "outputs":
       "auth-service": "${{ steps.filter.outputs.auth-service }}"
       "config-service": "${{ steps.filter.outputs.config-service }}"
