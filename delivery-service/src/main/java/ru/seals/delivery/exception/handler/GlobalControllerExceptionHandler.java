@@ -17,7 +17,7 @@ import java.net.URI;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
-    @Value("spring.application.name")
+    @Value("${spring.application.name}")
     private String domain;
     @ResponseBody
     @ExceptionHandler(value = {
