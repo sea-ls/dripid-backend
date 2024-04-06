@@ -7,8 +7,6 @@ on:
   workflow_run:
     branches:
       - "develop"
-    paths:
-      - "docker/**"
     types:
       - "completed"
     workflows:
