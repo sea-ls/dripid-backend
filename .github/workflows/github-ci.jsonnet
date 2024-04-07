@@ -37,7 +37,10 @@ local job_changes() = {
             {
                 uses: "dorny/paths-filter@v2",
                 id: "filter",
-                with: { filters: filters() },
+                with: {
+                filters: filters(),
+                base: develop
+                },
             },
         ],
      }
