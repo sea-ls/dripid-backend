@@ -15,6 +15,7 @@ public class WebSocketEventListener {
 
     private final SimpMessageSendingOperations messagingTemplate;
 
+
     @EventListener
     public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
         //TODO после добавления авторизации чуток переделать
