@@ -19,7 +19,7 @@ services:
           size: 1024000000
 
   delivery-minio:
-    image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/postgres-12-alpine:latest
+    image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/minio-release_2024-04-06t05-26-02z:latest
     command: 'server /data --console-address ":9090"'
     environment:
       - MINIO_SECRET_KEY=minioadmin
@@ -34,7 +34,7 @@ services:
 
   delivery-service:
     <<: *default-spring-config
-    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/minio-release_2024-04-06t05-26-02z:${IMAGE_TAG}
+    image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/delivery-service:${IMAGE_TAG}
     hostname: "{{index .Service.Labels \"com.docker.stack.namespace\"}}.{{.Task.Slot}}.{{index .Service.Labels \"ru.seals.service\"}}"
     deploy:
       labels:
