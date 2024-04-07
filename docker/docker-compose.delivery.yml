@@ -19,7 +19,7 @@ services:
           size: 1024000000
 
   delivery-minio:
-    image: minio/minio
+    image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/minio-release_2024-04-06t05-26-02z:latest
     command: 'server /data --console-address ":9090"'
     environment:
       - MINIO_SECRET_KEY=minioadmin
