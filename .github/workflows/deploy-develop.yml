@@ -10,7 +10,7 @@ on:
     types:
       - "completed"
     workflows:
-      - "Create all jobs"
+      - "Create and publish a Service image"
 env:
   CI_COMMIT_BRANCH: "develop"
   CI_PROJECT_NAME: "${{ github.event.repository.name }}"
