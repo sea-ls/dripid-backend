@@ -19,7 +19,7 @@
       - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo \"IMAGE=dripid/auth-service:${GITHUB_REF_NAME}\" >> $GITHUB_ENV || echo \"IMAGE=dripid/auth-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}\" >> $GITHUB_ENV"
       - "run": "mvn -v"
       - "run": "echo $IMAGE"
-      - "run": "mvn clean -DskipTests spring-boot:build-image -pl auth-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "mvn clean -DskipTests spring-boot:build-image -pl auth-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
       - "run": "docker tag dripid/auth-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
   "build-config-service":
@@ -35,7 +35,7 @@
       - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo \"IMAGE=dripid/config-service:${GITHUB_REF_NAME}\" >> $GITHUB_ENV || echo \"IMAGE=dripid/config-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}\" >> $GITHUB_ENV"
       - "run": "mvn -v"
       - "run": "echo $IMAGE"
-      - "run": "mvn clean -DskipTests spring-boot:build-image -pl config-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "mvn clean -DskipTests spring-boot:build-image -pl config-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
       - "run": "docker tag dripid/config-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
   "build-delivery-service":
@@ -51,7 +51,7 @@
       - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo \"IMAGE=dripid/delivery-service:${GITHUB_REF_NAME}\" >> $GITHUB_ENV || echo \"IMAGE=dripid/delivery-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}\" >> $GITHUB_ENV"
       - "run": "mvn -v"
       - "run": "echo $IMAGE"
-      - "run": "mvn clean -DskipTests spring-boot:build-image -pl delivery-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "mvn clean -DskipTests spring-boot:build-image -pl delivery-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
       - "run": "docker tag dripid/delivery-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
   "build-gateway-service":
@@ -67,7 +67,7 @@
       - "run": "[[ -n \"${GITHUB_REF_NAME}\" ]] && echo \"IMAGE=dripid/gateway-service:${GITHUB_REF_NAME}\" >> $GITHUB_ENV || echo \"IMAGE=dripid/gateway-service:${GITHUB_HEAD_REF}-${GITHUB_BASE_REF}\" >> $GITHUB_ENV"
       - "run": "mvn -v"
       - "run": "echo $IMAGE"
-      - "run": "mvn clean -DskipTests spring-boot:build-image -pl gateway-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
+      - "run": "mvn clean -DskipTests spring-boot:build-image -pl gateway-service -Dspring-boot.build-image.imageName=$IMAGE -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest -Ddocker.repo.url=$CI_REGISTRY -Ddocker.repo.username=$DOCKER_REPO_USERNAME -Ddocker.repo.password=$DOCKER_REPO_PASSWORD"
       - "run": "docker tag dripid/gateway-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/gateway-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/gateway-service:${GITHUB_REF_NAME}"
   "build-parent":
@@ -81,7 +81,7 @@
           "ref": "${{ github.event.workflow_run.head_branch }}"
       - "run": "mvn --non-recursive clean package"
   "changes":
-    "if": "${{ github.event.inputs.build == '' }}"
+    "if": "${{ github.event.inputs.build == null}}"
     "outputs":
       "auth-service": "${{ steps.filter.outputs.auth-service }}"
       "config-service": "${{ steps.filter.outputs.config-service }}"
@@ -116,11 +116,3 @@
           - "gateway-service"
           - "delivery-service"
         "type": "choice"
-  "workflow_run":
-    "branches":
-      - "develop"
-      - "test-microservices"
-    "types":
-      - "completed"
-    "workflows":
-      - "Create all jobs"

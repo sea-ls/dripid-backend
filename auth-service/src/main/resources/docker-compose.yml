@@ -1,30 +1,42 @@
-version: "3.9"
+version: '3'
 services:
-  db:
-    image: postgres:13.3
+  postgres:
+    image: postgres:latest
     restart: always
-    environment:
-      POSTGRES_USER: my_admin
-      POSTGRES_PASSWORD: my_password
-      POSTGRES_DB: keycloak_db
-      PGDATA: "/var/lib/postgresql/data/pgdata"
+    ports:
+      - "5431:5432"
     volumes:
-      - /mnt/docker/keycloak/db:/var/lib/postgresql/data:rw
-    ports:
-      - 5431:5432
-  kc:
-    image: quay.io/keycloak/keycloak:legacy
+      - auth-pgdata-volume:/var/lib/postgresql/data:rw
     environment:
-      DB_VENDOR: POSTGRES
-      DB_ADDR: db
-      DB_DATABASE: keycloak_db
-      DB_URL: jdbc:postgresql://db:5432/keycloak_db
-      DB_USER: my_admin
-      DB_SCHEMA: public
-      DB_PASSWORD: my_password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-    ports:
-      - 9000:8080
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    networks:
+      - local
+
+
+  keycloak:
+    image: keycloak/keycloak:24.0
+    command: start-dev
+    restart: always
     depends_on:
-      - db
+      - postgres
+    ports:
+      - "9000:8080"
+    environment:
+      KEYCLOAK_ADMIN : admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_SCHEMA: public
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+    networks:
+      - local
+
+networks:
+  local:
+
+volumes:
+  auth-pgdata-volume:
+    name: docker_auth-pgdata

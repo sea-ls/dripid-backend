@@ -17,9 +17,11 @@ local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom()
 
 local job_changes() = {
      changes: {
+        "if": "${{ github.event.inputs.build == null}}",
+
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
-        "if": "${{ github.event.inputs.build == '' }}",
+
         # Required permissions
         permissions:{
             "pull-requests": "read"
@@ -83,8 +85,8 @@ local job_build_service(container_name) = {
     //TODO убрать -DskipTests для пропуска тестов
     { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
-          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
-          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
+          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest' +
+          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest' +
           ' -Ddocker.repo.url=$CI_REGISTRY' +
           ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
           ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
@@ -131,7 +133,6 @@ local build_services() = {
 //  }
 //} else { };
 
-
 local jsonPipeline =
 {
   name: "Create and publish a Service image",
@@ -153,16 +154,16 @@ local jsonPipeline =
               },
           }
       },
-      workflow_run: {
-          workflows: [ "Create all jobs" ],
-          types: [ "completed" ],
-          branches: [
-              "develop",
-              "test-microservices"
-          ],
-      },
+      #workflow_run: {
+      #    workflows: [ "Create all jobs" ],
+      #    types: [ "completed" ],
+      #    branches: [
+      #        "develop",
+      #        "test-microservices"
+      #    ],
+      #},
       push: {
-          "paths-ignore": [ '.github/**' ]
+          "paths-ignore": [ '.github/**']
       }
   },
     env: {

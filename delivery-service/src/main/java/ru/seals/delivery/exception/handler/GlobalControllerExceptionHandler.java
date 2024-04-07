@@ -1,5 +1,6 @@
 package ru.seals.delivery.exception.handler;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.access.AccessDeniedException;
@@ -16,6 +17,8 @@ import java.net.URI;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
+    @Value("${spring.application.name}")
+    private String domain;
     @ResponseBody
     @ExceptionHandler(value = {
             DefaultMessageNotFoundException.class,
@@ -45,7 +48,7 @@ public class GlobalControllerExceptionHandler {
     }
 
     private URI setTypeFromErrorCode(String errorCode) {
-        String ERROR_URL = "http://localhost:8080/error-code/";
+        String ERROR_URL = String.format("http://%s:8080/error-code/", domain);
         return new DefaultUriBuilderFactory()
                 .uriString(ERROR_URL)
                 .pathSegment(errorCode)
