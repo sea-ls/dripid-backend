@@ -1,9 +1,6 @@
 package ru.seals.delivery.service.impl;
 
-import io.minio.BucketExistsArgs;
-import io.minio.GetPresignedObjectUrlArgs;
-import io.minio.MinioClient;
-import io.minio.PutObjectArgs;
+import io.minio.*;
 import io.minio.http.Method;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +20,7 @@ public class MinioServiceImpl implements MinioService {
     public void saveImage(MultipartFile file, String fileName, String bucketName) {
         try {
             if (!bucketExists(bucketName)) {
-                throw new RuntimeException(String.format("Error occurred during uploading image for warehouse." +
+                throw new RuntimeException(String.format("Error occurred during uploading image." +
                         "No such bucket with name: %s", bucketName));
             }
 
@@ -39,7 +36,7 @@ public class MinioServiceImpl implements MinioService {
                             .contentType(file.getContentType())
                             .build());
         } catch (Exception e) {
-            throw new RuntimeException("Error occurred during uploading image for warehouse.");
+            throw new RuntimeException("Error occurred during uploading image.");
         }
     }
 
@@ -59,6 +56,19 @@ public class MinioServiceImpl implements MinioService {
             return url;
         } catch (Exception e) {
             throw new RuntimeException(String.format("Error has occurred during get image %s", fileName));
+        }
+    }
+
+    @Override
+    public void deleteImage(String fileName, String bucket) {
+        try {
+            minioClient.removeObject(
+                    RemoveObjectArgs.builder()
+                            .bucket(bucket)
+                            .object(fileName)
+                            .build());
+        } catch (Exception e) {
+            throw new RuntimeException("Error occurred during deleting image.");
         }
     }
 

@@ -21,8 +21,15 @@ public class MinioController {
         minioService.saveImage(file, bucketName, fileName);
     }
 
-    @GetMapping(path = "/get/{fileName}")
-    public String uploadFile(@PathVariable String bucketName, @PathVariable String fileName) {
+    @GetMapping("/get")
+    public String getFile(@RequestParam("bucketName") String bucketName,
+                          @RequestParam("fileName") String fileName) {
         return minioService.getImage(bucketName, fileName);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteFile(@RequestParam("fileName") String fileName,
+                           @RequestParam("bucket") String bucket) {
+        minioService.deleteImage(fileName, bucket);
     }
 }

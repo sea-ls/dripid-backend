@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum MinioBuckets {
     WAREHOUSE_BUCKET("warehouse"),
-    USER_BUCKET("user");
+    PERSON_BUCKET("person");
 
     private final String value;
 

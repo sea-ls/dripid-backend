@@ -6,4 +6,6 @@ public interface MinioService {
     void saveImage(MultipartFile file, String fileName, String bucketName);
 
     String getImage(String bucketName, String fileName);
+
+    void deleteImage(String bucketName, String fileName);
 }
