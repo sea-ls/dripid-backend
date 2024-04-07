@@ -31,7 +31,9 @@ local job_changes() = {
             [container.name]: "${{ steps.filter.outputs." + container.name + " }}"
             for container in configuration.containers
          },
+
         steps: [
+            {"uses": "actions/checkout@v3"},
             {
                 uses: "dorny/paths-filter@v2",
                 id: "filter",
