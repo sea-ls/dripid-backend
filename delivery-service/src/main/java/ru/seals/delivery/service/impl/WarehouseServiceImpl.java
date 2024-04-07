@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
 import ru.seals.delivery.model.Warehouse;
+import ru.seals.delivery.model.enums.MinioBuckets;
 import ru.seals.delivery.repository.WarehouseRepository;
 import ru.seals.delivery.service.MinioService;
 import ru.seals.delivery.service.WarehouseService;
@@ -41,7 +42,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public void save(MultipartFile multipartFile, WarehouseSimpleViewDTO warehouseSimpleViewDTO) {
         String fileName = String.valueOf(UUID.randomUUID());
         repository.save(modelMapper.map(warehouseSimpleViewDTO, Warehouse.class));
-        minioService.saveImage(multipartFile, fileName);
+        minioService.saveImage(multipartFile, fileName, MinioBuckets.WAREHOUSE_BUCKET.getValue());
     }
 
     @Override
