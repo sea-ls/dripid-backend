@@ -39,7 +39,6 @@ local job_changes() = {
                 id: "filter",
                 with: {
                 filters: filters()
-
                 },
             },
         ],
