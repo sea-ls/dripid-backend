@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v3
         with:
           token: ${{ secrets.WORKFLOW_TOKEN }}
-          ref: $CI_COMMIT_BRANCH
+          ref: develop
       - run: |
           pwd
           cd docker
