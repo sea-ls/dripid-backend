@@ -152,14 +152,14 @@ local jsonPipeline =
               },
           }
       },
-      workflow_run: {
-          workflows: [ "Create all jobs" ],
-          types: [ "completed" ],
-          branches: [
-              "develop",
-              "test-microservices"
-          ],
-      },
+      #workflow_run: {
+      #    workflows: [ "Create all jobs" ],
+      #    types: [ "completed" ],
+      #    branches: [
+      #        "develop",
+      #        "test-microservices"
+      #    ],
+      #},
       push: {
           "paths-ignore": [ '.github/**' ]
       }
