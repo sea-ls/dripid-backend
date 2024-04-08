@@ -16,7 +16,6 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.source>${java.version}</maven.compiler.source>
