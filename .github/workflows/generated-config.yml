@@ -112,11 +112,3 @@
           - "gateway-service"
           - "delivery-service"
         "type": "choice"
-  "workflow_run":
-    "branches":
-      - "develop"
-      - "test-microservices"
-    "types":
-      - "completed"
-    "workflows":
-      - "Create all jobs"
