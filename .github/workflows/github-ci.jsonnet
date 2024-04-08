@@ -40,7 +40,7 @@ local job_changes() = {
                 with: {
                 filters: filters(),
                 ref: "${{ github.event.ref }}",
-                base: "${{ github.ref }}"
+                base: "${{ github.event.ref }}"
                 },
             },
         ],
