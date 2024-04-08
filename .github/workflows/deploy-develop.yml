@@ -10,7 +10,7 @@ on:
     types:
       - "completed"
     workflows:
-      - "Create all jobs"
+      - "Create and publish a Service image"
 env:
   CI_COMMIT_BRANCH: "develop"
   CI_PROJECT_NAME: "${{ github.event.repository.name }}"
@@ -19,17 +19,31 @@ env:
   DOCKER_REPO_URL: "${{ vars.DOCKER_REPO_URL }}"
   DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}"
   DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}"
+  CONFIG_TOKEN: "${{ secrets.CONFIG_TOKEN }}"
+
 
 jobs:
   deploy:
     runs-on:
       - develop
-  steps:
-    - uses: actions/checkout@v3
-      with:
-        token: ${{ secrets.WORKFLOW_TOKEN }}
-    - run: cd docker
-    - run: "echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin"
-    - run: "echo $DOCKER_REPO_URL"
-    - run: "cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml"
-    - run: "env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth ucso-delivery"
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+      - run: |
+          pwd
+          cd docker
+          pwd
+          echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin
+          echo $DOCKER_REPO_URL
+          cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth dripid-delivery
+          
+          cat docker-compose.yaml-links.yml docker-compose.config.yml > docker-compose.config.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.config.gen.yml --with-registry-auth dripid-config
+          
+          cat docker-compose.yaml-links.yml docker-compose.gateway.yml > docker-compose.gateway.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.gateway.gen.yml --with-registry-auth dripid-gateway
+          
+          cat docker-compose.yaml-links.yml docker-compose.auth.yml > docker-compose.auth.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.auth.gen.yml --with-registry-auth dripid-auth
