@@ -39,7 +39,8 @@ local job_changes() = {
                 id: "filter",
                 with: {
                 filters: filters(),
-                base: develop
+                ref: "${{ github.event.ref }}",
+                base: "${{ github.event.ref }}"
                 },
             },
         ],
@@ -56,7 +57,7 @@ local job_build_parent() = {
         {
             uses: "actions/checkout@v3",
             with: {
-              ref: "${{ github.event.workflow_run.head_branch }}"
+              ref: "${{ github.event.ref }}"
             },
         },
         { run: 'mvn --non-recursive clean package' },
@@ -80,7 +81,7 @@ local job_build_service(container_name) = {
 //  },
   "runs-on": [ "self-hosted" ],
   needs: [ "changes", "build-parent" ],
-  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' && always() }}",
+  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
   steps: [
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },

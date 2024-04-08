@@ -7,7 +7,7 @@
   "DOCKER_REPO_USERNAME": "${{ secrets.DOCKER_REPO_USERNAME }}"
 "jobs":
   "build-auth-service":
-    "if": "${{ github.event.inputs.build == 'auth-service' || needs.changes.outputs.auth-service == 'true' && always() }}"
+    "if": "${{ github.event.inputs.build == 'auth-service' || needs.changes.outputs.auth-service == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs":
       - "changes"
       - "build-parent"
@@ -23,7 +23,7 @@
       - "run": "docker tag dripid/auth-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/auth-service:${GITHUB_REF_NAME}"
   "build-config-service":
-    "if": "${{ github.event.inputs.build == 'config-service' || needs.changes.outputs.config-service == 'true' && always() }}"
+    "if": "${{ github.event.inputs.build == 'config-service' || needs.changes.outputs.config-service == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs":
       - "changes"
       - "build-parent"
@@ -39,7 +39,7 @@
       - "run": "docker tag dripid/config-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/config-service:${GITHUB_REF_NAME}"
   "build-delivery-service":
-    "if": "${{ github.event.inputs.build == 'delivery-service' || needs.changes.outputs.delivery-service == 'true' && always() }}"
+    "if": "${{ github.event.inputs.build == 'delivery-service' || needs.changes.outputs.delivery-service == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs":
       - "changes"
       - "build-parent"
@@ -55,7 +55,7 @@
       - "run": "docker tag dripid/delivery-service:${GITHUB_REF_NAME} $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/delivery-service:${GITHUB_REF_NAME}"
   "build-gateway-service":
-    "if": "${{ github.event.inputs.build == 'gateway-service' || needs.changes.outputs.gateway-service == 'true' && always() }}"
+    "if": "${{ github.event.inputs.build == 'gateway-service' || needs.changes.outputs.gateway-service == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
     "needs":
       - "changes"
       - "build-parent"
@@ -78,7 +78,7 @@
     "steps":
       - "uses": "actions/checkout@v3"
         "with":
-          "ref": "${{ github.event.workflow_run.head_branch }}"
+          "ref": "${{ github.event.ref }}"
       - "run": "mvn --non-recursive clean package"
   "changes":
     "if": "${{ github.event.inputs.build == null}}"
@@ -97,7 +97,9 @@
       - "id": "filter"
         "uses": "dorny/paths-filter@v2"
         "with":
+          "base": "${{ github.event.ref }}"
           "filters": "\"auth-service\":\n- \"./auth-service/**\"\n\"config-service\":\n- \"./config-service/**\"\n\"delivery-service\":\n- \"./delivery-service/**\"\n\"gateway-service\":\n- \"./gateway-service/**\"\n\"parent\":\n- \"pom.xml\""
+          "ref": "${{ github.event.ref }}"
 "name": "Create and publish a Service image"
 "on":
   "push":

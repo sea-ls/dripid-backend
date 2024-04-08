@@ -33,6 +33,7 @@
 		<runImage>paketobuildpacks/run-jammy-base:0.1.105</runImage>
 	</properties>
 
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
