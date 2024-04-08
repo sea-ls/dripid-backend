@@ -1,9 +1,11 @@
 package ru.seals.delivery.model;
 
+import io.hypersistence.utils.hibernate.type.money.MonetaryAmountType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CompositeType;
 import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.enums.Role;
 
@@ -24,9 +26,14 @@ public class Person {
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
     @AttributeOverride(
-            name = "amount",
+            name = "balance",
             column = @Column(name = "balance")
     )
+    @AttributeOverride(
+            name = "currency",
+            column = @Column(name = "currency")
+    )
+    @CompositeType(MonetaryAmountType.class)
     private MonetaryAmount balance;
     private String image;
 }
