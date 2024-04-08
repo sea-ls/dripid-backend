@@ -16,8 +16,6 @@ import ru.seals.delivery.security.JwtAuthConverter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
-
     private final JwtAuthConverter jwtAuthConverter;
     private final AuthenticationEntryPoint authenticationEntryPoint;
 
