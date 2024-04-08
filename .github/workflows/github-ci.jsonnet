@@ -38,7 +38,8 @@ local job_changes() = {
                 uses: "dorny/paths-filter@v2",
                 id: "filter",
                 with: {
-                filters: filters()
+                filters: filters(),
+                ref: "${{ github.event.ref }}"
                 },
             },
         ],
@@ -55,7 +56,7 @@ local job_build_parent() = {
         {
             uses: "actions/checkout@v3",
             with: {
-              ref: "${{ github.ref }}"
+              ref: "${{ github.event.ref }}"
             },
         },
         { run: 'mvn --non-recursive clean package' },
