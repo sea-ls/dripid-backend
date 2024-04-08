@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.enums.Role;
 
+import javax.money.MonetaryAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class Person {
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
-    @Column(columnDefinition = "money")
-    private Money balance;
+    @AttributeOverride(
+            name = "amount",
+            column = @Column(name = "balance")
+    )
+    private MonetaryAmount balance;
     private String image;
 }

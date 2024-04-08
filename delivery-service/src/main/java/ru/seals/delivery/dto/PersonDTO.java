@@ -3,9 +3,9 @@ package ru.seals.delivery.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.SaveAddress;
 
+import javax.money.MonetaryAmount;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,6 @@ import java.util.List;
 public class PersonDTO {
     private UserDTO accountInfo;
     private List<SaveAddress> saveAddresses = new ArrayList<>();
-    private Money balance;
+    private MonetaryAmount balance;
     private String image;
 }
