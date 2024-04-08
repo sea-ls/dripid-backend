@@ -13,6 +13,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import ru.seals.delivery.security.JwtAuthConverter;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
