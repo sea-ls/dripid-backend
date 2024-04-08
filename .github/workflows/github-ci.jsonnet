@@ -81,7 +81,7 @@ local job_build_service(container_name) = {
 //  },
   "runs-on": [ "self-hosted" ],
   needs: [ "changes", "build-parent" ],
-  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' && always() }}",
+  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
   steps: [
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
