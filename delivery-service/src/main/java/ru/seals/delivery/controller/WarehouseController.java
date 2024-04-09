@@ -1,5 +1,6 @@
 package ru.seals.delivery.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,21 +16,25 @@ public class WarehouseController {
     private final WarehouseService warehouseService;
 
     @GetMapping("/warehouses/{page}")
+    @Operation(description = "Получение страницы со складами")
     public Page<WarehouseSimpleViewDTO> getAllWarehouseSimpleViewDTO(@PathVariable int page, @RequestParam int size) {
         return warehouseService.getAllWarehouse(PageRequest.of(page, size));
     }
 
     @GetMapping("/warehouse/{id}")
+    @Operation(description = "Получение склада по ID")
     public Warehouse getWarehouseById(@PathVariable Long id) {
         return warehouseService.getById(id);
     }
 
     @PostMapping("/warehouse/save")
+    @Operation(description = "Сохранение склада")
     public void saveWarehouse(@RequestBody Warehouse warehouse) {
         warehouseService.save(warehouse);
     }
 
     @DeleteMapping("/warehouse/delete/{id}")
+    @Operation(description = "Удаление склада по ID")
     public void deleteWarehouseById(@PathVariable Long id) {
         warehouseService.deleteById(id);
     }

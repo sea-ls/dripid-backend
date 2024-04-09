@@ -1,6 +1,7 @@
 package ru.seals.delivery.controller;
 
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -25,6 +26,7 @@ public class ChatController {
 
     @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
+    @Operation(description = "Веб-сокет для отправки сообщения")
     public Message sendMessage(
             @Payload Message chatMessage
     ) {
@@ -34,6 +36,7 @@ public class ChatController {
 
     @MessageMapping("/chat.addUser")
     @SendTo("/topic/public")
+    @Operation(description = "Веб-сокет для добавления юзера в чат")
     public Message addUser(
             @Payload Message chatMessage,
             SimpMessageHeaderAccessor headerAccessor
@@ -43,12 +46,14 @@ public class ChatController {
     }
 
     @GetMapping("/messages/{orderId}")
+    @Operation(description = "Получения всех сообщений по ID заказа")
     public ResponseEntity<List<Message>> findMessages(@PathVariable Long orderId) {
         return ResponseEntity
                 .ok(messageService.findChatMessages(orderId));
     }
 
     @GetMapping("/orders")
+    @Operation(description = "Получения всех заказов с сообщениями")
     public ResponseEntity<List<Order>> findOrderWithMessage() {
         return ResponseEntity.ok(orderService.getAllOrderWithMessages());
     }

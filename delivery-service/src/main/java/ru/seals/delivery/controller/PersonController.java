@@ -1,5 +1,6 @@
 package ru.seals.delivery.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
     @GetMapping("authenticated")
+    @Operation(description = "Получение аутентифицированного пользователя по его Bearer-токену")
     public PersonDTO getAuthenticated(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
         UserDTO accountInfo = userAuthServiceClient.getAuthenticatedUser(bearerToken);
         Person person = personService.getAuthenticated();
