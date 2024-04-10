@@ -10,9 +10,6 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <properties>
-        <spring-cloud.version>2021.0.4</spring-cloud.version>
-    </properties>
     <artifactId>gateway-service</artifactId>
     <dependencies>
         <dependency>
