@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/delivery-service/admin")
 @RequiredArgsConstructor
+@CrossOrigin
 public class AdminController {
     private final AdminService adminService;
 

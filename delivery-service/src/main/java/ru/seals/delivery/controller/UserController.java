@@ -2,15 +2,13 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.service.OrderService;
 
 @RestController
 @RequestMapping(value = "api/v1/user")
 @RequiredArgsConstructor
+@CrossOrigin
 public class UserController {
     private final OrderService orderService;
 

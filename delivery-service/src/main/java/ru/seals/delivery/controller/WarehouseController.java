@@ -12,6 +12,7 @@ import ru.seals.delivery.service.WarehouseService;
 @RestController
 @RequestMapping(value = "delivery_service/api/v1/warehouses")
 @RequiredArgsConstructor
+@CrossOrigin
 public class WarehouseController {
     private final WarehouseService warehouseService;
 

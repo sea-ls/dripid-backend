@@ -2,6 +2,7 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import ru.seals.delivery.model.enums.*;
 @RestController
 @RequestMapping(value = "delivery_service/api/v1/admin/enum")
 @RequiredArgsConstructor
+@CrossOrigin
 public class EnumController {
     @GetMapping("/delivery_stage_type")
     @Operation(description = "Получение всех типов этапов доставки. Пример - прибыл в город")

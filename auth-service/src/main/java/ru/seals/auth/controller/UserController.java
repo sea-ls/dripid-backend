@@ -2,7 +2,6 @@ package ru.seals.auth.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +12,7 @@ import ru.seals.auth.service.KeycloakUserService;
 @RestController
 @RequestMapping("api/auth-service/user")
 @RequiredArgsConstructor
+@CrossOrigin
 public class UserController {
     private final KeycloakUserService userService;
 

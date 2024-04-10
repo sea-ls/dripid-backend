@@ -3,10 +3,7 @@ package ru.seals.delivery.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
@@ -16,6 +13,7 @@ import ru.seals.delivery.service.PersonService;
 @RestController
 @RequestMapping(value = "api/delivery-service/person")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
