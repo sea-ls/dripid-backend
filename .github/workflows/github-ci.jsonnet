@@ -1,6 +1,7 @@
 local configuration = import 'configuration.jsonnet';
 
 local filter_change_parent_pom() = { "parent": [ "pom.xml" ] };
+local filter_change_keycloak() = { "keycloak": [ "keycloak/**/*" ] };
 
 local rule_change_in_directory(directory) = { changes+: [directory + '/**/*'] };
 local rule_manual() = { when: 'manual' };
@@ -13,27 +14,36 @@ local filterArray() = {
     };
 
 
-local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom(), false);
+local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom() + filter_change_keycloak(), false);
 
 local job_changes() = {
      changes: {
+        "if": "${{ github.event.inputs.build == null}}",
+
         "runs-on": [ "self-hosted" ],
         //container: configuration.dockerImage,
-        "if": "${{ github.event.inputs.build == '' }}",
+
         # Required permissions
         permissions:{
             "pull-requests": "read"
         },
         outputs: { parent: "${{ steps.filter.outputs.parent }}" }
+         + { keycloak: "${{ steps.filter.outputs.keycloak }}" }
          + {
             [container.name]: "${{ steps.filter.outputs." + container.name + " }}"
             for container in configuration.containers
          },
+
         steps: [
+            {"uses": "actions/checkout@v3"},
             {
                 uses: "dorny/paths-filter@v2",
                 id: "filter",
-                with: { filters: filters() },
+                with: {
+                filters: filters(),
+                ref: "${{ github.event.ref }}",
+                base: "${{ github.event.ref }}"
+                },
             },
         ],
      }
@@ -49,7 +59,7 @@ local job_build_parent() = {
         {
             uses: "actions/checkout@v3",
             with: {
-              ref: "${{ github.event.workflow_run.head_branch }}"
+              ref: "${{ github.event.ref }}"
             },
         },
         { run: 'mvn --non-recursive clean package' },
@@ -73,17 +83,18 @@ local job_build_service(container_name) = {
 //  },
   "runs-on": [ "self-hosted" ],
   needs: [ "changes", "build-parent" ],
-  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' && always() }}",
+  "if": "${{ github.event.inputs.build == '" + container_name + "' || needs.changes.outputs." + container_name + " == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}",
   steps: [
     { uses: "actions/checkout@v3", },
     { run: command_docker_login_local },
     { run: image },
+    { run: "mvn -v" },
     { run: "echo $IMAGE" },
     //TODO убрать -DskipTests для пропуска тестов
     { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
-          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0_4_278:latest' +
-          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0_1_105:latest' +
+          ' -Dbuilder=${DOCKER_REPO_URL}docker/builder-jammy-base-0.4.278:latest' +
+          ' -DrunImage=${DOCKER_REPO_URL}docker/run-jammy-base-0.1.105:latest' +
           ' -Ddocker.repo.url=$CI_REGISTRY' +
           ' -Ddocker.repo.username=$DOCKER_REPO_USERNAME' +
           ' -Ddocker.repo.password=$DOCKER_REPO_PASSWORD'
@@ -98,6 +109,24 @@ local build_services() = {
     job_build_service(container.name)
   for container in configuration.containers
 };
+
+local job_build_keycloak_service() = {
+  local keycloak_name = "keycloak-23.0",
+
+  'build_keycloak': {
+    "runs-on": [ "self-hosted" ],
+    //container: configuration.dockerImage,
+    needs: "changes",
+    "if": "${{ github.event.inputs.build == 'keycloak' || needs.changes.outputs.keycloak == 'true' && always() }}",
+    steps: [
+        { uses: "actions/checkout@v3", },
+        { run: "cd keycloak"},
+        { run: "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
+        { run: "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
+    ],
+  },
+};
+
 //
 //local generate_compose_all() = [
 //  [
@@ -105,7 +134,7 @@ local build_services() = {
 //      'env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) ' +
 //      'docker --context $CI_COMMIT_BRANCH ' +
 //      'stack deploy -c docker-compose.' + deploymentGroup.name + '.gen.yml ' +
-//      '--with-registry-auth ucso-' + deploymentGroup.name,
+//      '--with-registry-auth dripid-' + deploymentGroup.name,
 //  ]
 //  for deploymentGroup in configuration.deploymentGroups
 //];
@@ -126,10 +155,9 @@ local build_services() = {
 //      rule_on_success(),
 //      rule_manual() + rule_allow_failure(),
 //    ],
-//    tags: ['ucso-deploy-manager'],
+//    tags: ['dripid-deploy-manager'],
 //  }
 //} else { };
-
 
 local jsonPipeline =
 {
@@ -145,7 +173,8 @@ local jsonPipeline =
                   type: "choice",
                   description: "Who to build",
                   options: [
-                     "parent"
+                     "parent",
+                     "keycloak"
                   ] + [
                       container.name for container in configuration.containers
                   ],
@@ -161,7 +190,7 @@ local jsonPipeline =
       #    ],
       #},
       push: {
-          "paths-ignore": [ '.github/**' ]
+          "paths-ignore": [ '.github/**']
       }
   },
     env: {
