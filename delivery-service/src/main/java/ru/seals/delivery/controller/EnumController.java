@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.seals.delivery.model.enums.*;
 
 @RestController
-@RequestMapping(value = "delivery_service/api/v1/admin/enum")
+@RequestMapping(value = "/api/delivery-service/admin/enum")
 @RequiredArgsConstructor
 @CrossOrigin
 public class EnumController {

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.chat.Message;
 import ru.seals.delivery.service.MessageService;
@@ -21,6 +22,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping(value = "/api/delivery-service/chats")
 @CrossOrigin
 public class ChatController {
     private final MessageService messageService;

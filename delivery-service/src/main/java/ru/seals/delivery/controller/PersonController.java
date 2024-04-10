@@ -13,7 +13,7 @@ import ru.seals.delivery.service.PersonService;
 import java.math.BigDecimal;
 
 @RestController
-@RequestMapping(value = "api/delivery-service/person")
+@RequestMapping(value = "/api/delivery-service/person")
 @RequiredArgsConstructor
 @CrossOrigin
 public class PersonController {

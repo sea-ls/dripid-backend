@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.service.OrderService;
 
 @RestController
-@RequestMapping(value = "api/v1/user")
+@RequestMapping(value = "/api/delivery-service/user")
 @RequiredArgsConstructor
 @CrossOrigin
 public class UserController {
