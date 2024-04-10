@@ -24,10 +24,7 @@ public class BalanceHistory {
 
     @ManyToOne
     private Person admin;
-
-    @Column(columnDefinition = "money")
     private Money oldBalance;
-    @Column(columnDefinition = "money")
     private Money newBalance;
     private String cheque;
 }
