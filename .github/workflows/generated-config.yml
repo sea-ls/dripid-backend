@@ -80,6 +80,16 @@
         "with":
           "ref": "${{ github.event.ref }}"
       - "run": "mvn --non-recursive clean package"
+  "build_keycloak":
+    "if": "${{ github.event.inputs.build == 'keycloak' || needs.changes.outputs.keycloak == 'true' && always() }}"
+    "needs": "changes"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "run": "cd keycloak"
+      - "run": "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}"
+      - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}"
   "changes":
     "if": "${{ github.event.inputs.build == null}}"
     "outputs":
