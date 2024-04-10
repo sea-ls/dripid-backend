@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.seals.delivery.model.SaveAddress;
 
-import javax.money.MonetaryAmount;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,6 @@ import java.util.List;
 public class PersonDTO {
     private UserDTO accountInfo;
     private List<SaveAddress> saveAddresses = new ArrayList<>();
-    private MonetaryAmount balance;
+    private BigDecimal balance;
     private String image;
 }
