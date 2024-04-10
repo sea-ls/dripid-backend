@@ -16,7 +16,6 @@ public class Product {
     private Long id;
     private String url;
     private String description;
-    @Column(columnDefinition = "money")
     private Money price;
     private Long weight;
 }
