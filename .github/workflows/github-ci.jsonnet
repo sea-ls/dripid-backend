@@ -110,7 +110,7 @@ local build_services() = {
   for container in configuration.containers
 };
 
-local job_build_keycloak_service() = {
+local job_build_keycloak() = {
   local keycloak_name = "keycloak-23.0",
 
   'build_keycloak': {
@@ -121,7 +121,7 @@ local job_build_keycloak_service() = {
     steps: [
         { uses: "actions/checkout@v3", },
         { run: "cd keycloak"},
-        { run: "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
+        { run: "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME} ." },
         { run: "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
     ],
   },
@@ -204,7 +204,7 @@ local jsonPipeline =
 } + {
     jobs: job_changes()
     + job_build_parent()
-    + job_build_keycloak_service()
+    + job_build_keycloak()
     + build_services()
   //  + deploy_local_server()
 };
