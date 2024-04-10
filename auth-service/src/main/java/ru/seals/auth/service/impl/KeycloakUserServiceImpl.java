@@ -26,6 +26,8 @@ import java.util.*;
 public class KeycloakUserServiceImpl implements KeycloakUserService {
     @Value("${keycloak.realm}")
     private String realmName;
+
+    private final String keycloakPhoneName = "phoneNumber";
     private final Keycloak keycloak;
     private UsersResource getUsersResource() {
         RealmResource realm = keycloak.realm(realmName);
@@ -48,7 +50,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
         user.setEmail(userRep.getEmail());
         user.setFirstName(userRep.getFirstName());
         user.setLastName(userRep.getLastName());
-        user.setPhone(userRep.getAttributes().get("phone").get(0));
+        user.setPhone(userRep.getAttributes().get(keycloakPhoneName).get(0));
         return user;
     }
 
@@ -60,7 +62,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
         if (userRep.getAttributes() == null)
             userRep.setAttributes(new HashMap<>());
         if (user.getPhone() != null)
-            userRep.getAttributes().put("phone", Collections.singletonList(user.getPhone()));
+            userRep.getAttributes().put(keycloakPhoneName, Collections.singletonList(user.getPhone()));
         if (user.getEmail() != null && !userRep.getEmail().equals(user.getEmail())) {
             userRep.setEmail(user.getEmail());
             userRep.setEmailVerified(false);
