@@ -1,6 +1,7 @@
 local configuration = import 'configuration.jsonnet';
 
 local filter_change_parent_pom() = { "parent": [ "pom.xml" ] };
+local filter_change_keycloak() = { "keycloak": [ "keycloak/**/*" ] };
 
 local rule_change_in_directory(directory) = { changes+: [directory + '/**/*'] };
 local rule_manual() = { when: 'manual' };
@@ -13,7 +14,7 @@ local filterArray() = {
     };
 
 
-local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom(), false);
+local filters() = std.manifestYamlDoc(filterArray() + filter_change_parent_pom() + filter_change_keycloak(), false);
 
 local job_changes() = {
      changes: {
@@ -27,6 +28,7 @@ local job_changes() = {
             "pull-requests": "read"
         },
         outputs: { parent: "${{ steps.filter.outputs.parent }}" }
+         + { keycloak: "${{ steps.filter.outputs.keycloak }}" }
          + {
             [container.name]: "${{ steps.filter.outputs." + container.name + " }}"
             for container in configuration.containers
@@ -107,6 +109,24 @@ local build_services() = {
     job_build_service(container.name)
   for container in configuration.containers
 };
+
+local job_build_keycloak_service() = {
+  local keycloak_name = keycloak-23.0,
+
+  'build_keycloak': {
+    "runs-on": [ "self-hosted" ],
+    //container: configuration.dockerImage,
+    needs: "changes",
+    "if": "${{ github.event.inputs.build == 'keycloak' || needs.changes.outputs.keycloak == 'true' && always() }}",
+    steps: [
+        { uses: "actions/checkout@v3", },
+        { run: "cd keycloak"},
+        { run: "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
+        { run: "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}" },
+    ],
+  },
+};
+
 //
 //local generate_compose_all() = [
 //  [
@@ -153,7 +173,8 @@ local jsonPipeline =
                   type: "choice",
                   description: "Who to build",
                   options: [
-                     "parent"
+                     "parent",
+                     "keycloak"
                   ] + [
                       container.name for container in configuration.containers
                   ],
