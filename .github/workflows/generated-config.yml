@@ -88,7 +88,7 @@
     "steps":
       - "uses": "actions/checkout@v3"
       - "run": "cd keycloak"
-      - "run": "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}"
+      - "run": "docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME} ."
       - "run": "docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}"
   "changes":
     "if": "${{ github.event.inputs.build == null}}"
