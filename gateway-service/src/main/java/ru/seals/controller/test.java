@@ -4,11 +4,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/test")
 @CrossOrigin
 public class test {
-    @GetMapping("{id}")
+    @GetMapping("/1")
     @Operation(description = "Получение юзера по ID")
-    public void getById() {
-
+    public String getById() {
+        return "a";
     }
 }
