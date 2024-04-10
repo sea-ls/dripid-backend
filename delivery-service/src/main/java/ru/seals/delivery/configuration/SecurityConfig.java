@@ -34,16 +34,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         return http
                 .authorizeHttpRequests(customizer -> customizer
-                        /*.requestMatchers(
+                        .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html/**", "/api-docs/**",
                                 "/api/delivery-service/v3/api-docs",
-                                "/api/delivery-service/v3/api-docs/**").permitAll()*/
+                                "/api/delivery-service/v3/api-docs/**").permitAll()
                         .anyRequest()
-                        //.hasAuthority("SCOPE_delivery.read")
-                        .permitAll())
+                        .hasAuthority("SCOPE_delivery.read"))
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthConverter)
