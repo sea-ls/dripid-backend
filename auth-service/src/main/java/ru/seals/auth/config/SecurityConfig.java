@@ -29,6 +29,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(  "/api/v1/auth/**",
+                                "api/v1/user/case/**",
+                                "api/v1/user/cases",  "/api/v1/auth/**",
+                                "/v3/api-docs/**",
+                                "/v3/api-docs.yaml",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html/**", "/api-docs/**").permitAll()
                         .anyRequest().hasAuthority("SCOPE_auth.read")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
