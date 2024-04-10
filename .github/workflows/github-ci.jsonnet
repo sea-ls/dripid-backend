@@ -111,7 +111,7 @@ local build_services() = {
 };
 
 local job_build_keycloak_service() = {
-  local keycloak_name = keycloak-23.0,
+  local keycloak_name = "keycloak-23.0",
 
   'build_keycloak': {
     "runs-on": [ "self-hosted" ],
