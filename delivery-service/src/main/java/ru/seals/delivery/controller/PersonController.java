@@ -10,6 +10,8 @@ import ru.seals.delivery.dto.UserDTO;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.service.PersonService;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping(value = "api/delivery-service/person")
 @RequiredArgsConstructor
@@ -24,7 +26,7 @@ public class PersonController {
         Person person = personService.getAuthenticated();
         return new PersonDTO(accountInfo,
                 person.getSaveAddresses(),
-                person.getBalance(),
+                person.getBalance().getNumber().numberValue(BigDecimal.class),
                 person.getImage());
     }
 }

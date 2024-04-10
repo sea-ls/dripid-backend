@@ -61,7 +61,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
 
         if (userRep.getAttributes() == null)
             userRep.setAttributes(new HashMap<>());
-        if (user.getPhone() != null)
+        if (user.getPhone() != null && !user.getPhone().isBlank())
             userRep.getAttributes().put(keycloakPhoneName, Collections.singletonList(user.getPhone()));
         if (user.getEmail() != null && !userRep.getEmail().equals(user.getEmail())) {
             userRep.setEmail(user.getEmail());
