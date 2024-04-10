@@ -87,6 +87,7 @@
       "config-service": "${{ steps.filter.outputs.config-service }}"
       "delivery-service": "${{ steps.filter.outputs.delivery-service }}"
       "gateway-service": "${{ steps.filter.outputs.gateway-service }}"
+      "keycloak": "${{ steps.filter.outputs.keycloak }}"
       "parent": "${{ steps.filter.outputs.parent }}"
     "permissions":
       "pull-requests": "read"
@@ -98,7 +99,7 @@
         "uses": "dorny/paths-filter@v2"
         "with":
           "base": "${{ github.event.ref }}"
-          "filters": "\"auth-service\":\n- \"./auth-service/**\"\n\"config-service\":\n- \"./config-service/**\"\n\"delivery-service\":\n- \"./delivery-service/**\"\n\"gateway-service\":\n- \"./gateway-service/**\"\n\"parent\":\n- \"pom.xml\""
+          "filters": "\"auth-service\":\n- \"./auth-service/**\"\n\"config-service\":\n- \"./config-service/**\"\n\"delivery-service\":\n- \"./delivery-service/**\"\n\"gateway-service\":\n- \"./gateway-service/**\"\n\"keycloak\":\n- \"keycloak/**/*\"\n\"parent\":\n- \"pom.xml\""
           "ref": "${{ github.event.ref }}"
 "name": "Create and publish a Service image"
 "on":
@@ -114,6 +115,7 @@
         "description": "Who to build"
         "options":
           - "parent"
+          - "keycloak"
           - "config-service"
           - "auth-service"
           - "gateway-service"
