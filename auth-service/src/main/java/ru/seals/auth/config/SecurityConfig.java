@@ -29,13 +29,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(  "/api/v1/auth/**",
-                                "api/v1/user/case/**",
-                                "api/v1/user/cases",  "/api/v1/auth/**",
+                        .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html/**", "/api-docs/**").permitAll()
+                                "/swagger-ui.html/**", "/api-docs/**",
+                                "/api/auth-service/v3/api-docs").permitAll()
                         .anyRequest().hasAuthority("SCOPE_auth.read")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
