@@ -120,8 +120,8 @@ local job_build_keycloak() = {
     "if": "${{ github.event.inputs.build == 'keycloak' || needs.changes.outputs.keycloak == 'true' && always() }}",
     steps: [
         { uses: "actions/checkout@v3", },
-        { run: "|
-            cd keycloak
+        { run: "cd keycloak
+            pwd
             docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME} .
             docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/" + keycloak_name + ":${GITHUB_REF_NAME}
         "},
