@@ -87,7 +87,7 @@
       - "self-hosted"
     "steps":
       - "uses": "actions/checkout@v3"
-      - "run": "|\n            cd keycloak\n            docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME} .\n            docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}\n        "
+      - "run": "cd keycloak\n            pwd\n            docker build -t $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME} .\n            docker push $DOCKER_REPO_URL$CI_PROJECT_NAME/keycloak-23.0:${GITHUB_REF_NAME}\n        "
   "changes":
     "if": "${{ github.event.inputs.build == null}}"
     "outputs":
