@@ -204,6 +204,7 @@ local jsonPipeline =
 } + {
     jobs: job_changes()
     + job_build_parent()
+    + job_build_keycloak_service()
     + build_services()
   //  + deploy_local_server()
 };
