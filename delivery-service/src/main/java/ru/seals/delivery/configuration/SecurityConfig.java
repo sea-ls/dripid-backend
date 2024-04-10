@@ -42,7 +42,8 @@ public class SecurityConfig {
                                 "/api/delivery-service/v3/api-docs",
                                 "/api/delivery-service/v3/api-docs/**").permitAll()
                         .anyRequest()
-                        .hasAuthority("SCOPE_delivery.read"))
+                        //.hasAuthority("SCOPE_delivery.read")
+                        .permitAll())
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthConverter)
