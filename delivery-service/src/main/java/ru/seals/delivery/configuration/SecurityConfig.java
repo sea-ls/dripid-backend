@@ -39,7 +39,8 @@ public class SecurityConfig {
                                 "/v3/api-docs.yaml",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html/**", "/api-docs/**",
-                                "/api/delivery-service/v3/api-docs").permitAll()
+                                "/api/delivery-service/v3/api-docs",
+                                "/api/delivery-service/v3/api-docs/**").permitAll()
                         .anyRequest()
                         .hasAuthority("SCOPE_delivery.read"))
                 .oauth2ResourceServer(oauth2 -> oauth2
