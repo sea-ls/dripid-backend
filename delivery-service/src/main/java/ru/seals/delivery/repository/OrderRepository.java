@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 import ru.seals.delivery.model.Order;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    Order findByTrackNumberExternal(String trackNumber);
+    Optional<Order> findByTrackNumberExternal(String trackNumber);
     Order findByTrackNumberInternal(String trackNumber);
 
     @Query(value = """

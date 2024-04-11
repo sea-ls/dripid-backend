@@ -31,7 +31,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public String getDeliveryHistory(String trackNumber) {
-        return orderRepository.findByTrackNumberExternal(trackNumber).getDeliveryHistory();
+        return orderRepository.findByTrackNumberExternal(trackNumber)
+                .orElseThrow(orderNotFoundException("Order with track number = {0} not found!", trackNumber))
+                .getDeliveryHistory();
     }
 
     @Override
