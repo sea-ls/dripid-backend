@@ -37,6 +37,8 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(customizer -> customizer
                         .requestMatchers("/api/delivery-service/user/**",
+                                "/api/delivery-service/user/tracking",
+                                "/api/delivery-service/user/tracking/**",
                                 "/v3/api-docs/**",
                                 "/v3/api-docs.yaml",
                                 "/swagger-ui/**",
