@@ -1,4 +1,4 @@
-package ru.seals.delivery.configuration;
+/*package ru.seals.delivery.configuration;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.models.Components;
@@ -35,4 +35,4 @@ public class OpenApiConfigs {
                 .security(List.of(new SecurityRequirement().addList(securitySchemeName)))
                 .info(new Info().title(serviceTitle).version(serviceVersion));
     }
-}
+}*/
