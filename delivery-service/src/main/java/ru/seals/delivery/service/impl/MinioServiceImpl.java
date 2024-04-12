@@ -2,6 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import io.minio.*;
 import io.minio.http.Method;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class MinioServiceImpl implements MinioService {
     private static final String BUCKET_NAME = "warehouse";
 
@@ -37,8 +39,10 @@ public class MinioServiceImpl implements MinioService {
                             .contentType(file.getContentType())
                             .build());
 
+            log.info(String.format("Сохранение нового изображения с названием '%s' выполнено успешно.", imageName));
             return String.format("Image %s uploaded", imageName);
         } catch (Exception e) {
+            log.error("Сохранение нового изображения не выполнено.");
             return String.format("Error uploading image: %s", e.getMessage());
         }
     }

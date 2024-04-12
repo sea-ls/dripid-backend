@@ -11,7 +11,6 @@ public interface AdminService {
     List<DefaultMessage> getAllDefaultMessagesByType(MessageType type);
     DefaultMessage getDefaultMessagesById(Long id);
     void deleteDefaultMessageById(Long id);
-    //void saveDefaultMessage(DefaultMessage defaultMessage, String type);
     void saveDefaultMessage(DefaultMessage defaultMessage);
 
     List<MessageType> getAllMessageTypes();

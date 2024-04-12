@@ -3,6 +3,7 @@ package ru.seals.delivery.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
@@ -18,7 +19,10 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AdminServiceImpl implements AdminService {
+    private static final String SAVE_LOG = "Сохранение записи в таблице '%s' с ID = %d выполнено успешно.";
+    private static final String DELETE_LOG = "Удаление записи в таблице '%s' с ID = %d выполнено успешно.";
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
@@ -36,16 +40,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteDefaultMessageById(Long id) {
         defaultMessageService.deleteById(id);
+        log.info(String.format(DELETE_LOG, "default_message", id));
     }
 
-    /*@Override
-    public void saveDefaultMessage(DefaultMessage defaultMessage, String type) {
-        defaultMessage.setMessageType(messageTypeService.getByName(type));
-        defaultMessageService.save(defaultMessage);
-    }*/
     @Override
     public void saveDefaultMessage(DefaultMessage defaultMessage) {
         defaultMessageService.save(defaultMessage);
+        log.info(String.format(SAVE_LOG, "default_message", defaultMessage.getId()));
     }
 
 
@@ -57,11 +58,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void deleteMessageTypeById(Long id) {
         messageTypeService.deleteById(id);
+        log.info(String.format(DELETE_LOG, "message_type", id));
     }
 
     @Override
     public void saveMessageType(MessageType messageType) {
         messageTypeService.save(messageType);
+        log.info(String.format(SAVE_LOG, "message_type", messageType.getId()));
     }
 
     @Override
@@ -72,11 +75,13 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void saveOrder(Order order) {
         orderService.saveOrder(order);
+        log.info(String.format(SAVE_LOG, "order", order.getId()));
     }
 
     @Override
     public void deleteOrderById(Long id) {
         orderService.deleteOrderById(id);
+        log.info(String.format(DELETE_LOG, "order", id));
     }
 
     @Override
@@ -90,10 +95,12 @@ public class AdminServiceImpl implements AdminService {
             statuses.add(newStatus);
             order.setDeliveryHistory(om.writeValueAsString(statuses));
         } catch (JsonProcessingException e) {
+            log.error(String.format("Обновление последнего статуса доставки заказа с ID = %d не выполнено.", id));
             throw new RuntimeException(e);
         }
 
         orderService.saveOrder(order);
+        log.info(String.format("Обновление последнего статуса доставки заказа с ID = %d выполнено успешно.", id));
     }
 
     @Override

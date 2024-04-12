@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByTrackNumberExternal(String trackNumber);
-    Order findByTrackNumberInternal(String trackNumber);
+    Optional<Order> findByTrackNumberInternal(String trackNumber);
 
     @Query(value = """
             SELECT DISTINCT o

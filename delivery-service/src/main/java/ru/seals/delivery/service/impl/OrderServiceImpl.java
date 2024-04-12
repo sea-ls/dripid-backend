@@ -38,7 +38,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrderByTrackIntervalNumber(String trackNumber) {
-        return orderRepository.findByTrackNumberInternal(trackNumber);
+        return orderRepository.findByTrackNumberInternal(trackNumber)
+                .orElseThrow(orderNotFoundException("Order with track number = {0} not found!", trackNumber));
     }
 
     @Override

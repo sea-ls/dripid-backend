@@ -1,6 +1,7 @@
 package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,9 @@ import static ru.seals.delivery.exception.WarehouseNotFoundException.warehouseNo
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class WarehouseServiceImpl implements WarehouseService {
+
     private final WarehouseRepository repository;
     private final Convertor convertor;
 
@@ -33,10 +36,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public void save(Warehouse warehouse) {
         repository.save(warehouse);
+        log.info(String.format("Сохранение записи в таблице 'warehouse' с ID = %d выполнено успешно", warehouse.getId()));
     }
 
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+        log.info(String.format("Удаление записи в таблице 'warehouse' с ID = %d выполнено успешно", id));
     }
 }

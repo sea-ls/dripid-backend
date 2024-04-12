@@ -37,11 +37,6 @@ public class AdminController {
         adminService.deleteDefaultMessageById(id);
     }
 
-   /* @PostMapping("/default_message/save")
-    public void saveDefaultMessage(@RequestBody DefaultMessage defaultMessage, @RequestParam String type) {
-        adminService.saveDefaultMessage(defaultMessage, type);
-    }*/
-
     @PostMapping("/default_message/save")
     @Operation(description = "Сохранение шаблонного сообщения")
     public void saveDefaultMessage(@RequestBody DefaultMessage defaultMessage) {
