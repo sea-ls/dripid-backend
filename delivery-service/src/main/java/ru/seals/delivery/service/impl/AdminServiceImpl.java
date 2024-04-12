@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AdminServiceImpl implements AdminService {
-    private static final String SAVE_LOG = "Сохранение записи в таблице '%s' с ID = %d выполнено успешно.";
+    private static final String SAVE_LOG = "Сохранение объекта '%s' выполнено успешно.";
     private static final String DELETE_LOG = "Удаление записи в таблице '%s' с ID = %d выполнено успешно.";
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
@@ -46,7 +46,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void saveDefaultMessage(DefaultMessage defaultMessage) {
         defaultMessageService.save(defaultMessage);
-        log.info(String.format(SAVE_LOG, "default_message", defaultMessage.getId()));
+        log.info(String.format(SAVE_LOG, defaultMessage.toString()));
     }
 
 
@@ -64,7 +64,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void saveMessageType(MessageType messageType) {
         messageTypeService.save(messageType);
-        log.info(String.format(SAVE_LOG, "message_type", messageType.getId()));
+        log.info(String.format(SAVE_LOG, messageType.toString()));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public void saveOrder(Order order) {
         orderService.saveOrder(order);
-        log.info(String.format(SAVE_LOG, "order", order.getId()));
+        log.info(String.format(SAVE_LOG, order.getId()));
     }
 
     @Override
