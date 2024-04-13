@@ -3,6 +3,7 @@ package ru.seals.delivery.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.PersonDTO;
@@ -20,6 +21,7 @@ public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
     @GetMapping("authenticated")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Получение аутентифицированного пользователя по его Bearer-токену")
     public PersonDTO getAuthenticated(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
         UserDTO accountInfo = userAuthServiceClient.getAuthenticatedUser(bearerToken);

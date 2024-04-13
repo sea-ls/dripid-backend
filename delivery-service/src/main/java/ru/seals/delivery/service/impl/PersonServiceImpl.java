@@ -19,15 +19,24 @@ public class PersonServiceImpl implements PersonService {
     private String getKeycloakUserId() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
+
     @Override
-    public Person getAuthenticated() {
-        return personRepository.findPersonByKeycloakId(getKeycloakUserId())
-                .orElseGet(() -> {
-                   Person person = new Person();
-                   person.setKeycloakId(getKeycloakUserId());
-                   person.setBalance(Money.of(new BigDecimal(0), Monetary.getCurrency("RUB")));
-                   return personRepository.saveAndFlush(person);
-                });
+    public Person save(Person person) {
+        return personRepository.saveAndFlush(person);
     }
 
+    @Override
+    public Person getAuthenticated() {
+        return getByKeycloakId(getKeycloakUserId());
+    }
+    @Override
+    public Person getByKeycloakId(String kcId) {
+        return personRepository.findPersonByKeycloakId(kcId)
+                .orElseGet(() -> {
+                    Person person = new Person();
+                    person.setKeycloakId(kcId);
+                    person.setBalance(Money.of(new BigDecimal(0), Monetary.getCurrency("RUB")));
+                    return save(person);
+                });
+    }
 }
