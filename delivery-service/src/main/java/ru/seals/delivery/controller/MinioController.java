@@ -27,7 +27,7 @@ public class MinioController {
         return minioService.getImage(bucketName, fileName);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete") // test
     public void deleteFile(@RequestParam("bucketName") String bucketName,
                            @RequestParam("fileName") String fileName) {
         minioService.deleteImage(bucketName, fileName);
