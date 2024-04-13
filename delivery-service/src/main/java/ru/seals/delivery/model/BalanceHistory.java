@@ -27,4 +27,12 @@ public class BalanceHistory {
     private Money oldBalance;
     private Money newBalance;
     private String cheque;
+    public BalanceHistory(TransactionType transactionType, Person user, Person admin, Money oldBalance, Money newBalance, String cheque) {
+        this.transactionType = transactionType;
+        this.user = user;
+        this.admin = admin;
+        this.oldBalance = oldBalance;
+        this.newBalance = newBalance;
+        this.cheque = cheque;
+    }
 }

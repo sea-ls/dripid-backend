@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.seals.delivery.exception.DefaultMessageNotFoundException;
 import ru.seals.delivery.exception.MessageTypeNotFoundException;
+import ru.seals.delivery.exception.NotEnoughMoneyException;
 import ru.seals.delivery.exception.WarehouseNotFoundException;
 
 import java.net.URI;
@@ -27,6 +28,16 @@ public class GlobalControllerExceptionHandler {
     })
     public ProblemDetail notFoundHandle(RuntimeException exception) {
         ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());
+        p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
+        return p;
+    }
+
+    @ResponseBody
+    @ExceptionHandler(value = {
+            NotEnoughMoneyException.class
+    })
+    public ProblemDetail badRequestHandler(RuntimeException exception) {
+        ProblemDetail p = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, exception.getMessage());
         p.setType(setTypeFromErrorCode(exception.getClass().getSimpleName()));
         return p;
     }
