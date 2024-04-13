@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.service.MinioService;
 
 @RestController
-@RequestMapping("api/v1/minio")
+@RequestMapping("api/delivery-service/minio")
 @RequiredArgsConstructor
 public class MinioController {
     @Autowired
@@ -15,9 +15,9 @@ public class MinioController {
 
     @PostMapping("/upload")
     public void uploadFile(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("bucketName") String bucketName,
-            @RequestParam("fileName") String fileName) {
+            @RequestPart("file") MultipartFile file,
+            @RequestPart("bucketName") String bucketName,
+            @RequestPart("fileName") String fileName) {
         minioService.saveImage(file, bucketName, fileName);
     }
 
@@ -28,8 +28,8 @@ public class MinioController {
     }
 
     @DeleteMapping("/delete")
-    public void deleteFile(@RequestParam("fileName") String fileName,
-                           @RequestParam("bucket") String bucket) {
-        minioService.deleteImage(fileName, bucket);
+    public void deleteFile(@RequestParam("bucketName") String bucketName,
+                           @RequestParam("fileName") String fileName) {
+        minioService.deleteImage(bucketName, fileName);
     }
 }

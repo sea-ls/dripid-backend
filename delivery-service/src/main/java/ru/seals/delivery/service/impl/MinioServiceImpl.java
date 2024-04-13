@@ -17,7 +17,7 @@ public class MinioServiceImpl implements MinioService {
     private MinioClient minioClient;
 
     @Override
-    public void saveImage(MultipartFile file, String fileName, String bucketName) {
+    public void saveImage(MultipartFile file, String bucketName, String fileName) {
         try {
             if (!bucketExists(bucketName)) {
                 throw new RuntimeException(String.format("Error occurred during uploading image." +
@@ -41,7 +41,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public String getImage(String fileName, String bucketName) {
+    public String getImage(String bucketName, String fileName) {
         try {
             Map<String, String> reqParams = new HashMap<>();
             reqParams.put("response-content-type", "image/png");
@@ -60,11 +60,11 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public void deleteImage(String fileName, String bucket) {
+    public void deleteImage(String bucketName, String fileName) {
         try {
             minioClient.removeObject(
                     RemoveObjectArgs.builder()
-                            .bucket(bucket)
+                            .bucket(bucketName)
                             .object(fileName)
                             .build());
         } catch (Exception e) {
@@ -72,7 +72,7 @@ public class MinioServiceImpl implements MinioService {
         }
     }
 
-    private boolean bucketExists(String bucket) throws Exception {
-        return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
+    private boolean bucketExists(String bucketName) throws Exception {
+        return minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
     }
 }

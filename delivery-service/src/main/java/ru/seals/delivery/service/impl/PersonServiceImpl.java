@@ -22,10 +22,11 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void changePersonPhoto(Long id, MultipartFile file) {
         Optional<Person> result = personRepository.findById(id);
-        String newFileName = String.valueOf(UUID.randomUUID());
 
         if (result.isPresent()) {
             Person person = result.get();
+            String newFileName = String.valueOf(UUID.randomUUID());
+
             person.setImage(newFileName);
             personRepository.save(person);
 
