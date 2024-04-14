@@ -33,8 +33,8 @@ public class WarehouseController {
     @Operation(description = "Сохранение склада")
     public void saveWarehouse(
             @RequestPart(value = "file") MultipartFile file,
-            @RequestPart(value = "json") WarehouseSimpleViewDTO warehouseSimpleViewDTO) {
-        warehouseService.save(file, warehouseSimpleViewDTO);
+            @RequestPart(value = "json") Warehouse warehouse) {
+        warehouseService.save(file, warehouse);
     }
 
     @DeleteMapping("/warehouse/delete/{id}")

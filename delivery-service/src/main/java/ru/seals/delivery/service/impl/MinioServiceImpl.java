@@ -2,6 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import io.minio.*;
 import io.minio.http.Method;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,6 @@ import java.util.Map;
 @Service
 @Slf4j
 public class MinioServiceImpl implements MinioService {
-    private static final String BUCKET_NAME = "warehouse";
 
     @Autowired
     private MinioClient minioClient;
@@ -22,6 +22,7 @@ public class MinioServiceImpl implements MinioService {
     public void saveImage(MultipartFile file, String bucketName, String fileName) {
         try {
             if (!bucketExists(bucketName)) {
+                log.error("Сохранение нового изображения не выполнено. Бакета с именем %s не существует", bucketName);
                 throw new RuntimeException(String.format("Error occurred during uploading image." +
                         "No such bucket with name: %s", bucketName));
             }
@@ -38,7 +39,7 @@ public class MinioServiceImpl implements MinioService {
                             .contentType(file.getContentType())
                             .build());
 
-            log.info(String.format("Сохранение нового изображения с названием '%s' выполнено успешно.", imageName));
+            log.info(String.format("Сохранение нового изображения с названием '%s' выполнено успешно.", fileName));
         } catch (Exception e) {
             log.error("Сохранение нового изображения не выполнено.");
             throw new RuntimeException("Error occurred during uploading image.");
@@ -60,6 +61,7 @@ public class MinioServiceImpl implements MinioService {
                             .build());
             return url;
         } catch (Exception e) {
+            log.error("Найти изображение с названием %s не удалось.", fileName);
             throw new RuntimeException(String.format("Error has occurred during get image %s", fileName));
         }
     }
@@ -72,7 +74,9 @@ public class MinioServiceImpl implements MinioService {
                             .bucket(bucketName)
                             .object(fileName)
                             .build());
+            log.info("Изображение с названием %s удалено успешно.", fileName);
         } catch (Exception e) {
+            log.error("Удалить изображение с названием %s не удалось.", fileName);
             throw new RuntimeException("Error occurred during deleting image.");
         }
     }

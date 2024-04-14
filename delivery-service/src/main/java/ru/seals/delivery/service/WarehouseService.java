@@ -9,6 +9,6 @@ import ru.seals.delivery.model.Warehouse;
 public interface WarehouseService {
     Page<WarehouseSimpleViewDTO> getAllWarehouse(Pageable pageable);
     Warehouse getById(Long id);
-    void save(MultipartFile multipartFile, WarehouseSimpleViewDTO warehouseSimpleViewDTO);
+    void save(MultipartFile multipartFile, Warehouse warehouse);
     void deleteById(Long id);
 }

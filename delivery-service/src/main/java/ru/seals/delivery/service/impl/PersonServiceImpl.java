@@ -1,11 +1,13 @@
 package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.model.Person;
+import ru.seals.delivery.model.enums.MinioBuckets;
 import ru.seals.delivery.repository.PersonRepository;
 import ru.seals.delivery.service.MinioService;
 import ru.seals.delivery.service.PersonService;
@@ -15,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
@@ -61,6 +64,8 @@ public class PersonServiceImpl implements PersonService {
                     file,
                     newFileName,
                     MinioBuckets.PERSON_BUCKET.getValue());
+        } else {
+            log.error("Возникла ошибка при изменении аватара пользователя. Пользователь с id %d не найден", id);
         }
     }
 }

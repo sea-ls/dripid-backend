@@ -9,4 +9,3 @@ public interface PersonService {
     Person getByKeycloakId(String kcId);
     void changePersonPhoto(Long id, MultipartFile file);
 }
-}

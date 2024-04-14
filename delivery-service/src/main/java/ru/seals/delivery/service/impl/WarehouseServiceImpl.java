@@ -42,11 +42,13 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public void save(MultipartFile multipartFile, WarehouseSimpleViewDTO warehouseSimpleViewDTO) {
-        repository.save(modelMapper.map(warehouseSimpleViewDTO, Warehouse.class));
+    public void save(MultipartFile multipartFile, Warehouse warehouse) {
+        String fileName = UUID.randomUUID().toString();
+        warehouse.setImage(fileName);
+        repository.save(modelMapper.map(warehouse, Warehouse.class));
         minioService.saveImage(
                 multipartFile,
-                String.valueOf(UUID.randomUUID()),
+                warehouse.getImage(),
                 MinioBuckets.WAREHOUSE_BUCKET.getValue());
         log.info(String.format("Сохранение записи в таблице 'warehouse' с ID = %d выполнено успешно", warehouse.getId()));
     }
