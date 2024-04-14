@@ -3,11 +3,14 @@ package ru.seals.delivery.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
+import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.service.PersonService;
 
@@ -20,6 +23,7 @@ import java.math.BigDecimal;
 public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
+
     @GetMapping("authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Получение аутентифицированного пользователя по его Bearer-токену")
@@ -30,5 +34,12 @@ public class PersonController {
                 person.getSaveAddresses(),
                 person.getBalance().getNumber().numberValue(BigDecimal.class),
                 person.getImage());
+    }
+
+    @PostMapping("changePersonPhoto")
+    public void changePersonPhoto(
+            @RequestPart(value = "userId") Long id,
+            @RequestPart(value = "file") MultipartFile file) {
+        personService.changePersonPhoto(id, file);
     }
 }
