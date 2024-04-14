@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.seals.auth.dto.ResetPasswordResponseDTO;
 import ru.seals.auth.dto.UserDTO;
+import ru.seals.auth.model.enums.UserActions;
 import ru.seals.auth.service.KeycloakUserService;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -90,6 +91,7 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
         UserResource userRes = getUsersResource().get(id);
         UserRepresentation userRep = mapUserRep(user, userRes);
         userRes.update(userRep);
+        log.info("User %s updated".formatted(id));
         return userRes.toRepresentation();
     }
 
@@ -101,8 +103,10 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
     @Override
     public ResetPasswordResponseDTO resetPassword() {
         UserResource userRes = getUsersResource().get(getUserId());
-        userRes.executeActionsEmail(Collections.singletonList("UPDATE_PASSWORD"));
-        return new ResetPasswordResponseDTO("Instructions was sent to email");
+        String email = userRes.toRepresentation().getEmail();
+        userRes.executeActionsEmail(Collections.singletonList(UserActions.UPDATE_PASSWORD.name()));
+        log.info("Sent reset pass instructions to %s".formatted(email));
+        return new ResetPasswordResponseDTO("Instructions was sent to %s".formatted(email));
     }
 
     @Override
@@ -110,13 +114,15 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
         UserResource userRes = getUsersResource().get(getUserId());
         UserRepresentation userRep = userRes.toRepresentation();
         if (enabled) {
-            userRep.getRequiredActions().add("CONFIGURE_TOTP");
+            userRep.getRequiredActions().add(UserActions.CONFIGURE_TOTP.name());
+            log.info("Enable 2FA to user %s".formatted(getUserId()));
         } else {
-            userRep.getRequiredActions().remove("CONFIGURE_TOTP");
+            userRep.getRequiredActions().remove(UserActions.CONFIGURE_TOTP.name());
             userRes.credentials().forEach(cred -> {
                 if (cred.getType().equals("otp"))
                     userRes.removeCredential(cred.getId());
             });
+            log.info("Disable 2FA and rm all devices to user %s".formatted(getUserId()));
         }
         userRes.update(userRep);
     }
