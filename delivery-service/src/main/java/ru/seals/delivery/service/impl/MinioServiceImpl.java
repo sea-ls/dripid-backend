@@ -14,6 +14,7 @@ import java.util.Map;
 @Service
 @Slf4j
 public class MinioServiceImpl implements MinioService {
+    private final static Integer EXPIRY_IN_SECOND = 7200; // 7200 секунд = 2 часа.
 
     @Autowired
     private MinioClient minioClient;
@@ -56,7 +57,7 @@ public class MinioServiceImpl implements MinioService {
                             .method(Method.GET)
                             .bucket(bucketName)
                             .object(fileName)
-                            .expiry(2) // TODO: change to ".expiry(2, TimeUnit.HOURS)". reason -> https://programingqa.com/answers/intellij-idea-jdk-21-issue-with-java-util-concurrent-package-timeunit-class-n/
+                            .expiry(EXPIRY_IN_SECOND)
                             .extraQueryParams(reqParams)
                             .build());
             return url;
