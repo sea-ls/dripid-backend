@@ -66,8 +66,10 @@ public class BalanceServiceImpl implements BalanceService {
     private String getKeycloakUserId() {
         return SecurityContextHolder.getContext().getAuthentication().getName();
     }
-    private String getUpdBalLog(Long uId, TransactionType tp,
-                                BigDecimal amount, Money oldBal,
+    private String getUpdBalLog(Long uId,
+                                TransactionType tp,
+                                BigDecimal amount,
+                                Money oldBal,
                                 Money newBal) {
         BigDecimal oldB = oldBal.getNumber().numberValue(BigDecimal.class);
         BigDecimal newB = newBal.getNumber().numberValue(BigDecimal.class);
