@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
+import ru.seals.delivery.service.OrderService;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.service.PersonService;
@@ -23,6 +24,7 @@ import java.math.BigDecimal;
 public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
+    private final OrderService orderService;
 
     @GetMapping("authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -37,9 +39,17 @@ public class PersonController {
     }
 
     @PostMapping("changePersonPhoto")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Изменение фото профиля")
     public void changePersonPhoto(
             @RequestPart(value = "userId") Long id,
             @RequestPart(value = "file") MultipartFile file) {
         personService.changePersonPhoto(id, file);
+    }
+    @GetMapping("order/tracking")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Получение истории доставки заказа по трек-номеру")
+    public String getDeliveryHistory(@RequestParam String trackNumber) {
+        return orderService.getDeliveryHistory(trackNumber);
     }
 }
