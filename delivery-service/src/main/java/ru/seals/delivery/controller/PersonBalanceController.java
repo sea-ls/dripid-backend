@@ -25,7 +25,7 @@ public class PersonBalanceController {
     @Operation(description = "Пользователь сам пополняет баланс")
     public BalanceHistoryDTO depositAuthenticated(@RequestBody UpdateBalanceDTO dto) {
         String kcIdAuth = SecurityContextHolder.getContext().getAuthentication().getName();
-        BalanceHistory bh = balanceService.deposit(kcIdAuth, dto);
+        BalanceHistory bh = balanceService.updateUserBalance(kcIdAuth, dto);
         return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getCheque());
@@ -35,7 +35,7 @@ public class PersonBalanceController {
     @Operation(description = "Пополнение баланса пользователя")
     public BalanceHistoryDTO deposit(@PathVariable String id,
                                      @RequestBody UpdateBalanceDTO dto) {
-        BalanceHistory bh = balanceService.deposit(id, dto);
+        BalanceHistory bh = balanceService.updateUserBalance(id, dto);
         return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getCheque());
@@ -45,7 +45,7 @@ public class PersonBalanceController {
     @Operation(description = "Опустошение баланса пользователя")
     public BalanceHistoryDTO withdraw(@PathVariable String id,
                                       @RequestBody UpdateBalanceDTO dto) {
-        BalanceHistory bh = balanceService.withdraw(id, dto);
+        BalanceHistory bh = balanceService.updateUserBalance(id, dto);
         return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getCheque());

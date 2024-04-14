@@ -1,6 +1,7 @@
 package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,27 +20,13 @@ import java.math.BigDecimal;
 
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
     private final PersonService ps;
     private final BalanceHistoryRepository bhRepo;
-    private Money getMoneyRub(BigDecimal amount) {
-        return Money.of(amount, "RUB");
-    }
-    private String getKeycloakUserId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
-    private Money subtract(Money bal, BigDecimal amount) {
-        Money newBalance = bal.subtract(getMoneyRub(amount));
-        if (newBalance.isNegative()) {
-            throw new NotEnoughMoneyException("Not enough money");
-        }
-        return newBalance;
-    }
-    private Money add(Money bal, BigDecimal amount) {
-        return bal.add(getMoneyRub(amount));
-    }
-    private BalanceHistory updateUserBalance(String kcId, UpdateBalanceDTO dto) {
+    @Override
+    public BalanceHistory updateUserBalance(String kcId, UpdateBalanceDTO dto) {
         Person person = ps.getByKeycloakId(kcId);
         Money oldBalance = person.getBalance();
         Money newBalance = null;
@@ -51,6 +38,10 @@ public class BalanceServiceImpl implements BalanceService {
 
         person.setBalance(newBalance);
         ps.save(person);
+        log.info(getUpdBalLog(person.getId(),
+                dto.getType(),
+                dto.getAmount(),
+                oldBalance, newBalance));
 
         return bhRepo.saveAndFlush(new BalanceHistory(dto.getType(),
                 person,
@@ -59,14 +50,33 @@ public class BalanceServiceImpl implements BalanceService {
                 newBalance,
                 dto.getCheque()));
     }
-
-    @Override
-    public BalanceHistory withdraw(String kcId, UpdateBalanceDTO dto) {
-        return updateUserBalance(kcId, dto);
+    private Money subtract(Money bal, BigDecimal amount) {
+        Money newBalance = bal.subtract(getMoneyRub(amount));
+        if (newBalance.isNegative()) {
+            throw new NotEnoughMoneyException("Not enough money");
+        }
+        return newBalance;
     }
-
-    @Override
-    public BalanceHistory deposit(String kcId, UpdateBalanceDTO dto) {
-        return updateUserBalance(kcId, dto);
+    private Money add(Money bal, BigDecimal amount) {
+        return bal.add(getMoneyRub(amount));
+    }
+    private Money getMoneyRub(BigDecimal amount) {
+        return Money.of(amount, "RUB");
+    }
+    private String getKeycloakUserId() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+    private String getUpdBalLog(Long uId, TransactionType tp,
+                                BigDecimal amount, Money oldBal,
+                                Money newBal) {
+        BigDecimal oldB = oldBal.getNumber().numberValue(BigDecimal.class);
+        BigDecimal newB = newBal.getNumber().numberValue(BigDecimal.class);
+        return """
+            Обновление баланса пользователя: %d
+            Операция: %s
+            Сумма: %f
+            Баланс: %f
+            Новый баланас: %f
+            """.formatted(uId, tp, amount, oldB, newB);
     }
 }

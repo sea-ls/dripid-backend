@@ -30,12 +30,6 @@ public class MinioController {
         return minioService.getImage(bucketName, fileName);
     }
 
-    @GetMapping(path = "/download/{fileName}")
-    @Operation(description = "Получение изображения по его названию")
-    public String uploadFile(@PathVariable String fileName) {
-        return minioService.getImage(fileName);
-    }
-
     @DeleteMapping("/delete")
     public void deleteFile(@RequestParam("bucketName") String bucketName,
                            @RequestParam("fileName") String fileName) {
