@@ -16,4 +16,5 @@ jobs:
       - self-hosted
     steps:
       - uses: actions/checkout@v3
+      - run: pwd
       - run: docker run -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase update --url=jdbc:postgresql://212.233.73.223:5433/dripId --changelog-file=./migrations/delivery-service/master.xml --username=postgres --password=postgres
