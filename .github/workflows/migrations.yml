@@ -1,0 +1,24 @@
+name: Migration develop
+
+on:
+  workflow_dispatch:
+    branches:
+      - "develop"
+  push:
+    paths:
+      - 'migrations/**'
+env:
+  CI_COMMIT_BRANCH: "develop"
+
+jobs:
+  deploy:
+    runs-on:
+      - develop
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          docker run -v /.migrations/delivery-service:/liquibase/changelog liquibase/liquibase 
+          --url=jdbc:postgresql://212.233.73.223:5433/dripId
+          --changelog-file=master.xml
+          --username=postgres
+          --password=postgres
