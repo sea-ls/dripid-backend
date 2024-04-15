@@ -1,20 +1,22 @@
 --liquibase formatted sql
 
-CREATE OR REPLACE FUNCTION generate_random_unique_value() RETURNS VARCHAR AS $$
-DECLARE
-    random_number_first VARCHAR;
-    random_number_second VARCHAR;
-    new_value VARCHAR;
-BEGIN
-    LOOP
-        random_number_first := lpad(CAST(FLOOR(random() * 10000) AS VARCHAR), 4, '0');
-        random_number_second := lpad(CAST(FLOOR(random() * 10000) AS VARCHAR), 4, '0');
-        new_value := 'D' || random_number_first || 'l' || random_number_second;
-        EXIT WHEN NOT EXISTS (SELECT 1 FROM orders WHERE track_number_internal = new_value);
-    END LOOP;
-    RETURN new_value;
-END;
-$$ LANGUAGE plpgsql;
+--changeset sea-ls:create_function
+CREATE OR REPLACE FUNCTION generate_random_unique_value() RETURNS VARCHAR AS '
+    DECLARE
+        random_number_first VARCHAR;
+        random_number_second VARCHAR;
+        new_value VARCHAR;
+    BEGIN
+        LOOP
+            random_number_first := lpad(CAST(FLOOR(random() * 10000) AS VARCHAR), 4, ''0'');
+            random_number_second := lpad(CAST(FLOOR(random() * 10000) AS VARCHAR), 4, ''0'');
+            new_value := ''D'' || random_number_first || ''l'' || random_number_second;
+            EXIT WHEN NOT EXISTS (SELECT 1 FROM orders WHERE track_number_internal = new_value);
+        END LOOP;
+        RETURN new_value;
+    END;
+' LANGUAGE plpgsql;
+--rollback DROP FUNCTION generate_random_unique_value();
 
 --changeset sea-ls:id1
 CREATE TABLE IF NOT EXISTS "warehouse"(
@@ -57,7 +59,7 @@ CREATE TABLE IF NOT EXISTS "save_address"(
     "city" VARCHAR(255) NOT NULL,
     "address" VARCHAR(255) NOT NULL,
     "person_id" BIGINT NOT NULL,
-    CONSTRAINT FK FOREIGN KEY (person_id) REFERENCES person(id)
+    CONSTRAINT FK_person_id FOREIGN KEY (person_id) REFERENCES person(id)
 );
 --rollback drop table save_address;
 
@@ -69,9 +71,9 @@ CREATE TABLE IF NOT EXISTS "balance_history"(
     "old_balance" DECIMAL(8, 2) NOT NULL,
     "new_balance" DECIMAL(8, 2) NOT NULL,
     "admin_id" BIGINT NOT NULL,
-    "person_id" BIGINT NOT NULL,
-    CONSTRAINT FK FOREIGN KEY (admin_id) REFERENCES person(id),
-    CONSTRAINT FK FOREIGN KEY (person_id) REFERENCES person(id)
+    "user_id" BIGINT NOT NULL,
+    CONSTRAINT FK_admin_id_balance_history FOREIGN KEY (admin_id) REFERENCES person(id),
+    CONSTRAINT FK_user_id_balance_history FOREIGN KEY (user_id) REFERENCES person(id)
 );
 --rollback drop table balance_history;
 
@@ -87,8 +89,8 @@ CREATE TABLE IF NOT EXISTS "orders"(
     "warehouse_id" BIGINT NOT NULL,
     "delivery_stage_type" VARCHAR(255) DEFAULT NULL,
     "delivery_history" jsonb DEFAULT null,
-    CONSTRAINT FK FOREIGN KEY (person_id) REFERENCES person(id),
-    CONSTRAINT FK FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT FK_person_id_orders FOREIGN KEY (person_id) REFERENCES person(id),
+    CONSTRAINT FK_warehouse_id_orders FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
 );
 --rollback drop table orders;
 
@@ -100,7 +102,7 @@ CREATE TABLE IF NOT EXISTS "product"(
     "price" DECIMAL(8, 2) NOT NULL,
     "weight" DECIMAL(8, 2) NOT NULL,
     "order_id" BIGINT NOT NULL,
-    CONSTRAINT FK FOREIGN KEY (order_id) REFERENCES orders(id)
+    CONSTRAINT FK_order_id_product FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 --rollback drop table product;
 
@@ -109,20 +111,20 @@ CREATE TABLE IF NOT EXISTS "default_message"(
     "id" BIGSERIAL PRIMARY KEY,
     "message_type_id" BIGINT NOT NULL,
     "message" VARCHAR(255) NOT NULL,
-    CONSTRAINT FK FOREIGN KEY (message_type_id) REFERENCES message_type(id)
+    CONSTRAINT FK_message_type_id_default_message FOREIGN KEY (message_type_id) REFERENCES message_type(id)
 );
 --rollback drop table default_message;
 
 --changeset sea-ls:id9
 CREATE TABLE IF NOT EXISTS "message"(
     "id" BIGSERIAL PRIMARY KEY,
-    "person_id" BIGINT NOT NULL,
+    "sender_id" BIGINT NOT NULL,
     "order_id" BIGINT NOT NULL,
     "content" VARCHAR(255) NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
     "status" VARCHAR(255) NOT NULL,
     "event_type" VARCHAR(255) NOT NULL,
-    CONSTRAINT FK FOREIGN KEY (person_id) REFERENCES person(id),
-    CONSTRAINT FK FOREIGN KEY (order_id) REFERENCES orders(id)
+    CONSTRAINT FK_sender_id_message FOREIGN KEY (sender_id) REFERENCES person(id),
+    CONSTRAINT FK_order_id_message FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 --rollback drop table message;
