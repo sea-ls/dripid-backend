@@ -17,5 +17,6 @@ public class Product {
     private String url;
     private String description;
     private Money price;
+    @Column(columnDefinition = "DECIMAL(8, 2)")
     private Long weight;
 }
