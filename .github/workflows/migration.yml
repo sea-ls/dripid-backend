@@ -17,4 +17,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: pwd
-      - run: docker run -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase update --url=jdbc:postgresql://212.233.73.223:5433/dripId --searchPath="./migrations/delivery-service" --changelog-file=master.xml --username=postgres --password=postgres
+      - run: docker run -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase update --url=jdbc:postgresql://212.233.73.223:5433/dripId  --changelog-file=master.xml --searchpath="./migrations/delivery-service" --username=postgres --password=postgres
