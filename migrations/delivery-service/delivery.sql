@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS "warehouse"(
 );
 --rollback drop table warehouse;
 
-
 --changeset sea-ls:id2
 CREATE TABLE IF NOT EXISTS "message_type"(
     "id" BIGSERIAL PRIMARY KEY,
