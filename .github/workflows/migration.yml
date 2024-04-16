@@ -4,6 +4,12 @@ on:
   workflow_dispatch:
     branches:
       - "develop"
+    "inputs":
+      "build":
+        "description": "Who to build"
+        "options":
+          - "delivery-service"
+        "type": "choice"
   push:
     paths:
       - 'migrations/**'
@@ -11,9 +17,30 @@ env:
   CI_COMMIT_BRANCH: "develop"
 
 jobs:
-  deploy:
-    runs-on:
-      - self-hosted
+  "changes":
+    "if": "${{ github.event.inputs.build == null}}"
+    "outputs":
+      "delivery-service": "${{ steps.filter.outputs.delivery-service }}"
+    "permissions":
+      "pull-requests": "read"
+    "runs-on":
+      - "self-hosted"
+    "steps":
+      - "uses": "actions/checkout@v3"
+      - "id": "filter"
+        "uses": "dorny/paths-filter@v2"
+        "with":
+          "base": "${{ github.event.ref }}"
+          "filters": |
+            "delivery-service":
+            - "./migrations/delivery-service/**"
+          "ref": "${{ github.event.ref }}"
+  "migration-delivery-service":
+    "if": "${{ github.event.inputs.build == 'delivery-service' || needs.changes.outputs.delivery-service == 'true' && always() }}"
+    "needs":
+      - "changes"
+    "runs-on":
+      - "self-hosted"
     steps:
       - uses: actions/checkout@v3
-      - run: docker run -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase --url=jdbc:postgresql://212.233.73.223:5433/dripId --changelog-file=master.xml --username=postgres --password=postgres
+      - run: docker run -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase --search-path=/liquibase/changelog update --url=jdbc:postgresql://212.233.73.223:5433/dripId  --username=postgres --password=postgres --changelog-file=master.xml
