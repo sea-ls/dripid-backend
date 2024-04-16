@@ -37,7 +37,8 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html/**", "/api-docs/**",
                                 "/api/auth-service/v3/api-docs",
-                                "/api/auth-service/v3/api-docs/**").permitAll()
+                                "/api/auth-service/v3/api-docs/**",
+                                "/auth-service/actuator/**").permitAll()
                         .anyRequest().hasAuthority("SCOPE_auth.read")
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
