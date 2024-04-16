@@ -114,6 +114,8 @@
   "push":
     "paths-ignore":
       - ".github/**"
+      - "docker/**"
+      - "migrations/**"
   "workflow_dispatch":
     "branches":
       - "develop"
