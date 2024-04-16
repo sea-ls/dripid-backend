@@ -47,7 +47,10 @@ public class SecurityConfig {
                                 "/swagger-ui.html/**", "/api-docs/**",
                                 "/api/delivery-service/v3/api-docs",
                                 "/api/delivery-service/v3/api-docs/**",
-                                "/delivery-service/actuator/**"
+                                "/delivery-service/actuator/**",
+                                "/delivery-service/actuator",
+                                "/actuator/**",
+                                "/actuator"
                                 ).permitAll()
                         .anyRequest()
                         .hasAuthority("SCOPE_delivery.read"))
