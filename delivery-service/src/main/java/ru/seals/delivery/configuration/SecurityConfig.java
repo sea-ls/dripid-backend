@@ -38,7 +38,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
         return http
                 .authorizeHttpRequests(customizer -> customizer
-                        /*.requestMatchers("/api/delivery-service/user/**",
+                        .requestMatchers("/api/delivery-service/user/**",
                                 "/api/delivery-service/user/tracking",
                                 "/api/delivery-service/user/tracking/**",
                                 "/v3/api-docs/**",
@@ -47,13 +47,11 @@ public class SecurityConfig {
                                 "/swagger-ui.html/**", "/api-docs/**",
                                 "/api/delivery-service/v3/api-docs",
                                 "/api/delivery-service/v3/api-docs/**",
-                                "/delivery-service/actuator/**",
-                                "/delivery-service/actuator",
                                 "/actuator/**",
                                 "/actuator"
-                                ).permitAll()*/
-                        .anyRequest().permitAll())
-                        //.hasAuthority("SCOPE_delivery.read"))
+                                ).permitAll()
+                        .anyRequest()
+                        .hasAuthority("SCOPE_delivery.read"))
                 .oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> jwt
                                 .jwtAuthenticationConverter(jwtAuthConverter)
