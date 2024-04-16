@@ -192,7 +192,7 @@ local jsonPipeline =
       #    ],
       #},
       push: {
-          "paths-ignore": [ '.github/**']
+          "paths-ignore": [ '.github/**', 'docker/**', 'migrations/**']
       }
   },
     env: {
