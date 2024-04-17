@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.seals.auth.dto.ResetPasswordResponseDTO;
 import ru.seals.auth.dto.UserDTO;
 import ru.seals.auth.service.KeycloakUserService;
+import ru.seals.auth.util.Convertor;
 
 @RestController
 @RequestMapping("api/auth-service/user")
@@ -15,19 +16,20 @@ import ru.seals.auth.service.KeycloakUserService;
 @CrossOrigin
 public class UserController {
     private final KeycloakUserService userService;
+    private final Convertor convertor;
 
     @GetMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation(description = "Получение юзера по ID")
     public UserDTO getById(@PathVariable String id) {
-        return userService.mapUser(userService.getById(id));
+        return convertor.mapUser(userService.getById(id));
     }
 
     @GetMapping("authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Получение аутентифицированного пользователя")
     public UserDTO getAuthenticatedUser() {
-        return userService.mapUser(userService.getAuthenticatedUser());
+        return convertor.mapUser(userService.getAuthenticatedUser());
     }
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")

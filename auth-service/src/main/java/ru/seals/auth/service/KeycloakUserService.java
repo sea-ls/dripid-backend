@@ -11,5 +11,4 @@ public interface KeycloakUserService {
     UserRepresentation updateAuthenticatedUser(UserDTO user);
     ResetPasswordResponseDTO resetPassword();
     void set2FA(boolean enabled);
-    UserDTO mapUser(UserRepresentation userRep);
 }

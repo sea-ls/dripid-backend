@@ -2,6 +2,7 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,6 +12,7 @@ import ru.seals.delivery.dto.BalanceHistoryDTO;
 import ru.seals.delivery.dto.UpdateBalanceDTO;
 import ru.seals.delivery.model.BalanceHistory;
 import ru.seals.delivery.service.BalanceService;
+import ru.seals.delivery.util.Convertor;
 
 import java.math.BigDecimal;
 
@@ -20,15 +22,15 @@ import java.math.BigDecimal;
 @CrossOrigin
 public class PersonBalanceController {
     private final BalanceService balanceService;
+    private final Convertor convertor;
+
     @PostMapping("deposit/authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Пользователь сам пополняет баланс")
     public BalanceHistoryDTO depositAuthenticated(@RequestBody UpdateBalanceDTO dto) {
         String kcIdAuth = SecurityContextHolder.getContext().getAuthentication().getName();
         BalanceHistory bh = balanceService.updateUserBalance(kcIdAuth, dto);
-        return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getCheque());
+        return convertor.mapBHIntoDTO(bh);
     }
     @PostMapping("deposit/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -36,9 +38,7 @@ public class PersonBalanceController {
     public BalanceHistoryDTO deposit(@PathVariable String id,
                                      @RequestBody UpdateBalanceDTO dto) {
         BalanceHistory bh = balanceService.updateUserBalance(id, dto);
-        return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getCheque());
+        return convertor.mapBHIntoDTO(bh);
     }
     @PostMapping("withdraw/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -46,8 +46,6 @@ public class PersonBalanceController {
     public BalanceHistoryDTO withdraw(@PathVariable String id,
                                       @RequestBody UpdateBalanceDTO dto) {
         BalanceHistory bh = balanceService.updateUserBalance(id, dto);
-        return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getCheque());
+        return convertor.mapBHIntoDTO(bh);
     }
 }
