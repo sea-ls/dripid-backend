@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.model.enums.MinioBuckets;
 import ru.seals.delivery.repository.PersonRepository;
+import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.service.MinioService;
 import ru.seals.delivery.service.PersonService;
 
@@ -22,11 +23,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PersonServiceImpl implements PersonService {
     private final MinioService minioService;
+    private final KeycloakService keycloakService;
     private final PersonRepository personRepository;
-
-    private String getKeycloakUserId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
 
     @Override
     public Person save(Person person) {
@@ -35,7 +33,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person getAuthenticated() {
-        return getByKeycloakId(getKeycloakUserId());
+        return getByKeycloakId(keycloakService.getKeycloakUserId());
     }
 
     @Override

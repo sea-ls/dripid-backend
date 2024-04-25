@@ -14,6 +14,7 @@ import ru.seals.delivery.model.Person;
 import ru.seals.delivery.model.enums.TransactionType;
 import ru.seals.delivery.repository.BalanceHistoryRepository;
 import ru.seals.delivery.service.BalanceService;
+import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.service.PersonService;
 
 import java.math.BigDecimal;
@@ -24,6 +25,7 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class BalanceServiceImpl implements BalanceService {
     private final PersonService ps;
+    private final KeycloakService keycloakService;
     private final BalanceHistoryRepository bhRepo;
     @Override
     public BalanceHistory updateUserBalance(String kcId, UpdateBalanceDTO dto) {
@@ -45,7 +47,7 @@ public class BalanceServiceImpl implements BalanceService {
 
         return bhRepo.saveAndFlush(new BalanceHistory(dto.getType(),
                 person,
-                kcId.equals(getKeycloakUserId()) ? null : ps.getAuthenticated(),
+                kcId.equals(keycloakService.getKeycloakUserId()) ? null : ps.getAuthenticated(),
                 oldBalance,
                 newBalance,
                 dto.getCheque()));
@@ -63,9 +65,7 @@ public class BalanceServiceImpl implements BalanceService {
     private Money getMoneyRub(BigDecimal amount) {
         return Money.of(amount, "RUB");
     }
-    private String getKeycloakUserId() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
-    }
+
     private String getUpdBalLog(Long uId,
                                 TransactionType tp,
                                 BigDecimal amount,

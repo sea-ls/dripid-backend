@@ -11,6 +11,7 @@ import ru.seals.delivery.dto.BalanceHistoryDTO;
 import ru.seals.delivery.dto.UpdateBalanceDTO;
 import ru.seals.delivery.model.BalanceHistory;
 import ru.seals.delivery.service.BalanceService;
+import ru.seals.delivery.service.KeycloakService;
 
 import java.math.BigDecimal;
 
@@ -20,11 +21,12 @@ import java.math.BigDecimal;
 @CrossOrigin
 public class PersonBalanceController {
     private final BalanceService balanceService;
+    private final KeycloakService keycloakService;
     @PostMapping("deposit/authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Пользователь сам пополняет баланс")
     public BalanceHistoryDTO depositAuthenticated(@RequestBody UpdateBalanceDTO dto) {
-        String kcIdAuth = SecurityContextHolder.getContext().getAuthentication().getName();
+        String kcIdAuth = keycloakService.getKeycloakUserId();
         BalanceHistory bh = balanceService.updateUserBalance(kcIdAuth, dto);
         return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
