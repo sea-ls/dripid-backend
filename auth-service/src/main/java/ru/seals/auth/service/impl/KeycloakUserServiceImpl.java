@@ -6,11 +6,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
-import org.keycloak.common.util.CollectionUtil;
-import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.seals.auth.dto.ResetPasswordResponseDTO;
@@ -33,26 +29,6 @@ public class KeycloakUserServiceImpl implements KeycloakUserService {
     private UsersResource getUsersResource() {
         RealmResource realm = keycloak.realm(realmName);
         return realm.users();
-    }
-
-    private List<UserDTO> mapUsers(List<UserRepresentation> userRepresentations) {
-        List<UserDTO> users = new ArrayList<>();
-        if(CollectionUtil.isNotEmpty(userRepresentations)) {
-            userRepresentations.forEach(userRep -> {
-                users.add(mapUser(userRep));
-            });
-        }
-        return users;
-    }
-
-    @Override
-    public UserDTO mapUser(UserRepresentation userRep) {
-        UserDTO user = new UserDTO();
-        user.setEmail(userRep.getEmail());
-        user.setFirstName(userRep.getFirstName());
-        user.setLastName(userRep.getLastName());
-        user.setPhone(userRep.getAttributes().get(keycloakPhoneName).get(0));
-        return user;
     }
 
     private UserRepresentation mapUserRep(UserDTO user, UserResource userRes) {

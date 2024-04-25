@@ -13,7 +13,6 @@ import ru.seals.delivery.dto.UserDTO;
 import ru.seals.delivery.service.OrderService;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.model.Person;
-import ru.seals.delivery.service.PersonService;
 
 import java.math.BigDecimal;
 
