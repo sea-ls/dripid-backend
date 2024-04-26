@@ -25,12 +25,12 @@ public class Order {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private OrderType type;
+    private OrderType orderType;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name = "order_id")
     private List<Product> products = new ArrayList<>();
 

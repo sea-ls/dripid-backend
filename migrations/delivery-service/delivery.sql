@@ -28,9 +28,9 @@ CREATE TABLE IF NOT EXISTS "warehouse"(
     "region" VARCHAR(255) NOT NULL,
     "country" VARCHAR(255) NOT NULL,
     "phone_number" VARCHAR(255) NOT NULL,
-    "email" VARCHAR(255) NOT NULL,
+    "email" VARCHAR(255),
     "work_schedule" VARCHAR(255) NOT NULL,
-    "image" VARCHAR(255) NOT NULL
+    "image" VARCHAR(255)
 );
 --rollback drop table warehouse;
 
@@ -79,10 +79,10 @@ CREATE TABLE IF NOT EXISTS "balance_history"(
 --changeset sea-ls:id6
 CREATE TABLE IF NOT EXISTS "orders"(
     "id" BIGSERIAL PRIMARY KEY,
-    "type" VARCHAR(255) NOT NULL,
+    "order_type" VARCHAR(255) NOT NULL,
     "order_status" VARCHAR(255) NOT NULL,
     "person_id" BIGINT NOT NULL,
-    "track_number_external" VARCHAR(255) NOT NULL,
+    "track_number_external" VARCHAR(255),
     "track_number_internal" VARCHAR(255) DEFAULT generate_random_unique_value(),
     "address" VARCHAR(255) NOT NULL,
     "warehouse_id" BIGINT NOT NULL,
@@ -127,3 +127,28 @@ CREATE TABLE IF NOT EXISTS "message"(
     CONSTRAINT FK_order_id_message FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 --rollback drop table message;
+
+
+ALTER TABLE balance_history
+    ADD CONSTRAINT CHECK_transaction_type
+        CHECK (transaction_type IN ('DEPOSIT', 'WITHDRAW'));
+
+ALTER TABLE orders
+    ADD CONSTRAINT CHECK_order_type
+        CHECK (order_type IN ('TEST'));
+
+ALTER TABLE orders
+    ADD CONSTRAINT CHECK_order_status
+        CHECK (order_status IN ('TEST'));
+
+ALTER TABLE orders
+    ADD CONSTRAINT CHECK_delivery_stage_type
+        CHECK (delivery_stage_type IN ('TEST'));
+
+ALTER TABLE message
+    ADD CONSTRAINT CHECK_event_type
+        CHECK (event_type IN ('CHAT', 'JOIN', 'LEAVE'));
+
+ALTER TABLE message
+    ADD CONSTRAINT CHECK_status
+        CHECK (status IN ('RECEIVED', 'DELIVERED'));
