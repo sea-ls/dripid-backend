@@ -128,27 +128,32 @@ CREATE TABLE IF NOT EXISTS "message"(
 );
 --rollback drop table message;
 
-
-/*ALTER TABLE balance_history
+ALTER TABLE balance_history
+    DROP CONSTRAINT IF EXISTS CHECK_transaction_type,
     ADD CONSTRAINT CHECK_transaction_type
         CHECK (transaction_type IN ('DEPOSIT', 'WITHDRAW'));
 
 ALTER TABLE orders
+    DROP CONSTRAINT IF EXISTS CHECK_order_type,
     ADD CONSTRAINT CHECK_order_type
         CHECK (order_type IN ('TEST'));
 
 ALTER TABLE orders
+    DROP CONSTRAINT IF EXISTS CHECK_order_status,
     ADD CONSTRAINT CHECK_order_status
         CHECK (order_status IN ('TEST'));
 
 ALTER TABLE orders
+    DROP CONSTRAINT IF EXISTS CHECK_delivery_stage_type,
     ADD CONSTRAINT CHECK_delivery_stage_type
         CHECK (delivery_stage_type IN ('TEST'));
 
 ALTER TABLE message
+    DROP CONSTRAINT IF EXISTS CHECK_event_type,
     ADD CONSTRAINT CHECK_event_type
         CHECK (event_type IN ('CHAT', 'JOIN', 'LEAVE'));
 
 ALTER TABLE message
+    DROP CONSTRAINT IF EXISTS CHECK_status,
     ADD CONSTRAINT CHECK_status
-        CHECK (status IN ('RECEIVED', 'DELIVERED'));*/
+        CHECK (status IN ('RECEIVED', 'DELIVERED'));
