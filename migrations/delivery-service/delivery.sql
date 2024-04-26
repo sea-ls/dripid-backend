@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS "message"(
 --rollback drop table message;
 
 
-ALTER TABLE balance_history
+/*ALTER TABLE balance_history
     ADD CONSTRAINT CHECK_transaction_type
         CHECK (transaction_type IN ('DEPOSIT', 'WITHDRAW'));
 
@@ -151,4 +151,4 @@ ALTER TABLE message
 
 ALTER TABLE message
     ADD CONSTRAINT CHECK_status
-        CHECK (status IN ('RECEIVED', 'DELIVERED'));
+        CHECK (status IN ('RECEIVED', 'DELIVERED'));*/
