@@ -6,9 +6,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: "dripId"
-      POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_USER_FILE: /run/secrets/db-username-secrets
+      POSTGRES_PASSWORD_FILE: /run/secrets/db-password-secrets
       PGDATA: "/var/lib/postgresql/data/pgdata"
+    secrets:
+      - db-username-secrets
+      - db-password-secrets
     ports:
       - "5433:5432"
     volumes:
@@ -45,6 +48,9 @@ services:
     environment:
       <<: *environment
       VIRTUAL_HOST: "delivery-service"
+    secrets:
+      - db-username-secrets
+      - db-password-secrets
     ports:
       - "5001:5000"
     depends_on:
@@ -62,4 +68,10 @@ volumes:
 networks:
   default:
     name: dripid-network
+    external: true
+
+secrets:
+  db-username-secrets:
+    external: true
+  db-password-secrets:
     external: true
