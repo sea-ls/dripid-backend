@@ -7,10 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.seals.delivery.model.enums.DeliveryStageType;
 import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.model.enums.OrderType;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +31,8 @@ public class Order {
 
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
+    @UpdateTimestamp
+    private LocalDateTime lastUpdate;
 
     @OneToMany
     @JoinColumn(name = "order_id")

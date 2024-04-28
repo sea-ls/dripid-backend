@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS "orders"(
     "id" BIGSERIAL PRIMARY KEY,
     "order_type" VARCHAR(255) NOT NULL,
     "order_status" VARCHAR(255) NOT NULL,
+    "last_update" TIMESTAMP NOT NULL,
     "person_id" BIGINT NOT NULL,
     "track_number_external" VARCHAR(255),
     "track_number_internal" VARCHAR(255) DEFAULT generate_random_unique_value(),
