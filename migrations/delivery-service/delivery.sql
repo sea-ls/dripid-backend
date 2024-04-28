@@ -142,7 +142,7 @@ ALTER TABLE orders
 ALTER TABLE orders
     DROP CONSTRAINT IF EXISTS CHECK_order_status,
     ADD CONSTRAINT CHECK_order_status
-        CHECK (order_status IN ('TEST'));
+        CHECK (order_status IN ('TEST', 'UPD_TEST'));
 
 ALTER TABLE orders
     DROP CONSTRAINT IF EXISTS CHECK_delivery_stage_type,
