@@ -1,6 +1,8 @@
- spring:
+spring:
   application:
     name: delivery-service
+  config:
+    import: optional:configtree:/run/secrets/
   cloud:
     config:
       uri: http://config-service:8888
