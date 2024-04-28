@@ -1,4 +1,0 @@
-minio:
-  endpoint: http://212.233.73.223:9000
-  accessKey: dripidMinio # login
-  secretKey: ch3Wuetm # password

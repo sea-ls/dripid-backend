@@ -6,12 +6,12 @@ services:
     restart: always
     environment:
       POSTGRES_DB: "dripId"
-      POSTGRES_USER_FILE: /run/secrets/db-username-secrets
-      POSTGRES_PASSWORD_FILE: /run/secrets/db-password-secrets
+      POSTGRES_USER_FILE: /run/secrets/delivery-postgres-username
+      POSTGRES_PASSWORD_FILE: /run/secrets/delivery-postgres-password
       PGDATA: "/var/lib/postgresql/data/pgdata"
     secrets:
-      - db-username-secrets
-      - db-password-secrets
+      - delivery-postgres-username
+      - delivery-postgres-password
     ports:
       - "5433:5432"
     volumes:
@@ -25,8 +25,11 @@ services:
     image: ${DOCKER_REPO_URL}${LOCAL_SLASH}docker/minio-release_2024-04-06t05-26-02z:latest
     command: 'server /data --console-address ":9090"'
     environment:
-      - MINIO_ACCESS_KEY=dripidMinio # login
-      - MINIO_SECRET_KEY=ch3Wuetm # password
+       MINIO_ACCESS_KEY_FILE: /run/secrets/delivery-minio-access-key # login
+       MINIO_SECRET_KEY_FILE: /run/secrets/delivery-minio-secret-key # password
+    secrets:
+      - delivery-minio-access-key
+      - delivery-minio-secret-key
     volumes:
       - delivery-minio-config-volume:/root/.minio
       - delivery-minio-data-volume:/data
@@ -49,8 +52,10 @@ services:
       <<: *environment
       VIRTUAL_HOST: "delivery-service"
     secrets:
-      - db-username-secrets
-      - db-password-secrets
+      - delivery-postgres-username
+      - delivery-postgres-password
+      - delivery-minio-access-key
+      - delivery-minio-secret-key
     ports:
       - "5001:5000"
     depends_on:
@@ -65,13 +70,17 @@ volumes:
   delivery-pgdata-volume:
     name: docker_delivery-pgdata
 
+secrets:
+  delivery-postgres-username:
+    external: true
+  delivery-postgres-password:
+    external: true
+  delivery-minio-access-key:
+    external: true
+  delivery-minio-secret-key:
+    external: true
+
 networks:
   default:
     name: dripid-network
-    external: true
-
-secrets:
-  db-username-secrets:
-    external: true
-  db-password-secrets:
     external: true
