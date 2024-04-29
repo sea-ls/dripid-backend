@@ -16,7 +16,7 @@ public class MinioController {
     private MinioService minioService;
 
     @PostMapping("/upload")
-    @Operation(description = "Загрузка новго изображения")
+    @Operation(description = "Загрузка нового изображения")
     public void uploadFile(
             @RequestPart("file") MultipartFile file,
             @RequestPart("bucketName") String bucketName,
@@ -25,12 +25,14 @@ public class MinioController {
     }
 
     @GetMapping("/get")
+    @Operation(description = "Получение изображения")
     public String getFile(@RequestParam("bucketName") String bucketName,
                           @RequestParam("fileName") String fileName) {
         return minioService.getImage(bucketName, fileName);
     }
 
     @DeleteMapping("/delete")
+    @Operation(description = "Удаление изображения")
     public void deleteFile(@RequestParam("bucketName") String bucketName,
                            @RequestParam("fileName") String fileName) {
         minioService.deleteImage(bucketName, fileName);

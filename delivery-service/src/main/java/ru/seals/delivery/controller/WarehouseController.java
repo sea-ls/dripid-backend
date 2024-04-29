@@ -2,10 +2,12 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.seals.delivery.dto.WarehouseSaveDTO;
 import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
 import ru.seals.delivery.model.Warehouse;
 import ru.seals.delivery.service.WarehouseService;
@@ -16,6 +18,7 @@ import ru.seals.delivery.service.WarehouseService;
 @CrossOrigin
 public class WarehouseController {
     private final WarehouseService warehouseService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/warehouses/{page}")
     @Operation(description = "Получение страницы со складами")
@@ -32,6 +35,14 @@ public class WarehouseController {
     @PostMapping("/warehouse/save")
     @Operation(description = "Сохранение склада")
     public void saveWarehouse(
+            @RequestPart(value = "file") MultipartFile file,
+            @RequestPart(value = "json") WarehouseSaveDTO warehouse) {
+        warehouseService.save(file, modelMapper.map(warehouse, Warehouse.class));
+    }
+
+    @PutMapping("/warehouse/update")
+    @Operation(description = "Изменение склада")
+    public void updateWarehouse(
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") Warehouse warehouse) {
         warehouseService.save(file, warehouse);

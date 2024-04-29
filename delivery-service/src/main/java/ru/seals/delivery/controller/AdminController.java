@@ -2,8 +2,12 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Description;
 import org.springframework.web.bind.annotation.*;
+import ru.seals.delivery.dto.DefaultMessageSaveDTO;
+import ru.seals.delivery.dto.MessageTypeSaveDTO;
+import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.chat.MessageType;
@@ -18,6 +22,7 @@ import java.util.List;
 @CrossOrigin
 public class AdminController {
     private final AdminService adminService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/default_message/type")
     @Operation(description = "Получение всех шаблонных сообщений по типу. Пример типа - приветствие")
@@ -39,7 +44,13 @@ public class AdminController {
 
     @PostMapping("/default_message/save")
     @Operation(description = "Сохранение шаблонного сообщения")
-    public void saveDefaultMessage(@RequestBody DefaultMessage defaultMessage) {
+    public void saveDefaultMessage(@RequestBody DefaultMessageSaveDTO defaultMessage) {
+        adminService.saveDefaultMessage(modelMapper.map(defaultMessage, DefaultMessage.class));
+    }
+
+    @PutMapping("/default_message/update")
+    @Operation(description = "Изменение шаблонного сообщения")
+    public void updateDefaultMessage(@RequestBody DefaultMessage defaultMessage) {
         adminService.saveDefaultMessage(defaultMessage);
     }
 
@@ -57,7 +68,13 @@ public class AdminController {
 
     @PostMapping("/message_type/save")
     @Operation(description = "Сохранение типа по ID")
-    public void saveMessageType(@RequestBody MessageType messageType) {
+    public void saveMessageType(@RequestBody MessageTypeSaveDTO messageType) {
+        adminService.saveMessageType(modelMapper.map(messageType, MessageType.class));
+    }
+
+    @PutMapping("/message_type/update")
+    @Operation(description = "Изменение типа по ID")
+    public void updateMessageType(@RequestBody MessageType messageType) {
         adminService.saveMessageType(messageType);
     }
 
@@ -69,7 +86,13 @@ public class AdminController {
 
     @PostMapping("/orders/save")
     @Operation(description = "Сохранение заказа")
-    public void saveOrder(@RequestBody Order order) {
+    public void saveOrder(@RequestBody OrderSaveDTO order) {
+        adminService.saveOrder(modelMapper.map(order, Order.class));
+    }
+
+    @PutMapping("/orders/update")
+    @Operation(description = "Изменение заказа")
+    public void updateOrder(@RequestBody Order order) {
         adminService.saveOrder(order);
     }
 
