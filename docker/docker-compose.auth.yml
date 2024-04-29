@@ -34,8 +34,8 @@ services:
       KC_HOSTNAME: 212.233.73.223
       KC_DB_URL: jdbc:postgresql://auth-postgres:5432/keycloak
     secrets:
-      - auth-postgres-username
-      - auth-postgres-password
+      - auth-postgres-username #Аналог KC_DB_USERNAME, не юзается
+      - auth-postgres-password #Аналог KC_DB_PASSWORD, не юзается
       - auth-keycloak-admin #Аналог KEYCLOAK_ADMIN, не юзается
       - auth-keycloak-admin-password # Аналог KEYCLOAK_ADMIN_PASSWORD, не юзается
     ports:
