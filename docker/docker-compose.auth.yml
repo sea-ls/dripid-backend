@@ -25,10 +25,10 @@ services:
     image: ${DOCKER_REPO_URL}${CI_PROJECT_NAME}/keycloak-23.0:${IMAGE_TAG}
     command: start-dev
     environment:
-      KEYCLOAK_ADMIN : admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_DB_USERNAME: keycloak
-      KC_DB_PASSWORD: password
+      KEYCLOAK_ADMIN : ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
       KC_DB: postgres
       KC_DB_SCHEMA: public
       KC_HOSTNAME: 212.233.73.223
@@ -36,6 +36,8 @@ services:
     secrets:
       - auth-postgres-username
       - auth-postgres-password
+      - auth-keycloak-admin #Аналог KEYCLOAK_ADMIN, не юзается
+      - auth-keycloak-admin-password # Аналог KEYCLOAK_ADMIN_PASSWORD, не юзается
     ports:
       - "9000:8080"
     depends_on:
@@ -68,9 +70,9 @@ secrets:
     external: true
   auth-postgres-password:
     external: true
-  KC_DB_USERNAME:
+  auth-keycloak-admin:
     external: true
-  KC_DB_PASSWORD:
+  auth-keycloak-admin-password:
     external: true
 
 networks:
