@@ -20,7 +20,10 @@ env:
   DOCKER_REPO_URL_LOGIN: "${{ vars.DOCKER_REPO_URL_LOGIN }}"
   DOCKER_REPO_USERNAME: "${{ secrets.DOCKER_REPO_USERNAME }}"
   CONFIG_TOKEN: "${{ secrets.CONFIG_TOKEN }}"
-
+  KEYCLOAK_ADMIN: "${{ secrets.KEYCLOAK_ADMIN }}"
+  KEYCLOAK_ADMIN_PASSWORD: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
+  KC_DB_USERNAME: "${{ secrets.KC_DB_USERNAME }}"
+  KC_DB_PASSWORD: "${{ secrets.KC_DB_PASSWORD }}"
 
 jobs:
   deploy:
