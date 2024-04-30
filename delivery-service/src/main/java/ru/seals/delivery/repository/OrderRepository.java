@@ -2,10 +2,13 @@ package ru.seals.delivery.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.enums.OrderStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +27,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             JOIN Message m ON o.id = m.order.id
             """)
     List<Order> findAllWithMessage();
+    @Query("""
+            from Order o
+            where o.orderStatus in :statuses
+            """)
+    Slice<Order> findAllByUpdStatus(@Param("statuses") Iterable<OrderStatus> statuses,
+                                    Pageable pageable);
 
     //Один из возможных методов, которые пригодятся
     /*@Query(value = """
