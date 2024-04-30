@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.seals.delivery.hibernate.converter.TimestampToLocalDateTimeAttributeConverter;
 import ru.seals.delivery.model.enums.DeliveryStageType;
 import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.model.enums.OrderType;
@@ -32,6 +33,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @UpdateTimestamp
+    @Convert(converter = TimestampToLocalDateTimeAttributeConverter.class)
     private LocalDateTime lastUpdate;
 
     @OneToMany
