@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Description;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.dto.DefaultMessageSaveDTO;
 import ru.seals.delivery.dto.MessageTypeSaveDTO;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequestMapping(value = "/api/delivery-service/admin")
 @RequiredArgsConstructor
 @CrossOrigin
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
     private final AdminService adminService;
     private final ModelMapper modelMapper;
