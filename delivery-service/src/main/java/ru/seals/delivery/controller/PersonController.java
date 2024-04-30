@@ -5,21 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
 import ru.seals.delivery.model.Order;
-import ru.seals.delivery.service.OrderService;
-import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.model.Person;
-
-import java.math.BigDecimal;
-import java.util.List;
+import ru.seals.delivery.service.PersonService;
+import ru.seals.delivery.util.Converter;
 
 @RestController
 @RequestMapping(value = "/api/delivery-service/person")
@@ -28,6 +24,7 @@ import java.util.List;
 public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;
+    private final Converter converter;
 
     @GetMapping("authenticated")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -35,10 +32,7 @@ public class PersonController {
     public PersonDTO getAuthenticated(@RequestHeader(HttpHeaders.AUTHORIZATION) String bearerToken) {
         UserDTO accountInfo = userAuthServiceClient.getAuthenticatedUser(bearerToken);
         Person person = personService.getAuthenticated();
-        return new PersonDTO(accountInfo,
-                person.getSaveAddresses(),
-                person.getBalance().getNumber().numberValue(BigDecimal.class),
-                person.getImage());
+        return converter.mapPersonToDto(accountInfo, person);
     }
 
     @PostMapping("changePersonPhoto")

@@ -3,10 +3,8 @@ package ru.seals.delivery.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.OrderPreviewDTO;
@@ -18,7 +16,7 @@ import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.service.MinioService;
 import ru.seals.delivery.service.OrderService;
 import ru.seals.delivery.service.PersonService;
-import ru.seals.delivery.util.Convertor;
+import ru.seals.delivery.util.Converter;
 
 import javax.money.Monetary;
 import java.math.BigDecimal;
@@ -33,7 +31,7 @@ public class PersonServiceImpl implements PersonService {
     private final KeycloakService keycloakService;
     private final PersonRepository personRepository;
     private final OrderService orderService;
-    private final Convertor convertor;
+    private final Converter converter;
 
     @Override
     public Person save(Person person) {
@@ -83,7 +81,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Page<OrderPreviewDTO> getUserOrders(Pageable pageable, Long id) {
-        return convertor.mapEntityPageIntoDtoPage(
+        return converter.mapEntityPageIntoDtoPage(
                 orderService.getUserOrders(pageable, id),
                 OrderPreviewDTO.class);
     }

@@ -13,7 +13,7 @@ import ru.seals.delivery.model.enums.MinioBuckets;
 import ru.seals.delivery.repository.WarehouseRepository;
 import ru.seals.delivery.service.MinioService;
 import ru.seals.delivery.service.WarehouseService;
-import ru.seals.delivery.util.Convertor;
+import ru.seals.delivery.util.Converter;
 
 import java.util.UUID;
 
@@ -25,14 +25,14 @@ import static ru.seals.delivery.exception.WarehouseNotFoundException.warehouseNo
 public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository repository;
-    private final Convertor convertor;
+    private final Converter converter;
     private final ModelMapper modelMapper;
     private final MinioService minioService;
 
     @Override
     public Page<WarehouseSimpleViewDTO> getAllWarehouse(Pageable pageable) {
         Page<Warehouse> warehouses = repository.findAll(pageable);
-        return convertor.mapEntityPageIntoDtoPage(warehouses, WarehouseSimpleViewDTO.class);
+        return converter.mapEntityPageIntoDtoPage(warehouses, WarehouseSimpleViewDTO.class);
     }
 
     @Override
