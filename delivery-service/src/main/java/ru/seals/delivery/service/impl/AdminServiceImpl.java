@@ -68,11 +68,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Order getOrderById(Long id) {
-        return orderService.getOrderById(id);
-    }
-
-    @Override
     public void saveOrder(Order order) {
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));

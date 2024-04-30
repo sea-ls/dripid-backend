@@ -17,7 +17,6 @@ public interface AdminService {
     void deleteMessageTypeById(Long id);
     void saveMessageType(MessageType messageType);
 
-    Order getOrderById(Long id);
     void saveOrder(Order order);
     void deleteOrderById(Long id);
 

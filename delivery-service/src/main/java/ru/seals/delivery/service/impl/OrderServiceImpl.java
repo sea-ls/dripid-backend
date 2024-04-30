@@ -1,7 +1,10 @@
 package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.repository.OrderRepository;
 import ru.seals.delivery.service.OrderService;
@@ -45,5 +48,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrderWithMessages() {
         return orderRepository.findAllWithMessage();
+    }
+
+    @Override
+    public Page<Order> getUserOrders(Pageable pageable, Long id) {
+        return orderRepository.findAllByPersonId(pageable, id);
     }
 }

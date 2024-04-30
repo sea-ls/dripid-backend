@@ -80,12 +80,6 @@ public class AdminController {
         adminService.saveMessageType(messageType);
     }
 
-    @GetMapping("/orders/{id}")
-    @Operation(description = "Получение заказа по ID")
-    public Order getOrderById(@PathVariable Long id) {
-        return adminService.getOrderById(id);
-    }
-
     @PostMapping("/orders/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {

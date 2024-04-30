@@ -1,5 +1,7 @@
 package ru.seals.delivery.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,8 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByTrackNumberExternal(String trackNumber);
     Optional<Order> findByTrackNumberInternal(String trackNumber);
+
+    Page<Order> findAllByPersonId(Pageable pageable, Long id);
 
     @Query(value = """
             SELECT DISTINCT o

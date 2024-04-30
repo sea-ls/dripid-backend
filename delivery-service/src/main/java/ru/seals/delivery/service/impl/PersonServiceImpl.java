@@ -3,15 +3,22 @@ package ru.seals.delivery.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.javamoney.moneta.Money;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.seals.delivery.dto.OrderPreviewDTO;
+import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.model.enums.MinioBuckets;
 import ru.seals.delivery.repository.PersonRepository;
 import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.service.MinioService;
+import ru.seals.delivery.service.OrderService;
 import ru.seals.delivery.service.PersonService;
+import ru.seals.delivery.util.Convertor;
 
 import javax.money.Monetary;
 import java.math.BigDecimal;
@@ -25,6 +32,8 @@ public class PersonServiceImpl implements PersonService {
     private final MinioService minioService;
     private final KeycloakService keycloakService;
     private final PersonRepository personRepository;
+    private final OrderService orderService;
+    private final Convertor convertor;
 
     @Override
     public Person save(Person person) {
@@ -65,5 +74,22 @@ public class PersonServiceImpl implements PersonService {
         } else {
             log.error("Возникла ошибка при изменении аватара пользователя. Пользователь с id %d не найден", id);
         }
+    }
+
+    @Override
+    public String getDeliveryHistory(String trackNumber) {
+        return orderService.getDeliveryHistory(trackNumber);
+    }
+
+    @Override
+    public Page<OrderPreviewDTO> getUserOrders(Pageable pageable, Long id) {
+        return convertor.mapEntityPageIntoDtoPage(
+                orderService.getUserOrders(pageable, id),
+                OrderPreviewDTO.class);
+    }
+
+    @Override
+    public Order getOrderById(Long id) {
+        return orderService.getOrderById(id);
     }
 }
