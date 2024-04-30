@@ -4,18 +4,25 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.chat.MessageType;
+import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.service.AdminService;
 import ru.seals.delivery.service.DefaultMessageService;
 import ru.seals.delivery.service.MessageTypeService;
 import ru.seals.delivery.service.OrderService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +30,45 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     private static final String SAVE_LOG = "Сохранение объекта '%s' выполнено успешно.";
     private static final String DELETE_LOG = "Удаление записи в таблице '%s' с ID = %d выполнено успешно.";
+    private final PageRequest BATCH = PageRequest.of(0, 10);
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
+
+    //@Scheduled(cron = "0 0 12,00 * * *") it can be im prod
+    @Scheduled(fixedDelay = 3000)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void changeOrdersStatus() {
+        Slice<Order> orders = orderService.getAllByUpdStatus(BATCH);
+        orders.getContent().forEach(this::updOrderStatusAndSendEmail);
+
+        while (orders.hasNext()) {
+            orders = orderService.getAllByUpdStatus(orders.nextPageable());
+            orders.getContent().forEach(this::updOrderStatusAndSendEmail);
+        }
+    }
+    private void updOrderStatusAndSendEmail(Order order) {
+        //contains old status and new status + upd time
+        //in min, can be in days (prod)
+        Map<OrderStatus, Object[]> updStatusMap = Map.of(
+                OrderStatus.TEST, new Object[]{OrderStatus.UPD_TEST, 2}
+        );
+        OrderStatus oldStatus = order.getOrderStatus();
+        OrderStatus newStatus = (OrderStatus) updStatusMap.get(oldStatus)[0];
+        LocalDateTime updTime = order.getLastUpdate()
+                .plusMinutes((int) updStatusMap.get(oldStatus)[1]);
+
+        if (LocalDateTime.now().isAfter(updTime)) {
+            order.setOrderStatus(newStatus);
+            updateDeliveryHistory(order.getId(), Map.of(
+                    "time", "%s".formatted(LocalDateTime.now().toString()),
+                    "status", "Статус заказа обновлен на %s".formatted(newStatus)));
+            log.info("""
+                    Status of order %d was updated (%s, %s)\s
+                    """.formatted(order.getId(), oldStatus, newStatus));
+            orderService.saveOrder(order);
+        }
+    }
 
     @Override
     public List<DefaultMessage> getAllDefaultMessagesByType(MessageType type) {
@@ -80,13 +123,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void updateDeliveryHistory(Long id, HashMap<String, String> newStatus) {
+    public void updateDeliveryHistory(Long id, Map<String, String> newStatus) {
         Order order = orderService.getOrderById(id);
         String oldStatus = order.getDeliveryHistory();
 
         try {
             ObjectMapper om = new ObjectMapper();
-            ArrayList<HashMap<String, String>> statuses = om.readValue(oldStatus, ArrayList.class);
+            ArrayList<Map<String, String>> statuses = om.readValue(oldStatus, ArrayList.class);
             statuses.add(newStatus);
             order.setDeliveryHistory(om.writeValueAsString(statuses));
         } catch (JsonProcessingException e) {

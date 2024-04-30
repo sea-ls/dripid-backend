@@ -6,6 +6,7 @@ import ru.seals.delivery.model.chat.MessageType;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
     List<DefaultMessage> getAllDefaultMessagesByType(MessageType type);
@@ -20,6 +21,6 @@ public interface AdminService {
     void saveOrder(Order order);
     void deleteOrderById(Long id);
 
-    void updateDeliveryHistory(Long id, HashMap<String, String> newStatus);
+    void updateDeliveryHistory(Long id, Map<String, String> newStatus);
     Order getOrderByTrackIntervalNumber(String trackNumber);
 }
