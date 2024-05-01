@@ -1,0 +1,40 @@
+openapi: 3.0.0
+servers:
+  - url: 'http://petstore.swagger.io/v2'
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags: []
+paths: {}
+externalDocs:
+  description: See AsyncAPI example
+  url: 'https://mermade.github.io/shins/asyncapi.html'
+components:
+  schemas:
+    BalanceHistoryDTO:
+      type: object
+      properties:
+        oldBalance:
+          type: big-decimal
+          description: Старый баланс
+        newBalance:
+          type: big-decimal
+          description: Новый баланс
+        cheque:
+          type: string
+          description: Чек
+    DefaultMessageSaveDTO:
+      type: object
+      properties:
+        messageType:
+          type: message-type
+          description: Тип сообщения
+        message:
+          type: string
+          description: Сообщение

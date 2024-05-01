@@ -1,3 +1,4 @@
+/*
 package ru.seals.delivery.dto;
 
 import lombok.AllArgsConstructor;
@@ -14,3 +15,4 @@ public class BalanceHistoryDTO {
     private BigDecimal newBalance;
     private String cheque;
 }
+*/

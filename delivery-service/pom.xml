@@ -107,6 +107,23 @@
 			<version>8.5.5</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>8.0.1.Final</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
+
 		<!--Metrics-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -125,4 +142,82 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>7.5.0</version>
+				<executions>
+					<execution>
+						<id>content-base-openapi</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>${project.basedir}/src/main/resources/test.yml</inputSpec>
+							<modelPackage>ru.seals.delivery.dto</modelPackage>
+							<generatorName>spring</generatorName>
+							<generateSupportingFiles>false</generateSupportingFiles>
+							<generateApiDocumentation>false</generateApiDocumentation>
+							<generateModelDocumentation>false</generateModelDocumentation>
+							<removeOperationIdPrefix>true</removeOperationIdPrefix>
+							<library>spring-cloud</library>
+							<schemaMappings>message-type=ru.seals.delivery.model.chat.MessageType</schemaMappings>
+							<!--                    <templateDirectory>template</templateDirectory>-->
+							<configOptions>
+								<sourceFolder>/</sourceFolder>
+								<interfaceOnly>false</interfaceOnly>
+								<dateLibrary>java21</dateLibrary>
+								<useBeanValidation>true</useBeanValidation>
+								<performBeanValidation>true</performBeanValidation>
+								<useRuntimeException>true</useRuntimeException>
+								<skipDefaultInterface>true</skipDefaultInterface>
+								<useTags>true</useTags>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<additionalModelTypeAnnotations>
+									@lombok.NoArgsConstructor
+									@lombok.AllArgsConstructor
+									@lombok.experimental.SuperBuilder
+								</additionalModelTypeAnnotations>
+							</configOptions>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
+
+
+
+<!--
+<configuration>
+<inputSpec>${project.basedir}/../api/openapi.yml</inputSpec>
+<generatorName>spring</generatorName>
+<generateSupportingFiles>false</generateSupportingFiles>
+<generateApiDocumentation>false</generateApiDocumentation>
+<generateModelDocumentation>false</generateModelDocumentation>
+<removeOperationIdPrefix>true</removeOperationIdPrefix>
+<library>spring-cloud</library>
+&lt;!&ndash;                    <templateDirectory>template</templateDirectory>&ndash;&gt;
+<configOptions>
+	<sourceFolder>/</sourceFolder>
+	<interfaceOnly>false</interfaceOnly>
+	<dateLibrary>java8</dateLibrary>
+	<java8>true</java8>
+	<useBeanValidation>true</useBeanValidation>
+	<performBeanValidation>true</performBeanValidation>
+	<useRuntimeException>true</useRuntimeException>
+	<serializableModel>true</serializableModel>
+	<skipDefaultInterface>true</skipDefaultInterface>
+	<useTags>true</useTags>
+	<hideGenerationTimestamp>true</hideGenerationTimestamp>
+	<additionalModelTypeAnnotations>
+		@lombok.NoArgsConstructor
+		@lombok.experimental.SuperBuilder
+	</additionalModelTypeAnnotations>
+</configOptions>
+</configuration>-->
