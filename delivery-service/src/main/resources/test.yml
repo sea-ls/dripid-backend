@@ -38,3 +38,24 @@ components:
         message:
           type: string
           description: Сообщение
+    MessageTypeSaveDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Название
+    OrderPreviewDTO:
+      type: object
+      properties:
+        orderStatus:
+          type: order-status
+          description: Статус заказа
+        deliveryStageType:
+          type: delivery-stage-type
+          description: Статус доставки
+        address:
+          type: string
+          description: Адрес
+        trackNumberExternal:
+          type: string
+          description: Внешний номер`

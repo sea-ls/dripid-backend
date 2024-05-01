@@ -1,3 +1,4 @@
+/*
 package ru.seals.delivery.dto;
 
 import lombok.Data;
@@ -11,3 +12,4 @@ public class OrderPreviewDTO {
     private String address;
     private String trackNumberExternal;
 }
+*/

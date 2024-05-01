@@ -165,7 +165,10 @@
 							<generateModelDocumentation>false</generateModelDocumentation>
 							<removeOperationIdPrefix>true</removeOperationIdPrefix>
 							<library>spring-cloud</library>
-							<schemaMappings>message-type=ru.seals.delivery.model.chat.MessageType</schemaMappings>
+							<schemaMappings>message-type=ru.seals.delivery.model.chat.MessageType,
+								order-status=ru.seals.delivery.model.enums.OrderStatus,
+								delivery-stage-type=ru.seals.delivery.model.enums.DeliveryStageType
+							</schemaMappings>
 							<!--                    <templateDirectory>template</templateDirectory>-->
 							<configOptions>
 								<sourceFolder>/</sourceFolder>
@@ -179,7 +182,6 @@
 								<hideGenerationTimestamp>true</hideGenerationTimestamp>
 								<additionalModelTypeAnnotations>
 									@lombok.NoArgsConstructor
-									@lombok.AllArgsConstructor
 									@lombok.experimental.SuperBuilder
 								</additionalModelTypeAnnotations>
 							</configOptions>

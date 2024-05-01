@@ -1,3 +1,4 @@
+/*
 package ru.seals.delivery.dto;
 
 import lombok.Data;
@@ -6,3 +7,4 @@ import lombok.Data;
 public class MessageTypeSaveDTO {
     private String name;
 }
+*/

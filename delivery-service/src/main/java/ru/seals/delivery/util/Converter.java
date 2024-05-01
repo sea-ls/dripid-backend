@@ -23,9 +23,14 @@ public class Converter {
     }
 
     public BalanceHistoryDTO mapBHIntoDTO(BalanceHistory bh) {
-        return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
+        return BalanceHistoryDTO.builder()
+                .oldBalance(bh.getOldBalance().getNumber().numberValue(BigDecimal.class))
+                .newBalance(bh.getNewBalance().getNumber().numberValue(BigDecimal.class))
+                .cheque(bh.getCheque())
+                .build();
+/*        return new BalanceHistoryDTO(bh.getOldBalance().getNumber().numberValue(BigDecimal.class),
                 bh.getNewBalance().getNumber().numberValue(BigDecimal.class),
-                bh.getCheque());
+                bh.getCheque());*/
     }
     public PersonDTO mapPersonToDto(UserDTO accInfo, Person person) {
         return new PersonDTO(accInfo,
