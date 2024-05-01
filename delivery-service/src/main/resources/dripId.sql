@@ -125,3 +125,14 @@ CREATE TABLE IF NOT EXISTS "message"(
     CONSTRAINT FK FOREIGN KEY (order_id) REFERENCES orders(id)
 );
 --rollback drop table message;
+
+--changeset sea-ls:id10
+CREATE TABLE IF NOT EXISTS "currency"(
+    "id" BIGSERIAL PRIMARY KEY,
+    "updated_timestamp" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT statement_timestamp(),
+    "currency_name" VARCHAR(255) NOT NULL,
+    "quickly_purchase" DECIMAL(8, 2) NOT NULL,
+    "non_quickly_purchase" DECIMAL(8, 2) NOT NULL,
+    "crypto" DECIMAL(8, 2) NOT NULL
+);
+--rollback drop table currency;
