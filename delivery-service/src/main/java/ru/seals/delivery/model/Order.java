@@ -64,9 +64,11 @@ public class Order {
     private String trackNumberExternal;
     private String address;
 
+    @Column(columnDefinition = "date")
     @CreatedDate
     private Date createdDate;
 
+    @Column(columnDefinition = "date")
     @LastModifiedDate
     private Date modifiedDate;
 
