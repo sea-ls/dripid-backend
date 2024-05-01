@@ -89,6 +89,10 @@ CREATE TABLE IF NOT EXISTS "orders"(
     "warehouse_id" BIGINT NOT NULL,
     "delivery_stage_type" VARCHAR(255) DEFAULT NULL,
     "delivery_history" jsonb DEFAULT null,
+    "created_date" date,
+    "modified_date" date DEFAULT NULL,
+    "created_by" VARCHAR(255),
+    "modified_by" VARCHAR(255) DEFAULT NULL,
     CONSTRAINT FK_person_id_orders FOREIGN KEY (person_id) REFERENCES person(id),
     CONSTRAINT FK_warehouse_id_orders FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
 );
