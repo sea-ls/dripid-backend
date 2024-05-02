@@ -20,7 +20,7 @@ public class OrderSaveDTO {
     //private List<Product> products = new ArrayList<>();
     private Warehouse warehouse;
     private DeliveryStageType deliveryStageType;
-    private Person person;
+    //private Person person;
     private String deliveryHistory;
     private String trackNumberInternal;
     private String trackNumberExternal;
