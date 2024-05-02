@@ -1,5 +1,6 @@
 package ru.seals.delivery.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.javamoney.moneta.Money;
@@ -9,6 +10,7 @@ import ru.seals.delivery.model.Warehouse;
 import ru.seals.delivery.model.enums.DeliveryStageType;
 import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.model.enums.OrderType;
+import ru.seals.delivery.util.MoneySerializer;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +29,6 @@ public class OrderSaveDTO {
     //private String trackNumberInternal;
     private String trackNumberExternal;
     private String address;
-    @Schema(type = "float")
+    @JsonSerialize(using = MoneySerializer.class)
     private Money money;
 }
