@@ -17,7 +17,7 @@ public class OrderSaveDTO {
     private OrderType orderType;
     private OrderStatus orderStatus;
     private LocalDateTime lastUpdate;
-    private List<Product> products = new ArrayList<>();
+    //private List<Product> products = new ArrayList<>();
     private Warehouse warehouse;
     private DeliveryStageType deliveryStageType;
     private Person person;
