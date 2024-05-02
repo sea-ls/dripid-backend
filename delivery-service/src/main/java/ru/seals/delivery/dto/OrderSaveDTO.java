@@ -27,10 +27,6 @@ public class OrderSaveDTO {
     private String trackNumberInternal;
     private String trackNumberExternal;
     private String address;
-    @Schema(
-            description = "first name of the user",
-            name = "firstName",
-            type = "float",
-            example = "Vatsal")
+    @Schema(type = "float")
     private Money money;
 }
