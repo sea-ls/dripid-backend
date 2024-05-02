@@ -30,5 +30,6 @@ public class OrderSaveDTO {
     private String trackNumberExternal;
     private String address;
     @JsonSerialize(using = MoneySerializer.class)
+    @Schema(type = "float")
     private Money money;
 }
