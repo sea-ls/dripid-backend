@@ -34,11 +34,11 @@ services:
       KC_HOSTNAME: 212.233.73.223
       KC_DB_URL: jdbc:postgresql://auth-postgres:5432/keycloak
     # Секреты не получилось прокинуть
-    secrets:
-      - auth-postgres-username #Аналог KC_DB_USERNAME, не юзается
-      - auth-postgres-password #Аналог KC_DB_PASSWORD, не юзается
-      - auth-keycloak-admin #Аналог KEYCLOAK_ADMIN, не юзается
-      - auth-keycloak-admin-password # Аналог KEYCLOAK_ADMIN_PASSWORD, не юзается
+    #secrets:
+    #  - auth-postgres-username #Аналог KC_DB_USERNAME, не юзается
+    #  - auth-postgres-password #Аналог KC_DB_PASSWORD, не юзается
+    #  - auth-keycloak-admin #Аналог KEYCLOAK_ADMIN, не юзается
+    #  - auth-keycloak-admin-password # Аналог KEYCLOAK_ADMIN_PASSWORD, не юзается
     ports:
       - "9000:8080"
     depends_on:
