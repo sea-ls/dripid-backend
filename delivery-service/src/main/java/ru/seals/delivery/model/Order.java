@@ -8,6 +8,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.seals.delivery.hibernate.converter.TimestampToLocalDateTimeAttributeConverter;
 import ru.seals.delivery.model.enums.DeliveryStageType;
 import ru.seals.delivery.model.enums.OrderStatus;
@@ -15,10 +20,12 @@ import ru.seals.delivery.model.enums.OrderType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "orders")
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -56,4 +63,18 @@ public class Order {
     private String trackNumberInternal;
     private String trackNumberExternal;
     private String address;
+
+    @Column(columnDefinition = "date")
+    @CreatedDate
+    private Date createdDate;
+
+    @Column(columnDefinition = "date")
+    @LastModifiedDate
+    private Date modifiedDate;
+
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedBy
+    private String modifiedBy;
 }

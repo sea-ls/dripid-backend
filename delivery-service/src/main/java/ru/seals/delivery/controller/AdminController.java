@@ -80,19 +80,19 @@ public class AdminController {
         adminService.saveMessageType(messageType);
     }
 
-    @PostMapping("/orders/save")
+    @PostMapping("/order/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {
         adminService.saveOrder(modelMapper.map(order, Order.class));
     }
 
-    @PutMapping("/orders/update")
+    @PutMapping("/order/update")
     @Operation(description = "Изменение заказа")
     public void updateOrder(@RequestBody Order order) {
         adminService.saveOrder(order);
     }
 
-    @DeleteMapping("/orders/delete/{id}")
+    @DeleteMapping("/order/delete/{id}")
     @Operation(description = "Удаление заказа по ID")
     public void deleteOrder(@PathVariable Long id) {
         adminService.deleteOrderById(id);
