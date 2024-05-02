@@ -1,6 +1,8 @@
 package ru.seals.delivery.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.Person;
 import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.Warehouse;
@@ -25,4 +27,10 @@ public class OrderSaveDTO {
     private String trackNumberInternal;
     private String trackNumberExternal;
     private String address;
+    @Schema(
+            description = "first name of the user",
+            name = "firstName",
+            type = "float",
+            example = "Vatsal")
+    private Money money;
 }
