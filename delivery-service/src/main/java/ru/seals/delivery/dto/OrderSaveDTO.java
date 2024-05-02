@@ -4,17 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.javamoney.moneta.Money;
-import ru.seals.delivery.model.Person;
-import ru.seals.delivery.model.Product;
-import ru.seals.delivery.model.Warehouse;
 import ru.seals.delivery.model.enums.DeliveryStageType;
-import ru.seals.delivery.model.enums.OrderStatus;
-import ru.seals.delivery.model.enums.OrderType;
-import ru.seals.delivery.util.MoneySerializer;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import ru.seals.delivery.serialize.MoneySerializer;
 
 @Data
 public class OrderSaveDTO {

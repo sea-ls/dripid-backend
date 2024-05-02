@@ -1,4 +1,4 @@
-package ru.seals.delivery.util;
+package ru.seals.delivery.serialize;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
