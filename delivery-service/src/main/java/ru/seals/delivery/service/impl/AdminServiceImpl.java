@@ -39,6 +39,8 @@ public class AdminServiceImpl implements AdminService {
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
     private final ProductService productService;
+    private final PersonService personService;
+    private final KeycloakService keycloakService;
     private final ModelMapper modelMapper;
 
     //@Scheduled(cron = "0 0 12,00 * * *") it can be im prod
@@ -126,6 +128,7 @@ public class AdminServiceImpl implements AdminService {
                     //return productService.save(product);
                     return product;
                 }).collect(Collectors.toList()));
+        order.setPerson(personService.getByKeycloakId(keycloakService.getKeycloakUserId()));
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));
