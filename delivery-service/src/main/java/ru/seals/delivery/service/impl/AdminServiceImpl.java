@@ -123,7 +123,8 @@ public class AdminServiceImpl implements AdminService {
                 object -> {
                     Product product = modelMapper.map(object, Product.class);
                     product.setPrice(Money.of(object.getPrice(), "RUB"));
-                    return productService.save(product);
+                    //return productService.save(product);
+                    return product;
                 }).collect(Collectors.toList()));
 
         orderService.saveOrder(order);
