@@ -4,21 +4,18 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.PropertyMap;
-import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.dto.DefaultMessageSaveDTO;
 import ru.seals.delivery.dto.MessageTypeSaveDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
+import ru.seals.delivery.dto.ProductSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
-import ru.seals.delivery.util.Converter;
 
-import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 
@@ -113,5 +110,17 @@ public class AdminController {
     @Operation(description = "Получение заказа по его внутреннему номеру")
     public Order getOrderByTrackInternalNumber(@RequestParam String trackNumber) {
         return adminService.getOrderByTrackIntervalNumber(trackNumber);
+    }
+
+    @PostMapping("/product/save")
+    @Operation(description = "Сохранение продукта")
+    public void saveProduct(@RequestBody ProductSaveDTO product, Long orderId) {
+        adminService.saveProduct(modelMapper.map(product, Product.class), orderId);
+    }
+
+    @DeleteMapping("/product/delete/{id}")
+    @Operation(description = "Удаление продукта по ID")
+    public void deleteProductById(@PathVariable Long id) {
+        adminService.deleteProductById(id);
     }
 }

@@ -38,8 +38,8 @@ public class AdminServiceImpl implements AdminService {
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
-    private final ProductService productService;
     private final PersonService personService;
+    private final ProductService productService;
     private final KeycloakService keycloakService;
     private final ModelMapper modelMapper;
 
@@ -126,7 +126,6 @@ public class AdminServiceImpl implements AdminService {
                     Product product = modelMapper.map(object, Product.class);
                     product.setPrice(Money.of(object.getPrice(), "RUB"));
                     product.setOrder(order);
-                    //return productService.save(product);
                     return product;
                 }).collect(Collectors.toList()));
         order.setPerson(personService.getByKeycloakId(keycloakService.getKeycloakUserId()));
@@ -163,6 +162,19 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Order getOrderByTrackIntervalNumber(String trackNumber) {
         return orderService.getOrderByTrackIntervalNumber(trackNumber);
+    }
+
+    @Override
+    public void saveProduct(Product product, Long orderId) {
+        product.setOrder(orderService.getOrderById(orderId));
+        productService.save(product);
+        log.info(String.format(SAVE_LOG, product.toString()));
+    }
+
+    @Override
+    public void deleteProductById(Long id) {
+        productService.deleteById(id);
+        log.info(String.format(DELETE_LOG, "product", id));
     }
 
     @Override

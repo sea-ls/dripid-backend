@@ -12,7 +12,12 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public Product save(Product product) {
-        return productRepository.saveAndFlush(product);
+    public void save(Product product) {
+        productRepository.saveAndFlush(product);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
     }
 }
