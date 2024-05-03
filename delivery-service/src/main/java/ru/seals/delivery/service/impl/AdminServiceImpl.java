@@ -4,25 +4,28 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.model.enums.OrderStatus;
-import ru.seals.delivery.service.AdminService;
-import ru.seals.delivery.service.DefaultMessageService;
-import ru.seals.delivery.service.MessageTypeService;
-import ru.seals.delivery.service.OrderService;
+import ru.seals.delivery.service.*;
+import ru.seals.delivery.util.Converter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,8 @@ public class AdminServiceImpl implements AdminService {
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
 
     //@Scheduled(cron = "0 0 12,00 * * *") it can be im prod
     @Scheduled(fixedDelay = 3000)
@@ -111,7 +116,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void saveOrder(Order order) {
+    public void saveOrder(OrderSaveDTO orderSaveDTO) {
+        Order order = modelMapper.map(orderSaveDTO, Order.class);
+        order.setProducts(orderSaveDTO.getProducts().stream().map(
+                object -> productService.save(modelMapper.map(object, Product.class))
+        ).collect(Collectors.toList()));
+
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));
     }
@@ -144,5 +154,10 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Order getOrderByTrackIntervalNumber(String trackNumber) {
         return orderService.getOrderByTrackIntervalNumber(trackNumber);
+    }
+
+    @Override
+    public void updateOrder(Order order) {
+        orderService.saveOrder(order);
     }
 }

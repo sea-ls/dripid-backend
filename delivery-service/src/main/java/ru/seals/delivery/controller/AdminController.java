@@ -30,17 +30,6 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
     private final ModelMapper modelMapper;
-    private final Converter converter;
-
-    @PostConstruct
-    private void modelMapperAddMappings() {
-        modelMapper.addMappings(new PropertyMap<OrderSaveDTO, Order>() {
-            @Override
-            protected void configure() {
-                map().setProducts(converter.mapListDTOIntoEntity(source.getProducts(), Product.class));
-            }
-        });
-    }
 
     @GetMapping("/default_message/type")
     @Operation(description = "Получение всех шаблонных сообщений по типу. Пример типа - приветствие")
@@ -99,13 +88,13 @@ public class AdminController {
     @PostMapping("/order/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {
-        adminService.saveOrder(modelMapper.map(order, Order.class));
+        adminService.saveOrder(order);
     }
 
     @PutMapping("/order/update")
     @Operation(description = "Изменение заказа")
     public void updateOrder(@RequestBody Order order) {
-        adminService.saveOrder(order);
+        adminService.updateOrder(order);
     }
 
     @DeleteMapping("/order/delete/{id}")
