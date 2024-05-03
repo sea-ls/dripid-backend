@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.weaver.ast.Or;
+import org.javamoney.moneta.Money;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -119,8 +120,11 @@ public class AdminServiceImpl implements AdminService {
     public void saveOrder(OrderSaveDTO orderSaveDTO) {
         Order order = modelMapper.map(orderSaveDTO, Order.class);
         order.setProducts(orderSaveDTO.getProducts().stream().map(
-                object -> productService.save(modelMapper.map(object, Product.class))
-        ).collect(Collectors.toList()));
+                object -> {
+                    Product product = modelMapper.map(object, Product.class);
+                    product.setPrice(Money.of(object.getPrice(), "RUB"));
+                    return productService.save(product);
+                }).collect(Collectors.toList()));
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));
