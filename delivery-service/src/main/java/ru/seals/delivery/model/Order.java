@@ -43,7 +43,7 @@ public class Order {
     @Convert(converter = TimestampToLocalDateTimeAttributeConverter.class)
     private LocalDateTime lastUpdate;
 
-    @OneToMany
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @JoinColumn(name = "order_id")
     private List<Product> products = new ArrayList<>();
 
