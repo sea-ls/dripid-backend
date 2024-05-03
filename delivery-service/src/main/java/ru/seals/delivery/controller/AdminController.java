@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
 import ru.seals.delivery.util.Converter;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +30,17 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
     private final ModelMapper modelMapper;
+    private final Converter converter;
+
+    @PostConstruct
+    private void modelMapperAddMappings() {
+        modelMapper.addMappings(new PropertyMap<OrderSaveDTO, Order>() {
+            @Override
+            protected void configure() {
+                map().setProducts(converter.mapListDTOIntoEntity(source.getProducts(), Product.class));
+            }
+        });
+    }
 
     @GetMapping("/default_message/type")
     @Operation(description = "Получение всех шаблонных сообщений по типу. Пример типа - приветствие")
@@ -86,7 +99,6 @@ public class AdminController {
     @PostMapping("/order/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {
-        //order.setProducts(converter.mapListDTOIntoEntity(order.getProducts(), Product.class));
         adminService.saveOrder(modelMapper.map(order, Order.class));
     }
 
