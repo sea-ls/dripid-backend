@@ -2,6 +2,7 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,8 +12,10 @@ import ru.seals.delivery.dto.MessageTypeSaveDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
+import ru.seals.delivery.util.Converter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -83,6 +86,7 @@ public class AdminController {
     @PostMapping("/order/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {
+        //order.setProducts(converter.mapListDTOIntoEntity(order.getProducts(), Product.class));
         adminService.saveOrder(modelMapper.map(order, Order.class));
     }
 

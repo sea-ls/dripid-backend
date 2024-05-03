@@ -6,6 +6,7 @@ import ru.seals.delivery.model.enums.OrderStatus;
 
 @Data
 public class OrderPreviewDTO {
+    private Long id;
     private OrderStatus orderStatus;
     private DeliveryStageType deliveryStageType;
     private String address;
