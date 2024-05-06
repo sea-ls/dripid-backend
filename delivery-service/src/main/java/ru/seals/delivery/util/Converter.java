@@ -11,6 +11,9 @@ import ru.seals.delivery.model.BalanceHistory;
 import ru.seals.delivery.model.Person;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 @Component
@@ -20,6 +23,10 @@ public class Converter {
 
     public <D, T> Page<D> mapEntityPageIntoDtoPage(Page<T> entities, Class<D> dtoClass) {
         return entities.map(objectEntity -> modelMapper.map(objectEntity, dtoClass));
+    }
+
+    public <D, T> List<D> mapListDTOIntoEntity(List<T> list, Class<D> entityClass) {
+        return list.stream().map(objectDto -> modelMapper.map(list, entityClass)).collect(Collectors.toList());
     }
 
     public BalanceHistoryDTO mapBHIntoDTO(BalanceHistory bh) {

@@ -2,15 +2,17 @@ package ru.seals.delivery.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Description;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.dto.DefaultMessageSaveDTO;
 import ru.seals.delivery.dto.MessageTypeSaveDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
+import ru.seals.delivery.dto.ProductSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
 
@@ -83,13 +85,13 @@ public class AdminController {
     @PostMapping("/order/save")
     @Operation(description = "Сохранение заказа")
     public void saveOrder(@RequestBody OrderSaveDTO order) {
-        adminService.saveOrder(modelMapper.map(order, Order.class));
+        adminService.saveOrder(order);
     }
 
     @PutMapping("/order/update")
     @Operation(description = "Изменение заказа")
     public void updateOrder(@RequestBody Order order) {
-        adminService.saveOrder(order);
+        adminService.updateOrder(order);
     }
 
     @DeleteMapping("/order/delete/{id}")
@@ -108,5 +110,17 @@ public class AdminController {
     @Operation(description = "Получение заказа по его внутреннему номеру")
     public Order getOrderByTrackInternalNumber(@RequestParam String trackNumber) {
         return adminService.getOrderByTrackIntervalNumber(trackNumber);
+    }
+
+    @PostMapping("/product/save")
+    @Operation(description = "Сохранение продукта")
+    public void saveProduct(@RequestBody ProductSaveDTO product, Long orderId) {
+        adminService.saveProduct(modelMapper.map(product, Product.class), orderId);
+    }
+
+    @DeleteMapping("/product/delete/{id}")
+    @Operation(description = "Удаление продукта по ID")
+    public void deleteProductById(@PathVariable Long id) {
+        adminService.deleteProductById(id);
     }
 }
