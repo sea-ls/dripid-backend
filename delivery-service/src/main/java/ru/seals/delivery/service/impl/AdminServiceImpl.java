@@ -30,15 +30,13 @@ import java.util.Map;
 public class AdminServiceImpl implements AdminService {
     private static final String SAVE_LOG = "Сохранение объекта '%s' выполнено успешно.";
     private static final String DELETE_LOG = "Удаление записи в таблице '%s' с ID = %d выполнено успешно.";
-    private final PageRequest BATCH = PageRequest.of(0, 10);
+    private static final PageRequest BATCH = PageRequest.of(0, 10);
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
-
-    //@Scheduled(cron = "0 0 12,00 * * *") it can be im prod
-    @Scheduled(fixedDelay = 3000)
+    @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void changeOrdersStatus() {
+    public void updOrdersStatus() {
         Slice<Order> orders = orderService.getAllByUpdStatus(BATCH);
         orders.getContent().forEach(this::updOrderStatusAndSendEmail);
 

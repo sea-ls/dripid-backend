@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
+    void updOrdersStatus();
     List<DefaultMessage> getAllDefaultMessagesByType(MessageType type);
     DefaultMessage getDefaultMessagesById(Long id);
     void deleteDefaultMessageById(Long id);
