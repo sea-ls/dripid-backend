@@ -14,7 +14,6 @@ import ru.seals.delivery.util.Converter;
 @RestController
 @RequestMapping(value = "/api/delivery-service/person/balance")
 @RequiredArgsConstructor
-@CrossOrigin
 public class PersonBalanceController {
     private final BalanceService balanceService;
     private final Converter converter;

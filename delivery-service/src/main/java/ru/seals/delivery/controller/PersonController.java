@@ -20,7 +20,6 @@ import ru.seals.delivery.util.Converter;
 @RestController
 @RequestMapping(value = "/api/delivery-service/person")
 @RequiredArgsConstructor
-@CrossOrigin
 public class PersonController {
     private final UserAuthServiceClient userAuthServiceClient;
     private final PersonService personService;

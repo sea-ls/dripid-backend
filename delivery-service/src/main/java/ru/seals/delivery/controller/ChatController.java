@@ -23,7 +23,6 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/delivery-service/chats")
-@CrossOrigin
 public class ChatController {
     private final MessageService messageService;
     private final OrderService orderService;

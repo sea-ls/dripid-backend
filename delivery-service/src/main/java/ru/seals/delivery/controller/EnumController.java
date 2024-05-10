@@ -11,7 +11,6 @@ import ru.seals.delivery.model.enums.*;
 @RestController
 @RequestMapping(value = "/api/delivery-service/admin/enum")
 @RequiredArgsConstructor
-@CrossOrigin
 public class EnumController {
     @GetMapping("/delivery_stage_type")
     @Operation(description = "Получение всех типов этапов доставки. Пример - прибыл в город")

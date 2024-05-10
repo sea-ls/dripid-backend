@@ -58,7 +58,6 @@ public class SecurityConfig {
                         )
                 )
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
                 .exceptionHandling(c -> c.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();

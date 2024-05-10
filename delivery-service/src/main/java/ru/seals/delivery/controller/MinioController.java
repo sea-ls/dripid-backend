@@ -10,7 +10,6 @@ import ru.seals.delivery.service.MinioService;
 @RestController
 @RequestMapping("api/delivery-service/minio")
 @RequiredArgsConstructor
-@CrossOrigin
 public class MinioController {
     @Autowired
     private MinioService minioService;
