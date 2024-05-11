@@ -11,8 +11,8 @@ import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.repository.OrderRepository;
 import ru.seals.delivery.service.OrderService;
 
-import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 import static ru.seals.delivery.exception.OrderNotFoundException.orderNotFoundException;
 
@@ -22,8 +22,9 @@ import static ru.seals.delivery.exception.OrderNotFoundException.orderNotFoundEx
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     @Override
-    public Slice<Order> getAllByUpdStatus(Pageable pageable) {
-        return orderRepository.findAllByUpdStatus(EnumSet.of(OrderStatus.TEST), pageable);
+    public Slice<Order> getAllByStatuses(Set<OrderStatus> statuses,
+                                         Pageable pageable) {
+        return orderRepository.findAllByStatuses(statuses, pageable);
     }
 
     public Order getOrderById(Long id) {

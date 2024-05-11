@@ -4,12 +4,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import ru.seals.delivery.model.Order;
+import ru.seals.delivery.model.enums.OrderStatus;
 
 import java.util.List;
+import java.util.Set;
 
 
 public interface OrderService {
-    Slice<Order> getAllByUpdStatus(Pageable pageable);
+    Slice<Order> getAllByStatuses(Set<OrderStatus> statuses,
+                                  Pageable pageable);
     Order getOrderById(Long id);
 
     void saveOrder(Order order);

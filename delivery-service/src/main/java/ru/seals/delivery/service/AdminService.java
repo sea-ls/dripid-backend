@@ -5,13 +5,13 @@ import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.Product;
 import ru.seals.delivery.model.chat.MessageType;
+import ru.seals.delivery.model.enums.OrderStatus;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
-    void updOrdersStatus();
+    void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map);
     List<DefaultMessage> getAllDefaultMessagesByType(MessageType type);
     DefaultMessage getDefaultMessagesById(Long id);
     void deleteDefaultMessageById(Long id);

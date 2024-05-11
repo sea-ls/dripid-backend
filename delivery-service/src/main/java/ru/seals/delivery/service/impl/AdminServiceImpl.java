@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,25 +42,22 @@ public class AdminServiceImpl implements AdminService {
     private final ModelMapper modelMapper;
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void updOrdersStatus() {
-        Slice<Order> orders = orderService.getAllByUpdStatus(BATCH);
-        orders.getContent().forEach(this::updOrderStatusAndSendEmail);
+    public void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map) { // check map def in AdminCronService
+        Set<OrderStatus> statuses = map.keySet();
+        Slice<Order> orders = orderService.getAllByStatuses(statuses, BATCH);
+        orders.getContent().forEach(order -> updOrderStatusAndSendEmail(map, order));
 
         while (orders.hasNext()) {
-            orders = orderService.getAllByUpdStatus(orders.nextPageable());
-            orders.getContent().forEach(this::updOrderStatusAndSendEmail);
+            orders = orderService.getAllByStatuses(statuses, orders.nextPageable());
+            orders.getContent().forEach(order -> updOrderStatusAndSendEmail(map, order));
         }
     }
-    private void updOrderStatusAndSendEmail(Order order) {
-        //contains old status and new status + upd time
-        //in min, can be in days (prod)
-        Map<OrderStatus, Object[]> updStatusMap = Map.of(
-                OrderStatus.TEST, new Object[]{OrderStatus.UPD_TEST, 2}
-        );
+    private void updOrderStatusAndSendEmail(Map<OrderStatus, Object[]> map,
+                                            Order order) {
         OrderStatus oldStatus = order.getOrderStatus();
-        OrderStatus newStatus = (OrderStatus) updStatusMap.get(oldStatus)[0];
+        OrderStatus newStatus = (OrderStatus) map.get(oldStatus)[0];
         LocalDateTime updTime = order.getLastUpdate()
-                .plusMinutes((int) updStatusMap.get(oldStatus)[1]);
+                .plusMinutes((int) map.get(oldStatus)[1]);
 
         if (LocalDateTime.now().isAfter(updTime)) {
             order.setOrderStatus(newStatus);

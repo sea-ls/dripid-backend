@@ -31,8 +31,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             from Order o
             where o.orderStatus in :statuses
             """)
-    Slice<Order> findAllByUpdStatus(@Param("statuses") Iterable<OrderStatus> statuses,
-                                    Pageable pageable);
+    Slice<Order> findAllByStatuses(@Param("statuses") Iterable<OrderStatus> statuses,
+                                   Pageable pageable);
 
     //Один из возможных методов, которые пригодятся
     /*@Query(value = """
