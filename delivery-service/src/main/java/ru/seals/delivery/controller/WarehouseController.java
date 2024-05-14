@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.WarehouseSaveDTO;
@@ -33,6 +34,7 @@ public class WarehouseController {
 
     @PostMapping("/warehouse/save")
     @Operation(description = "Сохранение склада")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void saveWarehouse(
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") WarehouseSaveDTO warehouse) {
@@ -41,6 +43,7 @@ public class WarehouseController {
 
     @PutMapping("/warehouse/update")
     @Operation(description = "Изменение склада")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void updateWarehouse(
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") Warehouse warehouse) {
@@ -49,6 +52,7 @@ public class WarehouseController {
 
     @DeleteMapping("/warehouse/delete/{id}")
     @Operation(description = "Удаление склада по ID")
+    @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void deleteWarehouseById(@PathVariable Long id) {
         warehouseService.deleteById(id);
     }
