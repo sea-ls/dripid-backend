@@ -41,8 +41,8 @@ jobs:
           pwd
           echo $DOCKER_REPO_PASSWORD | docker login $DOCKER_REPO_URL_LOGIN -u $DOCKER_REPO_USERNAME --password-stdin
           echo $DOCKER_REPO_URL
-          cat docker-compose.yaml-links.yml docker-compose.module.yml > docker-compose.module.gen.yml
-          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.module.gen.yml --with-registry-auth module
+          cat docker-compose.yaml-links.yml docker-compose.delivery.yml > docker-compose.delivery.gen.yml
+          env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.delivery.gen.yml --with-registry-auth delivery
           
           cat docker-compose.yaml-links.yml docker-compose.config.yml > docker-compose.config.gen.yml
           env $(cat ./env/$CI_COMMIT_BRANCH/.env | grep ^[A-Z] | xargs) docker --context $CI_COMMIT_BRANCH stack deploy -c docker-compose.config.gen.yml --with-registry-auth dripid-config
