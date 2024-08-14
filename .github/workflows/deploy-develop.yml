@@ -24,6 +24,8 @@ env:
   KEYCLOAK_ADMIN_PASSWORD: "${{ secrets.KEYCLOAK_ADMIN_PASSWORD }}"
   KC_DB_USERNAME: "${{ secrets.KC_DB_USERNAME }}"
   KC_DB_PASSWORD: "${{ secrets.KC_DB_PASSWORD }}"
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
 
 jobs:
   deploy:
