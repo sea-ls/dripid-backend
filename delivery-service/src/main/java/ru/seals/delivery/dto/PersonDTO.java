@@ -13,6 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonDTO {
+    private Long id;
+    private String keycloakId;
     private UserDTO accountInfo;
     private List<SaveAddress> saveAddresses = new ArrayList<>();
     private BigDecimal balance;
