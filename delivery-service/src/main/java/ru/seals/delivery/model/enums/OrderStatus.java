@@ -1,7 +1,11 @@
 package ru.seals.delivery.model.enums;
 
 public enum OrderStatus {
-    TEST, UPD_TEST
+    PROCESSING,
+    PENDING_PAYMENT,
+    PAID,
+    REDEEMED,
+    WAREHOUSE_USA,
+    SHIPPED_RUSSIA,
+    DELIVERED
 }
-
-// В обработке, выкуплен,

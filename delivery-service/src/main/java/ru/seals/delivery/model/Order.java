@@ -14,7 +14,6 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import ru.seals.delivery.hibernate.converter.TimestampToLocalDateTimeAttributeConverter;
-import ru.seals.delivery.model.enums.DeliveryStageType;
 import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.model.enums.OrderType;
 
@@ -49,9 +48,6 @@ public class Order {
 
     @ManyToOne
     private Warehouse warehouse;
-
-    @Enumerated(EnumType.STRING)
-    private DeliveryStageType deliveryStageType;
 
     @ManyToOne
     private Person person;
