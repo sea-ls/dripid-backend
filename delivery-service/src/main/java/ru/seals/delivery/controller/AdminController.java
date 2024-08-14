@@ -39,6 +39,7 @@ public class AdminController {
         return adminService.getDefaultMessagesById(id);
     }
 
+
     @DeleteMapping("/default_message/delete/{id}")
     @Operation(description = "Удаление шаблонного сообщения по ID")
     public void deleteDefaultMessageById(@PathVariable Long id) {
