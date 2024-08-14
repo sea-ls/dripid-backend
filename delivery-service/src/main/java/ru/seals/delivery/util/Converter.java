@@ -34,7 +34,9 @@ public class Converter {
                 bh.getCheque());
     }
     public PersonDTO mapPersonToDto(UserDTO accInfo, Person person) {
-        return new PersonDTO(accInfo,
+        return new PersonDTO(person.getId(),
+                person.getKeycloakId(),
+                accInfo,
                 person.getSaveAddresses(),
                 person.getBalance().getNumber().numberValue(BigDecimal.class),
                 person.getImage());
