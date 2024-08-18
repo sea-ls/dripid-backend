@@ -1,11 +1,13 @@
 package ru.seals.delivery.util;
 
+import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 import ru.seals.delivery.model.common.BaseEntity;
 
 @Slf4j
+@UtilityClass
 public class ModelHelper {
-    public static <T extends BaseEntity> T createObjectWithId(Long id, Class<T> oClass) throws Exception {
+    public <T extends BaseEntity> T createObjectWithId(Long id, Class<T> oClass) throws Exception {
         if (id == null) {
             return null;
         } else {
@@ -14,7 +16,7 @@ public class ModelHelper {
             return o;
         }
     }
-    public static <T extends BaseEntity> T createObjectWithIdSafe(Long id, Class<T> oClass) {
+    public <T extends BaseEntity> T createObjectWithIdSafe(Long id, Class<T> oClass) {
         try {
             return createObjectWithId(id, oClass);
         } catch (Exception e) {
