@@ -103,7 +103,7 @@ public class PersonServiceImpl implements PersonService {
         order.setProducts(orderSaveDTO.getProducts().stream().map(
                 object -> {
                     Product product = modelMapper.map(object, Product.class);
-                    product.setPrice(Money.of(object.getPrice(), "RUB"));
+                    //  product.setPrice(Money.of(object.getPrice(), "RUB"));
                     product.setOrder(order);
                     return product;
                 }).collect(Collectors.toList()));
