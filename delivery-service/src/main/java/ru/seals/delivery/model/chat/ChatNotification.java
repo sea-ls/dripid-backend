@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.delivery.chat;
+package ru.seals.delivery.model.chat;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

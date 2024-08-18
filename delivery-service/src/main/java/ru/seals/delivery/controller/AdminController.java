@@ -12,7 +12,7 @@ import ru.seals.delivery.dto.ProductSaveDTO;
 import ru.seals.delivery.model.delivery.DefaultMessage;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Product;
-import ru.seals.delivery.model.delivery.chat.MessageType;
+import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.service.AdminService;
 
 import java.util.HashMap;

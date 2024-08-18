@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.delivery.chat;
+package ru.seals.delivery.model.chat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

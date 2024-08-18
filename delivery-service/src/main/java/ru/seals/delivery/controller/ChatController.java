@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.seals.delivery.model.delivery.Order;
-import ru.seals.delivery.model.delivery.chat.Message;
+import ru.seals.delivery.model.chat.Message;
 import ru.seals.delivery.service.MessageService;
 import ru.seals.delivery.service.OrderService;
 

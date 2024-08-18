@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.seals.delivery.model.delivery.DefaultMessage;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Product;
-import ru.seals.delivery.model.delivery.chat.MessageType;
+import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.service.*;
 

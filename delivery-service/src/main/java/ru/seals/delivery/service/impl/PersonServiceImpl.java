@@ -97,7 +97,7 @@ public class PersonServiceImpl implements PersonService {
                 OrderPreviewDTO.class);
     }
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void saveOrder(OrderSaveDTO orderSaveDTO) {
         Order order = modelMapper.map(orderSaveDTO, Order.class);
         order.setProducts(orderSaveDTO.getProducts().stream().map(
