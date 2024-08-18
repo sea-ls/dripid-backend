@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 import ru.seals.delivery.dto.BalanceHistoryDTO;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
-import ru.seals.delivery.model.BalanceHistory;
-import ru.seals.delivery.model.Person;
+import ru.seals.delivery.model.delivery.BalanceHistory;
+import ru.seals.delivery.model.delivery.Person;
 
 import java.math.BigDecimal;
 import java.util.List;

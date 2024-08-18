@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.chat;
+package ru.seals.delivery.model.delivery.chat;
 
 import lombok.Data;
 

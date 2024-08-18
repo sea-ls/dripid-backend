@@ -6,8 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.repository.OrderRepository;
 import ru.seals.delivery.service.OrderService;
 

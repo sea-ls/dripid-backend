@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.seals.delivery.model.enums.*;
+import ru.seals.delivery.model.delivery.enums.*;
 
 @RestController
 @RequestMapping(value = "/api/delivery-service/admin/enum")

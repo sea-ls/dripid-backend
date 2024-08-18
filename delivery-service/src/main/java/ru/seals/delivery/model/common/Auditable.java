@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.base;
+package ru.seals.delivery.model.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

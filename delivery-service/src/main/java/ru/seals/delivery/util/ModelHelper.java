@@ -1,7 +1,7 @@
 package ru.seals.delivery.util;
 
 import lombok.extern.slf4j.Slf4j;
-import ru.seals.delivery.model.base.BaseEntity;
+import ru.seals.delivery.model.common.BaseEntity;
 
 @Slf4j
 public class ModelHelper {

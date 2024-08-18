@@ -1,4 +1,4 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import ru.seals.delivery.model.base.BaseEntity;
-import ru.seals.delivery.model.chat.MessageType;
+import ru.seals.delivery.model.delivery.chat.MessageType;
+import ru.seals.delivery.model.common.BaseEntity;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

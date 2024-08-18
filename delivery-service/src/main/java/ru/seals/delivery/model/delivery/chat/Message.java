@@ -1,13 +1,14 @@
-package ru.seals.delivery.model.chat;
+package ru.seals.delivery.model.delivery.chat;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.Person;
-import ru.seals.delivery.model.enums.MessageStatus;
+import ru.seals.delivery.model.common.BaseEntity;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.Person;
+import ru.seals.delivery.model.delivery.enums.MessageStatus;
 
 import java.time.LocalDateTime;
 
@@ -16,11 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Data
 @Builder
-public class Message {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Message extends BaseEntity {
     @ManyToOne
     private Order order;
 

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.WarehouseSaveDTO;
 import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
-import ru.seals.delivery.model.Warehouse;
+import ru.seals.delivery.model.delivery.Warehouse;
 import ru.seals.delivery.service.WarehouseService;
 
 @RestController

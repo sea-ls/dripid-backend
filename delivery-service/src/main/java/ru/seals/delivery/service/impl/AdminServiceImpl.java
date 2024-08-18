@@ -4,29 +4,23 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javamoney.moneta.Money;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.seals.delivery.dto.OrderSaveDTO;
-import ru.seals.delivery.model.DefaultMessage;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.Product;
-import ru.seals.delivery.model.Warehouse;
-import ru.seals.delivery.model.chat.MessageType;
-import ru.seals.delivery.model.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.DefaultMessage;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.Product;
+import ru.seals.delivery.model.delivery.chat.MessageType;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.service.*;
-import ru.seals.delivery.util.ModelHelper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,10 +32,7 @@ public class AdminServiceImpl implements AdminService {
     private final DefaultMessageService defaultMessageService;
     private final MessageTypeService messageTypeService;
     private final OrderService orderService;
-    private final PersonService personService;
     private final ProductService productService;
-    private final KeycloakService keycloakService;
-    private final ModelMapper modelMapper;
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map) { // check map def in AdminCronService
@@ -113,24 +104,6 @@ public class AdminServiceImpl implements AdminService {
         log.info(String.format(SAVE_LOG, messageType.toString()));
     }
 
-    @Override
-    public void saveOrder(OrderSaveDTO orderSaveDTO) {
-        Order order = modelMapper.map(orderSaveDTO, Order.class);
-        order.setProducts(orderSaveDTO.getProducts().stream().map(
-                object -> {
-                    Product product = modelMapper.map(object, Product.class);
-                    product.setPrice(Money.of(object.getPrice(), "RUB"));
-                    product.setOrder(order);
-                    return product;
-                }).collect(Collectors.toList()));
-        order.setPerson(personService.getByKeycloakId(keycloakService.getKeycloakUserId()));
-        order.setOrderStatus(OrderStatus.PROCESSING);
-        order.setWarehouse(ModelHelper.createObjectWithIdSafe(orderSaveDTO.getWarehouseId(), Warehouse.class));
-        order.setAddress(orderSaveDTO.getAddress());
-
-        orderService.saveOrder(order);
-        log.info(String.format(SAVE_LOG, order.getId()));
-    }
 
     @Override
     public void deleteOrderById(Long id) {
@@ -155,11 +128,6 @@ public class AdminServiceImpl implements AdminService {
 
         orderService.saveOrder(order);
         log.info(String.format("Обновление последнего статуса доставки заказа с ID = %d выполнено успешно.", id));
-    }
-
-    @Override
-    public Order getOrderByTrackIntervalNumber(String trackNumber) {
-        return orderService.getOrderByTrackIntervalNumber(trackNumber);
     }
 
     @Override

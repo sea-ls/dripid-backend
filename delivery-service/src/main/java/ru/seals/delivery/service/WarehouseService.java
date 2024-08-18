@@ -4,7 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.WarehouseSimpleViewDTO;
-import ru.seals.delivery.model.Warehouse;
+import ru.seals.delivery.model.delivery.Warehouse;
 
 public interface WarehouseService {
     Page<WarehouseSimpleViewDTO> getAllWarehouse(Pageable pageable);

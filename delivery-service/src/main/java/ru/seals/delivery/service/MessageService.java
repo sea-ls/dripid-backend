@@ -4,7 +4,7 @@ package ru.seals.delivery.service;
 
 
 
-import ru.seals.delivery.model.chat.Message;
+import ru.seals.delivery.model.delivery.chat.Message;
 
 import java.util.List;
 

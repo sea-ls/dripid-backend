@@ -1,7 +1,7 @@
 package ru.seals.delivery.dto;
 
 import lombok.Data;
-import ru.seals.delivery.model.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
 
 @Data
 public class OrderPreviewDTO {

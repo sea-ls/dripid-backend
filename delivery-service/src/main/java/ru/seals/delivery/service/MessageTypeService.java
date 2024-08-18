@@ -1,6 +1,6 @@
 package ru.seals.delivery.service;
 
-import ru.seals.delivery.model.chat.MessageType;
+import ru.seals.delivery.model.delivery.chat.MessageType;
 
 import java.util.List;
 

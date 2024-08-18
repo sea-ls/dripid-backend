@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.chat;
+package ru.seals.delivery.model.delivery.chat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,14 +7,12 @@ import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.seals.delivery.model.common.BaseEntity;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class MessageType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class MessageType extends BaseEntity {
     private String name;
 }

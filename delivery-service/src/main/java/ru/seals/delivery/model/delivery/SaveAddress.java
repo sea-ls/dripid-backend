@@ -1,14 +1,11 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ru.seals.delivery.model.base.BaseEntity;
+import ru.seals.delivery.model.common.BaseEntity;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

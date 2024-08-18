@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
 import ru.seals.delivery.dto.OrderPreviewDTO;
+import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.Person;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.Person;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.util.Converter;
 
@@ -34,6 +35,19 @@ public class PersonController {
         return converter.mapPersonToDto(accountInfo, person);
     }
 
+    @PostMapping("/order/save")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Сохранение заказа")
+    public void saveOrder(@RequestBody OrderSaveDTO order) {
+        personService.saveOrder(order);
+    }
+
+    @GetMapping("/tracking")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Получение заказа по его внутреннему номеру")
+    public Order getOrderByTrackInternalNumber(@RequestParam String trackNumber) {
+        return personService.getOrderByTrackInternalNumber(trackNumber);
+    }
     @PostMapping("changePersonPhoto")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Изменение фото профиля")
