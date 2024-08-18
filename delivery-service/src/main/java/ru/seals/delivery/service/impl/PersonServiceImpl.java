@@ -42,7 +42,6 @@ public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
     private final OrderService orderService;
     private final Converter converter;
-    private final PersonService personService;
     private final ModelMapper modelMapper;
 
     @Override
