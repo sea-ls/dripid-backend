@@ -3,20 +3,20 @@ package ru.seals.delivery.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import ru.seals.delivery.model.base.BaseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "currency")
-public class Currency {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Currency extends BaseEntity {
     @Column(name = "updated_timestamp")
     private LocalDateTime updatedTimestamp;
     @Column(name = "currency_name")

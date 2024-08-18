@@ -81,20 +81,15 @@ CREATE TABLE IF NOT EXISTS "orders"(
     "id" BIGSERIAL PRIMARY KEY,
     "order_type" VARCHAR(255) NOT NULL,
     "order_status" VARCHAR(255) NOT NULL,
-    "last_update" TIMESTAMP NOT NULL,
     "person_id" BIGINT NOT NULL,
     "track_number_external" VARCHAR(255),
     "track_number_internal" VARCHAR(255) DEFAULT generate_random_unique_value(),
-    "address" VARCHAR(255) NOT NULL,
+    "address_id" BIGINT NOT NULL,
     "warehouse_id" BIGINT NOT NULL,
-    "delivery_stage_type" VARCHAR(255) DEFAULT NULL,
     "delivery_history" jsonb DEFAULT null,
-    "created_date" date,
-    "modified_date" date DEFAULT NULL,
-    "created_by" VARCHAR(255),
-    "modified_by" VARCHAR(255) DEFAULT NULL,
     CONSTRAINT FK_person_id_orders FOREIGN KEY (person_id) REFERENCES person(id),
     CONSTRAINT FK_warehouse_id_orders FOREIGN KEY (warehouse_id) REFERENCES warehouse(id)
+    CONSTRAINT FK_address_id_orders FOREIGN KEY (address_id) REFERENCES save_address(id)
 );
 --rollback drop table orders;
 
@@ -152,17 +147,12 @@ ALTER TABLE balance_history
 ALTER TABLE orders
     DROP CONSTRAINT IF EXISTS CHECK_order_type,
     ADD CONSTRAINT CHECK_order_type
-        CHECK (order_type IN ('TEST'));
+        CHECK (order_type IN ('DELIVERY', 'REDEMPTION'));
 
 ALTER TABLE orders
     DROP CONSTRAINT IF EXISTS CHECK_order_status,
     ADD CONSTRAINT CHECK_order_status
         CHECK (order_status IN ('TEST', 'UPD_TEST'));
-
-ALTER TABLE orders
-    DROP CONSTRAINT IF EXISTS CHECK_delivery_stage_type,
-    ADD CONSTRAINT CHECK_delivery_stage_type
-        CHECK (delivery_stage_type IN ('TEST'));
 
 ALTER TABLE message
     DROP CONSTRAINT IF EXISTS CHECK_event_type,

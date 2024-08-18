@@ -15,9 +15,11 @@ import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.DefaultMessage;
 import ru.seals.delivery.model.Order;
 import ru.seals.delivery.model.Product;
+import ru.seals.delivery.model.Warehouse;
 import ru.seals.delivery.model.chat.MessageType;
 import ru.seals.delivery.model.enums.OrderStatus;
 import ru.seals.delivery.service.*;
+import ru.seals.delivery.util.ModelHelper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
                                             Order order) {
         OrderStatus oldStatus = order.getOrderStatus();
         OrderStatus newStatus = (OrderStatus) map.get(oldStatus)[0];
-        LocalDateTime updTime = order.getLastUpdate()
+        LocalDateTime updTime = order.getLastModifiedDate()
                 .plusMinutes((int) map.get(oldStatus)[1]);
 
         if (LocalDateTime.now().isAfter(updTime)) {
@@ -122,6 +124,9 @@ public class AdminServiceImpl implements AdminService {
                     return product;
                 }).collect(Collectors.toList()));
         order.setPerson(personService.getByKeycloakId(keycloakService.getKeycloakUserId()));
+        order.setOrderStatus(OrderStatus.PROCESSING);
+        order.setWarehouse(ModelHelper.createObjectWithIdSafe(orderSaveDTO.getWarehouseId(), Warehouse.class));
+        order.setAddress(orderSaveDTO.getAddress());
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));

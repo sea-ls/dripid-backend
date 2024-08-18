@@ -17,7 +17,7 @@ public class AdminCronService {
      * in min, can be in days (prod)
      */
     private static final Map<OrderStatus, Object[]> UPD_STATUSES_MAP = Map.of(
-            OrderStatus.TEST, new Object[]{OrderStatus.UPD_TEST, 2}
+            OrderStatus.WAREHOUSE_USA, new Object[]{OrderStatus.SHIPPED_RUSSIA, 2}
     );
     private final AdminService adminService;
     @Scheduled(cron = EVERY_12HRS)
