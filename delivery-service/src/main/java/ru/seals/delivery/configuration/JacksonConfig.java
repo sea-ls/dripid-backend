@@ -10,9 +10,7 @@ public class JacksonConfig {
     @Bean
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new MoneyModule().withAmountFieldName("amount")
-                .withCurrencyFieldName("currency"));
-
+        objectMapper.registerModule(new MoneyModule());
         return objectMapper;
     }
 }
