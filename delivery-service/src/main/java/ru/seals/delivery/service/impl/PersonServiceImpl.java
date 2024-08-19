@@ -19,10 +19,7 @@ import ru.seals.delivery.model.delivery.Warehouse;
 import ru.seals.delivery.model.delivery.enums.MinioBuckets;
 import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.repository.PersonRepository;
-import ru.seals.delivery.service.KeycloakService;
-import ru.seals.delivery.service.MinioService;
-import ru.seals.delivery.service.OrderService;
-import ru.seals.delivery.service.PersonService;
+import ru.seals.delivery.service.*;
 import ru.seals.delivery.util.Converter;
 import ru.seals.delivery.util.ModelHelper;
 
@@ -40,6 +37,7 @@ public class PersonServiceImpl implements PersonService {
     private final MinioService minioService;
     private final KeycloakService keycloakService;
     private final PersonRepository personRepository;
+    private final AddressService addressService;
     private final OrderService orderService;
     private final Converter converter;
     private final ModelMapper modelMapper;
@@ -110,7 +108,7 @@ public class PersonServiceImpl implements PersonService {
         order.setPerson(getAuthenticated());
         order.setOrderStatus(OrderStatus.PROCESSING);
         order.setWarehouse(ModelHelper.createObjectWithIdSafe(orderSaveDTO.getWarehouseId(), Warehouse.class));
-        order.setAddress(orderSaveDTO.getAddress());
+        order.setAddress(addressService.getAddressById(orderSaveDTO.getAddressId()));
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));

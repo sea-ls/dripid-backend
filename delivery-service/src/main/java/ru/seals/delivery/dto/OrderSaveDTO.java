@@ -14,5 +14,5 @@ public class OrderSaveDTO {
     private List<ProductSaveDTO> products = new ArrayList<>();
     private Long warehouseId;
     private String trackNumberExternal;
-    private SaveAddress address;
+    private Long addressId;
 }
