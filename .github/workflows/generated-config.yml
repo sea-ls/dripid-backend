@@ -5,7 +5,6 @@
   "DOCKER_REPO_URL": "${{ vars.DOCKER_REPO_URL }}"
   "DOCKER_REPO_URL_LOGIN": "${{ vars.DOCKER_REPO_URL_LOGIN }}"
   "DOCKER_REPO_USERNAME": "${{ secrets.DOCKER_REPO_USERNAME }}"
-  "ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION": true
 "jobs":
   "build-auth-service":
     "if": "${{ github.event.inputs.build == 'auth-service' || needs.changes.outputs.auth-service == 'true' || github.event.inputs.build == 'parent' || needs.changes.outputs.parent == 'true' && always() }}"
