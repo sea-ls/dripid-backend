@@ -1,5 +1,7 @@
 package ru.seals.delivery.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -47,7 +49,8 @@ public class WarehouseController {
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void updateWarehouse(
             @RequestPart(value = "file") MultipartFile file,
-            @RequestPart(value = "json") Warehouse warehouse) {
+            @RequestPart(value = "json") String warehouse) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
         warehouseService.save(file, warehouse);
     }
 
