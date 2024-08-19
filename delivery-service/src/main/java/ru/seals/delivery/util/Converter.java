@@ -1,6 +1,7 @@
 package ru.seals.delivery.util;
 
 import lombok.RequiredArgsConstructor;
+import org.javamoney.moneta.Money;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -46,13 +47,13 @@ public class Converter {
     public Order mapOrderSaveDTOtoOrder(OrderSaveDTO orderSaveDTO) {
         Order order = new Order();
 
-        /*order.setProducts(orderSaveDTO.getProducts().stream().map(
+        order.setProducts(orderSaveDTO.getProducts().stream().map(
                 object -> {
                     Product product = modelMapper.map(object, Product.class);
                     product.setPrice(Money.of(object.getPrice(), "RUB"));
                     product.setOrder(order);
                     return product;
-                }).collect(Collectors.toList()));*/
+                }).collect(Collectors.toList()));
         order.setOrderType(orderSaveDTO.getOrderType());
         order.setTrackNumberExternal(orderSaveDTO.getTrackNumberExternal());
         order.setOrderStatus(OrderStatus.PROCESSING);

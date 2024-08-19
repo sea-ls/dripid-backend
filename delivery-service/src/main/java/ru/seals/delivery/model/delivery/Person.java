@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 public class Person extends BaseEntity {
     private String keycloakId;
-    @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
+    @OneToMany
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
     private Money balance;
