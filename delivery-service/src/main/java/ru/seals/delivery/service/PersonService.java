@@ -27,5 +27,5 @@ public interface PersonService {
     void deleteAddressById(Long id);
     SaveAddress getAddressById(Long id);
 
-    List<SaveAddress> getAllPersonAddressById(Long id);
+    List<SaveAddress> getAllPersonAddressById();
 }

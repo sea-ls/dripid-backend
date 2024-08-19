@@ -129,7 +129,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public List<SaveAddress> getAllPersonAddressById(Long id) {
+    public List<SaveAddress> getAllPersonAddressById() {
         return getAuthenticated().getSaveAddresses();
     }
 

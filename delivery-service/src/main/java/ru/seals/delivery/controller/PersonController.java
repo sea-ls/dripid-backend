@@ -90,10 +90,10 @@ public class PersonController {
         return personService.getAddressById(id);
     }
 
-    @GetMapping("/address/{id}")
+    @GetMapping("/person/address")
     @Operation(description = "Получение всех адерсов юзера по его ID")
-    public List<SaveAddress> getAllPersonAddressById(@PathVariable Long id) {
-        return personService.getAllPersonAddressById(id);
+    public List<SaveAddress> getAllPersonAddressById() {
+        return personService.getAllPersonAddressById();
     }
 
     @DeleteMapping("/address/delete/{id}")
