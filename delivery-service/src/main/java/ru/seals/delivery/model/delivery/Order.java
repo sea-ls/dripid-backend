@@ -43,7 +43,6 @@ public class Order extends Auditable {
 
     private String trackNumberInternal;
     private String trackNumberExternal;
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ADDRESS_ID", foreignKey = @ForeignKey(name = "fkg4v700dsp3tkqx4cfpey8f3ic"))
+    @ManyToOne
     private SaveAddress address;
 }
