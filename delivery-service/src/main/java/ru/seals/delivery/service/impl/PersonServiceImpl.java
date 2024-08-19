@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import ru.seals.delivery.dto.AddressSaveDTO;
 import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.delivery.*;
@@ -117,8 +118,13 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void saveAddress(SaveAddress address) {
-        addressService.saveNewAddress(address);
+    public void saveAddress(AddressSaveDTO address) {
+        SaveAddress newAddress = modelMapper.map(address, SaveAddress.class);
+        addressService.saveNewAddress(newAddress);
+
+        Person person = getAuthenticated();
+        person.getSaveAddresses().add(newAddress);
+        personRepository.save(person);
     }
 
     @Override

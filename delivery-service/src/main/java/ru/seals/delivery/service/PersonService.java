@@ -3,6 +3,7 @@ package ru.seals.delivery.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
+import ru.seals.delivery.dto.AddressSaveDTO;
 import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.delivery.Order;
@@ -20,7 +21,7 @@ public interface PersonService {
     void saveOrder(OrderSaveDTO orderSaveDTO);
     Order getOrderByTrackInternalNumber(String trackNumber);
 
-    void saveAddress(SaveAddress address);
+    void saveAddress(AddressSaveDTO address);
     void deleteAddressById(Long id);
     SaveAddress getAddressById(Long id);
 }

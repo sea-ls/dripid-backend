@@ -9,10 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
-import ru.seals.delivery.dto.OrderPreviewDTO;
-import ru.seals.delivery.dto.OrderSaveDTO;
-import ru.seals.delivery.dto.PersonDTO;
-import ru.seals.delivery.dto.UserDTO;
+import ru.seals.delivery.dto.*;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Person;
 import ru.seals.delivery.model.delivery.SaveAddress;
@@ -81,7 +78,7 @@ public class PersonController {
     @PostMapping("/address/save")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Сохранение адреса")
-    public void saveAddress(@RequestBody SaveAddress address) {
+    public void saveAddress(@RequestBody AddressSaveDTO address) {
         personService.saveAddress(address);
     }
 
