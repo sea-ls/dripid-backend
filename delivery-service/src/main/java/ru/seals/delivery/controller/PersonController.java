@@ -15,6 +15,7 @@ import ru.seals.delivery.dto.PersonDTO;
 import ru.seals.delivery.dto.UserDTO;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Person;
+import ru.seals.delivery.model.delivery.SaveAddress;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.util.Converter;
 
@@ -75,5 +76,24 @@ public class PersonController {
     @Operation(description = "Получение заказа по ID")
     public Order getOrderById(@PathVariable Long id) {
         return personService.getOrderById(id);
+    }
+
+    @PostMapping("/address/save")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Сохранение адреса")
+    public void saveAddress(@RequestBody SaveAddress address) {
+        personService.saveAddress(address);
+    }
+
+    @GetMapping("/address/{id}")
+    @Operation(description = "Получение адреса по ID")
+    public SaveAddress getAddressById(@PathVariable Long id) {
+        return personService.getAddressById(id);
+    }
+
+    @DeleteMapping("/address/delete/{id}")
+    @Operation(description = "Удаление заказа по ID")
+    public void deleteAddressById(@PathVariable Long id) {
+        personService.deleteAddressById(id);
     }
 }

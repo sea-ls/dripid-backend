@@ -12,10 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
-import ru.seals.delivery.model.delivery.Order;
-import ru.seals.delivery.model.delivery.Person;
-import ru.seals.delivery.model.delivery.Product;
-import ru.seals.delivery.model.delivery.Warehouse;
+import ru.seals.delivery.model.delivery.*;
 import ru.seals.delivery.model.delivery.enums.MinioBuckets;
 import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.repository.PersonRepository;
@@ -117,6 +114,21 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public Order getOrderByTrackInternalNumber(String trackNumber) {
         return orderService.getOrderByTrackIntervalNumber(trackNumber);
+    }
+
+    @Override
+    public void saveAddress(SaveAddress address) {
+        addressService.saveNewAddress(address);
+    }
+
+    @Override
+    public void deleteAddressById(Long id) {
+        addressService.deleteAddress(id);
+    }
+
+    @Override
+    public SaveAddress getAddressById(Long id) {
+        return addressService.getAddressById(id);
     }
 
     @Override

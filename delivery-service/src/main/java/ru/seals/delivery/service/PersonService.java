@@ -7,6 +7,7 @@ import ru.seals.delivery.dto.OrderPreviewDTO;
 import ru.seals.delivery.dto.OrderSaveDTO;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Person;
+import ru.seals.delivery.model.delivery.SaveAddress;
 
 public interface PersonService {
     Person save(Person person);
@@ -18,4 +19,8 @@ public interface PersonService {
     Order getOrderById(Long id);
     void saveOrder(OrderSaveDTO orderSaveDTO);
     Order getOrderByTrackInternalNumber(String trackNumber);
+
+    void saveAddress(SaveAddress address);
+    void deleteAddressById(Long id);
+    SaveAddress getAddressById(Long id);
 }
