@@ -95,18 +95,8 @@ public class PersonServiceImpl implements PersonService {
     @Override
     @Transactional
     public void saveOrder(OrderSaveDTO orderSaveDTO) {
-        Order order = modelMapper.map(orderSaveDTO, Order.class);
-        order.setProducts(orderSaveDTO.getProducts().stream().map(
-                object -> {
-                    Product product = modelMapper.map(object, Product.class);
-                    //  product.setPrice(Money.of(object.getPrice(), "RUB"));
-                    product.setOrder(order);
-                    return product;
-                }).collect(Collectors.toList()));
+        Order order = converter.mapOrderSaveDTOtoOrder(orderSaveDTO);
         order.setPerson(getAuthenticated());
-        order.setOrderStatus(OrderStatus.PROCESSING);
-        order.setWarehouse(ModelHelper.createObjectWithIdSafe(orderSaveDTO.getWarehouseId(), Warehouse.class));
-        order.setAddress(addressService.getAddressById(orderSaveDTO.getAddressId()));
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));
