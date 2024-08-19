@@ -23,6 +23,7 @@ import ru.seals.delivery.util.ModelHelper;
 
 import javax.money.Monetary;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -126,6 +127,12 @@ public class PersonServiceImpl implements PersonService {
     public SaveAddress getAddressById(Long id) {
         return addressService.getAddressById(id);
     }
+
+    @Override
+    public List<SaveAddress> getAllPersonAddressById(Long id) {
+        return getAuthenticated().getSaveAddresses();
+    }
+
 
     @Override
     public Order getOrderById(Long id) {

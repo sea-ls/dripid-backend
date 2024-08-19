@@ -46,13 +46,13 @@ public class Converter {
     public Order mapOrderSaveDTOtoOrder(OrderSaveDTO orderSaveDTO) {
         Order order = new Order();
 
-        order.setProducts(orderSaveDTO.getProducts().stream().map(
+        /*order.setProducts(orderSaveDTO.getProducts().stream().map(
                 object -> {
                     Product product = modelMapper.map(object, Product.class);
-                    //  product.setPrice(Money.of(object.getPrice(), "RUB"));
+                    product.setPrice(Money.of(object.getPrice(), "RUB"));
                     product.setOrder(order);
                     return product;
-                }).collect(Collectors.toList()));
+                }).collect(Collectors.toList()));*/
         order.setOrderType(orderSaveDTO.getOrderType());
         order.setTrackNumberExternal(orderSaveDTO.getTrackNumberExternal());
         order.setOrderStatus(OrderStatus.PROCESSING);

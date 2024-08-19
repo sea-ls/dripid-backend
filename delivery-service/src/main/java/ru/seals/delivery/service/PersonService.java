@@ -10,6 +10,8 @@ import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Person;
 import ru.seals.delivery.model.delivery.SaveAddress;
 
+import java.util.List;
+
 public interface PersonService {
     Person save(Person person);
     Person getAuthenticated();
@@ -24,4 +26,6 @@ public interface PersonService {
     void saveAddress(AddressSaveDTO address);
     void deleteAddressById(Long id);
     SaveAddress getAddressById(Long id);
+
+    List<SaveAddress> getAllPersonAddressById(Long id);
 }

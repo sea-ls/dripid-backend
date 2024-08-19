@@ -16,6 +16,8 @@ import ru.seals.delivery.model.delivery.SaveAddress;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.util.Converter;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/delivery-service/person")
 @RequiredArgsConstructor
@@ -86,6 +88,12 @@ public class PersonController {
     @Operation(description = "Получение адреса по ID")
     public SaveAddress getAddressById(@PathVariable Long id) {
         return personService.getAddressById(id);
+    }
+
+    @GetMapping("/address/{id}")
+    @Operation(description = "Получение всех адерсов юзера по его ID")
+    public List<SaveAddress> getAllPersonAddressById(@PathVariable Long id) {
+        return personService.getAllPersonAddressById(id);
     }
 
     @DeleteMapping("/address/delete/{id}")
