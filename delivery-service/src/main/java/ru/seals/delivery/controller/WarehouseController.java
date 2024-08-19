@@ -33,7 +33,7 @@ public class WarehouseController {
         return warehouseService.getById(id);
     }
 
-    @PostMapping(value = "/save", consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/save")
     @Operation(description = "Сохранение склада")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void saveWarehouse(
@@ -42,7 +42,7 @@ public class WarehouseController {
         warehouseService.save(file, modelMapper.map(warehouse, Warehouse.class));
     }
 
-    @PutMapping(value = "/update", consumes =MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description = "Изменение склада")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void updateWarehouse(
