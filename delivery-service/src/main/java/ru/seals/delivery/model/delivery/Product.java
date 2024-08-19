@@ -17,7 +17,7 @@ import ru.seals.delivery.model.common.BaseEntity;
 public class Product extends BaseEntity {
     private String url;
     private String description;
-    //private Money price;
+    private Money price;
     @Column(columnDefinition = "numeric(8, 2)")
     private Long weight;
 

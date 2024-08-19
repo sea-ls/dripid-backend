@@ -21,6 +21,6 @@ public class Person extends BaseEntity {
     @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
-    //private Money balance;
+    private Money balance;
     private String image;
 }
