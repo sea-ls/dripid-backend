@@ -43,7 +43,7 @@ public class AdminServiceImpl implements AdminService {
     private final KeycloakService keycloakService;
     private final ModelMapper modelMapper;
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map) { // check map def in AdminCronService
         Set<OrderStatus> statuses = map.keySet();
         Slice<Order> orders = orderService.getAllByStatuses(statuses, BATCH);
