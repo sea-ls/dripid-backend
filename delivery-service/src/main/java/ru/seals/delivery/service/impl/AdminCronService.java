@@ -3,7 +3,7 @@ package ru.seals.delivery.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.service.AdminService;
 
 import java.util.Map;

@@ -3,8 +3,8 @@ package ru.seals.delivery.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
 
 import java.util.List;
 import java.util.Set;

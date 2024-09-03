@@ -2,7 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.Product;
+import ru.seals.delivery.model.delivery.Product;
 import ru.seals.delivery.repository.ProductRepository;
 import ru.seals.delivery.service.ProductService;
 

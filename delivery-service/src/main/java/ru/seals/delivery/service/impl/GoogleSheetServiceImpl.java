@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.seals.delivery.model.Currency;
+import ru.seals.delivery.model.delivery.Currency;
 import ru.seals.delivery.repository.CurrencyRepository;
 import ru.seals.delivery.service.GoogleSheetService;
 

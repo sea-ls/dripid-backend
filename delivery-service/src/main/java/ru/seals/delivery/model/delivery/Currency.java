@@ -1,11 +1,11 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import ru.seals.delivery.model.base.BaseEntity;
+import ru.seals.delivery.model.common.BaseEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

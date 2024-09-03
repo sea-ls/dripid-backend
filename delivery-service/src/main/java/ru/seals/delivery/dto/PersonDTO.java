@@ -3,7 +3,7 @@ package ru.seals.delivery.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.seals.delivery.model.SaveAddress;
+import ru.seals.delivery.model.delivery.SaveAddress;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

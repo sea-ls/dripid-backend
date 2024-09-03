@@ -1,4 +1,4 @@
-package ru.seals.delivery.model.base;
+package ru.seals.delivery.model.common;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

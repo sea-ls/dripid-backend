@@ -1,4 +1,4 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 
 import io.hypersistence.utils.hibernate.type.json.JsonType;
@@ -8,20 +8,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import ru.seals.delivery.hibernate.converter.TimestampToLocalDateTimeAttributeConverter;
-import ru.seals.delivery.model.base.Auditable;
-import ru.seals.delivery.model.enums.OrderStatus;
-import ru.seals.delivery.model.enums.OrderType;
+import ru.seals.delivery.model.common.Auditable;
+import ru.seals.delivery.model.delivery.enums.OrderStatus;
+import ru.seals.delivery.model.delivery.enums.OrderType;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -52,6 +43,6 @@ public class Order extends Auditable {
 
     private String trackNumberInternal;
     private String trackNumberExternal;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private SaveAddress address;
 }

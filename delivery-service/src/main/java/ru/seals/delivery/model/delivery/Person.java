@@ -1,4 +1,4 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.javamoney.moneta.Money;
-import ru.seals.delivery.model.base.BaseEntity;
+import ru.seals.delivery.model.common.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 public class Person extends BaseEntity {
     private String keycloakId;
-    @OneToMany(/*cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true*/)
+    @OneToMany
     @JoinColumn(name = "person_id")
     private List<SaveAddress> saveAddresses = new ArrayList<>();
     private Money balance;

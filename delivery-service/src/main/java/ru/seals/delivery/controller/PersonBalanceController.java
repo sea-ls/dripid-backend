@@ -6,7 +6,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.dto.BalanceHistoryDTO;
 import ru.seals.delivery.dto.UpdateBalanceDTO;
-import ru.seals.delivery.model.BalanceHistory;
+import ru.seals.delivery.model.delivery.BalanceHistory;
 import ru.seals.delivery.service.BalanceService;
 import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.util.Converter;

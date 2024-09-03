@@ -1,4 +1,4 @@
-package ru.seals.delivery.model;
+package ru.seals.delivery.model.delivery;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.javamoney.moneta.Money;
-import ru.seals.delivery.model.base.BaseEntity;
-import ru.seals.delivery.model.enums.TransactionType;
+import ru.seals.delivery.model.common.BaseEntity;
+import ru.seals.delivery.model.delivery.enums.TransactionType;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity

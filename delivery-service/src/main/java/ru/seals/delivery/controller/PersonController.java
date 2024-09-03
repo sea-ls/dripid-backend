@@ -9,13 +9,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.controller.clients.UserAuthServiceClient;
-import ru.seals.delivery.dto.OrderPreviewDTO;
-import ru.seals.delivery.dto.PersonDTO;
-import ru.seals.delivery.dto.UserDTO;
-import ru.seals.delivery.model.Order;
-import ru.seals.delivery.model.Person;
+import ru.seals.delivery.dto.*;
+import ru.seals.delivery.model.delivery.Order;
+import ru.seals.delivery.model.delivery.Person;
+import ru.seals.delivery.model.delivery.SaveAddress;
 import ru.seals.delivery.service.PersonService;
 import ru.seals.delivery.util.Converter;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/delivery-service/person")
@@ -34,6 +35,19 @@ public class PersonController {
         return converter.mapPersonToDto(accountInfo, person);
     }
 
+    @PostMapping("/order/save")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Сохранение заказа")
+    public void saveOrder(@RequestBody OrderSaveDTO order) {
+        personService.saveOrder(order);
+    }
+
+    @GetMapping("/tracking")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Получение заказа по его внутреннему номеру")
+    public Order getOrderByTrackInternalNumber(@RequestParam String trackNumber) {
+        return personService.getOrderByTrackInternalNumber(trackNumber);
+    }
     @PostMapping("changePersonPhoto")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Изменение фото профиля")
@@ -61,5 +75,30 @@ public class PersonController {
     @Operation(description = "Получение заказа по ID")
     public Order getOrderById(@PathVariable Long id) {
         return personService.getOrderById(id);
+    }
+
+    @PostMapping("/address/save")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @Operation(description = "Сохранение адреса")
+    public void saveAddress(@RequestBody AddressSaveDTO address) {
+        personService.saveAddress(address);
+    }
+
+    @GetMapping("/address/{id}")
+    @Operation(description = "Получение адреса по ID")
+    public SaveAddress getAddressById(@PathVariable Long id) {
+        return personService.getAddressById(id);
+    }
+
+    @GetMapping("/person/address")
+    @Operation(description = "Получение всех адерсов юзера по его ID")
+    public List<SaveAddress> getAllPersonAddressById() {
+        return personService.getAllPersonAddressById();
+    }
+
+    @DeleteMapping("/address/delete/{id}")
+    @Operation(description = "Удаление заказа по ID")
+    public void deleteAddressById(@PathVariable Long id) {
+        personService.deleteAddressById(id);
     }
 }

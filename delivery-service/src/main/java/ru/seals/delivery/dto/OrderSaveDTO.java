@@ -2,8 +2,8 @@ package ru.seals.delivery.dto;
 
 
 import lombok.Data;
-import ru.seals.delivery.model.SaveAddress;
-import ru.seals.delivery.model.enums.OrderType;
+import ru.seals.delivery.model.delivery.SaveAddress;
+import ru.seals.delivery.model.delivery.enums.OrderType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,5 +14,5 @@ public class OrderSaveDTO {
     private List<ProductSaveDTO> products = new ArrayList<>();
     private Long warehouseId;
     private String trackNumberExternal;
-    private SaveAddress address;
+    private Long addressId;
 }
