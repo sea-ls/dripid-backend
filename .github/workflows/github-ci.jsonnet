@@ -62,6 +62,8 @@ local job_build_parent() = {
               ref: "${{ github.event.ref }}"
             },
         },
+        { run: 'echo "JAVA_HOME=/usr/lib/jvm/java-21" >> $GITHUB_ENV' },
+        { run: 'echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV' },
         { run: 'echo $JAVA_HOME' },
         { run: 'java --version' },
         { run: 'mvn -v' },
