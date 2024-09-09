@@ -1,5 +1,7 @@
 package ru.seals.delivery.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -42,14 +44,22 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
-    public void save(MultipartFile multipartFile, Warehouse warehouse) {
+    public void save(MultipartFile multipartFile, String warehouseJson) {
+        Warehouse warehouse;
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            warehouse = objectMapper.readValue(warehouseJson, Warehouse.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Произошла ошибка при считывании склада в виде JSON", e);
+        }
+
         String fileName = UUID.randomUUID().toString();
         warehouse.setImage(fileName);
         repository.save(modelMapper.map(warehouse, Warehouse.class));
         minioService.saveImage(
                 multipartFile,
-                warehouse.getImage(),
-                MinioBuckets.WAREHOUSE_BUCKET.getValue());
+                MinioBuckets.WAREHOUSE_BUCKET.getValue(),
+                warehouse.getImage());
         log.info(String.format("Сохранение записи в таблице 'warehouse' с ID = %d выполнено успешно", warehouse.getId()));
     }
 
