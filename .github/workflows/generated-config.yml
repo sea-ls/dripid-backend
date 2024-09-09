@@ -79,6 +79,7 @@
       - "uses": "actions/checkout@v3"
         "with":
           "ref": "${{ github.event.ref }}"
+      - "run": "mvn -v"
       - "run": "mvn --non-recursive clean package"
   "build_keycloak":
     "if": "${{ github.event.inputs.build == 'keycloak' || needs.changes.outputs.keycloak == 'true' && always() }}"
