@@ -62,6 +62,7 @@ local job_build_parent() = {
               ref: "${{ github.event.ref }}"
             },
         },
+        { run: 'mvn -v' },
         { run: 'mvn --non-recursive clean package' },
     ],
   },
