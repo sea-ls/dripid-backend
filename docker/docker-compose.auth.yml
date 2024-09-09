@@ -31,7 +31,7 @@ services:
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
       KC_DB: postgres
       KC_DB_SCHEMA: public
-      KC_HOSTNAME: 212.233.73.223
+      KC_HOSTNAME: 89.208.229.102
       KC_DB_URL: jdbc:postgresql://auth-postgres:5432/keycloak
     # Секреты не получилось прокинуть
     #secrets:
