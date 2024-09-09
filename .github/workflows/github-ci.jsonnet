@@ -62,6 +62,8 @@ local job_build_parent() = {
               ref: "${{ github.event.ref }}"
             },
         },
+        { run: 'echo $JAVA_HOME' },
+        { run: 'java --version' },
         { run: 'mvn -v' },
         { run: 'mvn --non-recursive clean package' },
     ],
