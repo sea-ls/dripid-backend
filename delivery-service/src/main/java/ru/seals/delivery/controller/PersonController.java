@@ -70,9 +70,10 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Получение превью всех заказов юзера")
     public Page<Order> getUserOrders(@RequestParam Long id, @PathVariable int page, @RequestParam int size) {
-        return personService.getUserOrders(PageRequest.of(page, size), id);
+        return personService.getUserOrders(PageRequest.of(page, size), id); // TODO брать id из токена
     }
 
+    //TODO адекватно получать даты в заказе
     @GetMapping("/order/{id}")
     @Operation(description = "Получение заказа по ID")
     public Order getOrderById(@PathVariable Long id) {
