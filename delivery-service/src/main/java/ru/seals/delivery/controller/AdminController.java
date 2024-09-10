@@ -28,7 +28,7 @@ public class AdminController {
     private final AdminService adminService;
     private final ModelMapper modelMapper;
 
-    @GetMapping("/orders/getAll")
+    @GetMapping("/orders/getAll/{page}")
     @Operation(description = "Получение всех заказов.")
     public Page<Order> getAllDefaultMessagesByType(@PathVariable int page, @RequestParam int size) {
         return adminService.getAllOrders(PageRequest.of(page, size));
