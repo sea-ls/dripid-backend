@@ -41,7 +41,7 @@ public class WarehouseController {
     public void saveWarehouse(
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") WarehouseSaveDTO warehouse) {
-        warehouseService.save(file, modelMapper.map(warehouse, Warehouse.class));
+        warehouseService.save(file, null); //TODO поправить
     }
 
     @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
