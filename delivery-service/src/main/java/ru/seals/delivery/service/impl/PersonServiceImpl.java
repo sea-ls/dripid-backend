@@ -88,10 +88,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Page<OrderPreviewDTO> getUserOrders(Pageable pageable, Long id) {
-        return converter.mapEntityPageIntoDtoPage(
-                orderService.getUserOrders(pageable, id),
-                OrderPreviewDTO.class);
+    public Page<Order> getUserOrders(Pageable pageable, Long id) {
+        return orderService.getUserOrders(pageable, id);
     }
     @Override
     @Transactional
