@@ -35,7 +35,7 @@ public class WarehouseController {
         return warehouseService.getById(id);
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description = "Сохранение склада")
     @PreAuthorize("hasRole('ROLE_SUPERADMIN')")
     public void saveWarehouse(

@@ -3,6 +3,7 @@ package ru.seals.delivery.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.seals.delivery.service.MinioService;
@@ -14,7 +15,7 @@ public class MinioController {
     @Autowired
     private MinioService minioService;
 
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(description = "Загрузка нового изображения")
     public void uploadFile(
             @RequestPart("file") MultipartFile file,
