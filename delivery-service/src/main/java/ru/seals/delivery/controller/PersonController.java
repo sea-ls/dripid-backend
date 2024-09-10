@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,13 +49,13 @@ public class PersonController {
     public Order getOrderByTrackInternalNumber(@RequestParam String trackNumber) {
         return personService.getOrderByTrackInternalNumber(trackNumber);
     }
-    @PostMapping("changePersonPhoto")
+    @PostMapping(value = "changePersonPhoto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Изменение фото профиля")
     public void changePersonPhoto(
             @RequestPart(value = "userId") Long id,
             @RequestPart(value = "file") MultipartFile file) {
-        personService.changePersonPhoto(id, file);
+        personService.changePersonPhoto(id, file); //TODO вернуть ResponseEntity.ok
     }
 
     @GetMapping("order/tracking")

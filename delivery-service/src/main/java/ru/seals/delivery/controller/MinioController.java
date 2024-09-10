@@ -20,7 +20,7 @@ public class MinioController {
             @RequestPart("file") MultipartFile file,
             @RequestPart("bucketName") String bucketName,
             @RequestPart("fileName") String fileName) {
-        minioService.saveImage(file, bucketName, fileName);
+        minioService.saveImage(file, bucketName, fileName); //TODO вернуть ResponseEntity.ok
     }
 
     @GetMapping("/get")

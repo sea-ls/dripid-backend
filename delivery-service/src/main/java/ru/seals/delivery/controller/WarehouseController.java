@@ -41,7 +41,7 @@ public class WarehouseController {
     public void saveWarehouse(
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") WarehouseSaveDTO warehouse) {
-        warehouseService.save(file, null); //TODO поправить
+        warehouseService.save(file, null); //TODO поправить //TODO вернуть ResponseEntity.ok
     }
 
     @PutMapping(value = "/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -51,7 +51,7 @@ public class WarehouseController {
             @RequestPart(value = "file") MultipartFile file,
             @RequestPart(value = "json") String warehouse) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        warehouseService.save(file, warehouse);
+        warehouseService.save(file, warehouse); //TODO вернуть ResponseEntity.ok
     }
 
     @DeleteMapping("/delete/{id}")
