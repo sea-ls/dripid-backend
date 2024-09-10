@@ -1,5 +1,7 @@
 package ru.seals.delivery.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ru.seals.delivery.model.delivery.DefaultMessage;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.Product;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface AdminService {
+    Page<Order> getAllOrders(Pageable pageable);
     void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map);
     List<DefaultMessage> getAllDefaultMessagesByType(MessageType type);
     DefaultMessage getDefaultMessagesById(Long id);

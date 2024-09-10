@@ -21,6 +21,11 @@ import static ru.seals.delivery.exception.OrderNotFoundException.orderNotFoundEx
 @Slf4j
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+
+    @Override
+    public Page<Order> findAll(Pageable pageable) {
+        return orderRepository.findAll(pageable);
+    }
     @Override
     public Slice<Order> getAllByStatuses(Set<OrderStatus> statuses,
                                          Pageable pageable) {

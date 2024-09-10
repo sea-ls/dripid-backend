@@ -26,4 +26,6 @@ public interface OrderService {
     List<Order> getAllOrderWithMessages();
 
     Page<Order> getUserOrders(Pageable pageable, Long id);
+
+    Page<Order> findAll(Pageable pageable);
 }

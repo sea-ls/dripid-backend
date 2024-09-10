@@ -4,6 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.seals.delivery.dto.DefaultMessageSaveDTO;
@@ -25,6 +27,12 @@ import java.util.List;
 public class AdminController {
     private final AdminService adminService;
     private final ModelMapper modelMapper;
+
+    @GetMapping("/orders/getAll")
+    @Operation(description = "Получение всех заказов.")
+    public Page<Order> getAllDefaultMessagesByType(@PathVariable int page, @RequestParam int size) {
+        return adminService.getAllOrders(PageRequest.of(page, size));
+    }
 
     @GetMapping("/default_message/type")
     @Operation(description = "Получение всех шаблонных сообщений по типу. Пример типа - приветствие")
