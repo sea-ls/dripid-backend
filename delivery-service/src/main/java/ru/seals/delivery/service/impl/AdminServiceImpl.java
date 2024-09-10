@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
     private final OrderService orderService;
     private final ProductService productService;
     @Override
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void updOrderStatusesByUpdMap(Map<OrderStatus, Object[]> map) { // check map def in AdminCronService
         Set<OrderStatus> statuses = map.keySet();
         Slice<Order> orders = orderService.getAllByStatuses(statuses, BATCH);
