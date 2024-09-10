@@ -63,8 +63,6 @@ local job_build_parent() = {
             },
         },
         { run: 'mvn -v' },
-        { run: 'echo "JAVA_HOME=/usr/lib/jvm/java-21" >> $GITHUB_ENV' },
-        { run: 'echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV' },
         { run: 'echo $JAVA_HOME' },
         { run: 'java --version' },
         { run: 'mvn -v' },
@@ -96,8 +94,6 @@ local job_build_service(container_name) = {
     { run: image },
     { run: "mvn -v" },
     { run: "echo $IMAGE" },
-    { run: 'echo "JAVA_HOME=/usr/lib/jvm/java-21" >> $GITHUB_ENV' },
-    { run: 'echo "PATH=$JAVA_HOME/bin:$PATH" >> $GITHUB_ENV' },
     //TODO убрать -DskipTests для пропуска тестов
     { run: 'mvn clean -DskipTests spring-boot:build-image' + ' -pl ' + container_name +
           ' -Dspring-boot.build-image.imageName=$IMAGE' +
