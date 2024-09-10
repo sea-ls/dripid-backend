@@ -95,12 +95,13 @@ public class PersonServiceImpl implements PersonService {
     }
     @Override
     @Transactional
-    public void saveOrder(OrderSaveDTO orderSaveDTO) {
+    public Order saveOrder(OrderSaveDTO orderSaveDTO) {
         Order order = converter.mapOrderSaveDTOtoOrder(orderSaveDTO);
         order.setPerson(getAuthenticated());
 
         orderService.saveOrder(order);
         log.info(String.format(SAVE_LOG, order.getId()));
+        return order;
     }
 
     @Override

@@ -39,8 +39,8 @@ public class PersonController {
     @PostMapping("/order/save")
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Сохранение заказа")
-    public void saveOrder(@RequestBody OrderSaveDTO order) {
-        personService.saveOrder(order);
+    public Order saveOrder(@RequestBody OrderSaveDTO order) {
+        return personService.saveOrder(order);
     }
 
     @GetMapping("/tracking")
@@ -55,6 +55,7 @@ public class PersonController {
     public void changePersonPhoto(
             @RequestPart(value = "userId") Long id,
             @RequestPart(value = "file") MultipartFile file) {
+        //TODO id брать из токена
         personService.changePersonPhoto(id, file); //TODO вернуть ResponseEntity.ok
     }
 

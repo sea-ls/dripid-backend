@@ -20,7 +20,7 @@ public interface PersonService {
     String getDeliveryHistory(String trackNumber);
     Page<OrderPreviewDTO> getUserOrders(Pageable pageable, Long id);
     Order getOrderById(Long id);
-    void saveOrder(OrderSaveDTO orderSaveDTO);
+    Order saveOrder(OrderSaveDTO orderSaveDTO);
     Order getOrderByTrackInternalNumber(String trackNumber);
 
     void saveAddress(AddressSaveDTO address);
