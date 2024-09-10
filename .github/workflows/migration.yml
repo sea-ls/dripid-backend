@@ -44,4 +44,4 @@ jobs:
       - "self-hosted"
     steps:
       - uses: actions/checkout@v3
-      - run: docker run --rm -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase --search-path=/liquibase/changelog update --url=jdbc:postgresql://89.208.229.102:5433/dripId  --username=postgres --password=postgres --changelog-file=master.xml
+      - run: docker run --rm -v ./migrations/delivery-service:/liquibase/changelog liquibase/liquibase --search-path=/liquibase/changelog update --url=jdbc:postgresql://109.120.189.206:5433/dripId  --username=postgres --password=postgres --changelog-file=master.xml

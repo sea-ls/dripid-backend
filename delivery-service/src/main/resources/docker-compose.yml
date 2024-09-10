@@ -19,7 +19,7 @@ services:
     environment:
       - MINIO_ACCESS_KEY=dripidMinio # login
       - MINIO_SECRET_KEY=ch3Wuetm # password
-      - MINIO_ENDPOINT=http://89.208.229.102:9000
+      - MINIO_ENDPOINT=http://109.120.189.206:9000
     volumes:
       - '~/data/minio/config:/root/.minio'
       - '~/data/minio/data:/data'
