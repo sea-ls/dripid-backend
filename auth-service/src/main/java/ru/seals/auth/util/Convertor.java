@@ -34,7 +34,8 @@ public class Convertor {
         user.setEmail(userRep.getEmail());
         user.setFirstName(userRep.getFirstName());
         user.setLastName(userRep.getLastName());
-        user.setPhone(userRep.getAttributes().get(keycloakPhoneName).get(0));
+        if (user.getPhone() != null && !user.getPhone().isBlank())
+            user.setPhone(userRep.getAttributes().get(keycloakPhoneName).get(0));
 
         return user;
     }
