@@ -1,6 +1,8 @@
 package ru.seals.delivery.service.impl;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.seals.delivery.model.delivery.Order;
 import ru.seals.delivery.model.delivery.enums.OrderStatus;
 import ru.seals.delivery.repository.OrderRepository;
+import ru.seals.delivery.service.KeycloakService;
 import ru.seals.delivery.service.OrderService;
 
 import java.util.List;
@@ -19,8 +22,10 @@ import static ru.seals.delivery.exception.OrderNotFoundException.orderNotFoundEx
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
+    OrderRepository orderRepository;
+    KeycloakService keycloakService;
 
     @Override
     public Page<Order> findAll(Pageable pageable) {
@@ -65,7 +70,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<Order> getUserOrders(Pageable pageable, Long id) {
-        return orderRepository.findAllByPersonId(pageable, id);
+    public Page<Order> getUserOrders(Pageable pageable) {
+        return orderRepository.findAllByPersonKeycloakId(pageable,
+                keycloakService.getKeycloakUserId());
     }
 }

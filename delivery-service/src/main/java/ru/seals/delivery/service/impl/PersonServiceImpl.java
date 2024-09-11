@@ -88,8 +88,8 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Page<Order> getUserOrders(Pageable pageable, Long id) {
-        return orderService.getUserOrders(pageable, id);
+    public Page<Order> getUserOrders(Pageable pageable) {
+        return orderService.getUserOrders(pageable);
     }
     @Override
     @Transactional

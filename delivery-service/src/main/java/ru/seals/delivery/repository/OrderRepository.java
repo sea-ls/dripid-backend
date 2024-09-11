@@ -19,7 +19,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByTrackNumberExternal(String trackNumber);
     Optional<Order> findByTrackNumberInternal(String trackNumber);
 
-    Page<Order> findAllByPersonId(Pageable pageable, Long id);
+    @Query("""
+            from Order o
+            where o.person.keycloakId = :kc_id
+            """)
+    Page<Order> findAllByPersonKeycloakId(Pageable pageable, @Param("kc_id") String kc_id);
 
     @Query(value = """
             SELECT DISTINCT o

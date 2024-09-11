@@ -70,8 +70,8 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Получение превью всех заказов юзера")
     //TODO проверить запрос
-    public Page<Order> getUserOrders(@RequestParam Long id, @PathVariable int page, @RequestParam int size) {
-        return personService.getUserOrders(PageRequest.of(page, size), id); // TODO брать id из токена
+    public Page<Order> getUserOrders(@PathVariable int page, @RequestParam int size) {
+        return personService.getUserOrders(PageRequest.of(page, size));
     }
 
     //TODO адекватно получать даты в заказе

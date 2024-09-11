@@ -18,7 +18,7 @@ public interface PersonService {
     Person getByKeycloakId(String kcId);
     void changePersonPhoto(Long id, MultipartFile file);
     String getDeliveryHistory(String trackNumber);
-    Page<Order> getUserOrders(Pageable pageable, Long id);
+    Page<Order> getUserOrders(Pageable pageable);
     Order getOrderById(Long id);
     Order saveOrder(OrderSaveDTO orderSaveDTO);
     Order getOrderByTrackInternalNumber(String trackNumber);
