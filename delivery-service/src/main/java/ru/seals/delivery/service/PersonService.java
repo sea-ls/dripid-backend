@@ -16,7 +16,7 @@ public interface PersonService {
     Person save(Person person);
     Person getAuthenticated();
     Person getByKeycloakId(String kcId);
-    void changePersonPhoto(Long id, MultipartFile file);
+    void changePersonPhoto(MultipartFile file);
     String getDeliveryHistory(String trackNumber);
     Page<Order> getUserOrders(Pageable pageable);
     Order getOrderById(Long id);

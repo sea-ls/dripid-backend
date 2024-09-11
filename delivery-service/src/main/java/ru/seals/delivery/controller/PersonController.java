@@ -53,10 +53,8 @@ public class PersonController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @Operation(description = "Изменение фото профиля")
     public void changePersonPhoto(
-            @RequestPart(value = "userId") Long id,
             @RequestPart(value = "file") MultipartFile file) {
-        //TODO id брать из токена
-        personService.changePersonPhoto(id, file); //TODO вернуть ResponseEntity.ok
+        personService.changePersonPhoto(file); //TODO вернуть ResponseEntity.ok
     }
 
     @GetMapping("order/tracking")

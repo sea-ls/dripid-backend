@@ -63,8 +63,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void changePersonPhoto(Long id, MultipartFile file) {
-        Optional<Person> result = personRepository.findById(id);
+    public void changePersonPhoto(MultipartFile file) {
+        Optional<Person> result = personRepository
+                .findPersonByKeycloakId(keycloakService.getKeycloakUserId());
 
         if (result.isPresent()) {
             Person person = result.get();
@@ -78,7 +79,8 @@ public class PersonServiceImpl implements PersonService {
                     newFileName,
                     MinioBuckets.PERSON_BUCKET.getValue());
         } else {
-            log.error("Возникла ошибка при изменении аватара пользователя. Пользователь с id %d не найден", id);
+            log.error("Возникла ошибка при изменении аватара пользователя. Пользователь с kc id %s не найден",
+                    keycloakService.getKeycloakUserId());
         }
     }
 
