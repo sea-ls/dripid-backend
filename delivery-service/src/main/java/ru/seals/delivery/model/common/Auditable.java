@@ -1,5 +1,6 @@
 package ru.seals.delivery.model.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -27,11 +28,13 @@ public abstract class Auditable extends BaseEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime createdDate;
 
     @LastModifiedBy
     protected String lastModifiedBy;
 
     @LastModifiedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime lastModifiedDate;
 }
