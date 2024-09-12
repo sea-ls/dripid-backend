@@ -1,6 +1,10 @@
 package ru.seals.delivery.model.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -27,6 +31,8 @@ public abstract class Auditable extends BaseEntity {
     protected String createdBy;
 
     @CreatedDate
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     @Column(nullable = false, updatable = false)
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime createdDate;
@@ -35,6 +41,8 @@ public abstract class Auditable extends BaseEntity {
     protected String lastModifiedBy;
 
     @LastModifiedDate
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     protected LocalDateTime lastModifiedDate;
 }
