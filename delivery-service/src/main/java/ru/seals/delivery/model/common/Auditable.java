@@ -32,13 +32,13 @@ public abstract class Auditable extends BaseEntity {
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
-    @JsonFormat(pattern = "yyyy-MM-ddTHH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     protected LocalDateTime createdDate;
 
     @LastModifiedBy
     protected String lastModifiedBy;
 
     @LastModifiedDate
-    @JsonFormat(pattern = "yyyy-MM-ddTHH:mm:ss.SSS")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
     protected LocalDateTime lastModifiedDate;
 }

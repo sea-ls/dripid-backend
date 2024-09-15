@@ -2,10 +2,7 @@ package ru.seals.delivery.model.delivery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.javamoney.moneta.Money;
 import ru.seals.delivery.model.common.BaseEntity;
 
@@ -23,5 +20,6 @@ public class Product extends BaseEntity {
 
     @ManyToOne
     @JsonIgnore
+    @ToString.Exclude
     private Order order;
 }
