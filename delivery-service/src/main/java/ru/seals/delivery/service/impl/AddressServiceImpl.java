@@ -14,7 +14,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public SaveAddress getAddressById(Long id) {
-        return repository.findById(id)
+        return repository.findExist(id)
                 .orElseThrow(); //TODO добавить ошибку
     }
 

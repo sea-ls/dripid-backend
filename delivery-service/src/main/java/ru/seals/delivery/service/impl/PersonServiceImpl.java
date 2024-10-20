@@ -53,13 +53,20 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public Person getByKeycloakId(String kcId) {
-        return personRepository.findPersonByKeycloakId(kcId)
+        Person p = personRepository.findPersonByKeycloakId(kcId)
                 .orElseGet(() -> {
                     Person person = new Person();
                     person.setKeycloakId(kcId);
                     person.setBalance(Money.of(new BigDecimal(0), Monetary.getCurrency("RUB")));
                     return save(person);
                 });
+        if (!p.getSaveAddresses().isEmpty()) {
+            List<SaveAddress> addresses = p.getSaveAddresses();
+            p.setSaveAddresses(
+                    addresses.stream().filter(a -> !a.isDeleted()).toList()
+            );
+        }
+        return p;
     }
 
     @Override
@@ -131,7 +138,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<SaveAddress> getAllPersonAddressById() {
-        return getAuthenticated().getSaveAddresses();
+        return personRepository
+                .findPersonSaveAddresses(keycloakService.getKeycloakUserId());
     }
 
 
