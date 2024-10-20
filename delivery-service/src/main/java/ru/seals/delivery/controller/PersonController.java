@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,7 +70,7 @@ public class PersonController {
     @Operation(description = "Получение превью всех заказов юзера")
     //TODO проверить запрос
     public Page<Order> getUserOrders(@PathVariable int page, @RequestParam int size) {
-        return personService.getUserOrders(PageRequest.of(page, size));
+        return personService.getUserOrders(PageRequest.of(page, size, Sort.by("id").descending()));
     }
 
     //TODO адекватно получать даты в заказе
