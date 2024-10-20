@@ -138,8 +138,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public List<SaveAddress> getAllPersonAddressById() {
-        return personRepository
-                .findPersonSaveAddresses(keycloakService.getKeycloakUserId());
+        return getAuthenticated().getSaveAddresses();
     }
 
 

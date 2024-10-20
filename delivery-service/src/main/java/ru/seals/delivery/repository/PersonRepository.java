@@ -12,12 +12,12 @@ import java.util.Optional;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
     Optional<Person> findPersonByKeycloakId(String kcId);
-    @Query("""
-            select sa
-            from Person p
-            join fetch p.saveAddresses sa
-            where p.keycloakId = :kcId
-            and sa.deleted = false
-            """)
-    List<SaveAddress> findPersonSaveAddresses(String kcId);
+//    @Query("""
+//            select sa
+//            from Person p
+//            join fetch p.saveAddresses sa
+//            where p.keycloakId = :kcId
+//            and sa.deleted = false
+//            """)
+//    List<SaveAddress> findPersonSaveAddresses(String kcId);
 }
