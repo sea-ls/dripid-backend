@@ -17,4 +17,5 @@ public class SaveAddress extends BaseEntity {
     private String region;
     private String city;
     private String address;
+    private boolean deleted = Boolean.FALSE;
 }
