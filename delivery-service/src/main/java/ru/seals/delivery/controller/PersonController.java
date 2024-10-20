@@ -100,7 +100,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/address/delete/{id}")
-    @Operation(description = "Удаление заказа по ID")
+    @Operation(description = "Удаление адреса по ID")
     public void deleteAddressById(@PathVariable Long id) {
         personService.deleteAddressById(id);
     }

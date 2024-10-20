@@ -2,6 +2,7 @@ package ru.seals.delivery.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.seals.delivery.model.delivery.SaveAddress;
 import ru.seals.delivery.repository.AddressRepository;
 import ru.seals.delivery.service.AddressService;
@@ -23,6 +24,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
+    @Transactional
     public void deleteAddress(Long id) {
         repository.softDelete(id);
     }
