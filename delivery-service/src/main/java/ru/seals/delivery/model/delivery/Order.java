@@ -41,6 +41,7 @@ public class Order extends Auditable {
     @Type(JsonType.class)
     private String deliveryHistory;
 
+    @GeneratedValue
     private String trackNumberInternal;
     private String trackNumberExternal;
     @ManyToOne
