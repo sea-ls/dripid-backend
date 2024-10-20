@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface PersonRepository extends JpaRepository<Person, Long> {
     @Query("""
             from Person p
-            left join fetch p.saveAddresses sa
+            join fetch p.saveAddresses sa
             where p.keycloakId = :kcId
             and sa.deleted = false
             """)
