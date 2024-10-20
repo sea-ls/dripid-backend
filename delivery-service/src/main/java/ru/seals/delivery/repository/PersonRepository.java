@@ -16,7 +16,7 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
             select sa
             from Person p
             join fetch p.saveAddresses sa
-            where p.id = :kcId
+            where p.keycloakId = :kcId
             and sa.deleted = false
             """)
     List<SaveAddress> findPersonSaveAddresses(String kcId);
