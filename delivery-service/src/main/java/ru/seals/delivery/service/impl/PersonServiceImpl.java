@@ -23,10 +23,13 @@ import ru.seals.delivery.util.ModelHelper;
 
 import javax.money.Monetary;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toCollection;
 
 @Slf4j
 @Service
@@ -122,7 +125,11 @@ public class PersonServiceImpl implements PersonService {
         addressService.saveNewAddress(newAddress);
 
         Person person = getAuthenticated();
-        person.getSaveAddresses().add(newAddress);
+       // person.getSaveAddresses().add(newAddress);
+
+        List<SaveAddress> mutable = new ArrayList<>(person.getSaveAddresses());
+        mutable.add(newAddress);
+        person.setSaveAddresses(mutable);
         personRepository.save(person);
     }
 
